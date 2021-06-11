@@ -106,7 +106,7 @@ do_cor_variables <- function(obj, method){
 cerv_cor <- do_cor_variables(obj = cerv, method = c("spearman"))
 ```
 
-Save the objects. Please note that the suffixes of the following filenames, such as `09` and `005`, are only for identifying the computational steps (there is no special significance).
+Save the objects. Please note that the suffixes of the following filenames, such as `09`, `005`, `006`, are only for identifying the computational steps (there is no special significance).
 
 ```R
 saveRDS(cerv, file = "backup/09_005_cerv_correlation.rds")
