@@ -15,7 +15,7 @@ https://www.biorxiv.org/content/10.1101/2021.06.09.447731v1
 ## ASURAT's workflow
 
 1. Preprocessing (data quality control, normalization, etc.)
-2. Collecting databases (DBs), but the following DBs were downloaded in December 2020: Disease Ontology (DO), Cell Ontology (CO), and Gene Ontology (GO) DB, Kyoto Encyclopedia of Genes and Genomes (KEGG), and Reactome.
+2. Collecting databases (DBs), but the following DBs were downloaded in December 2020: Disease Ontology (DO), Cell Ontology (CO), and Gene Ontology (GO) databases, Kyoto Encyclopedia of Genes and Genomes (KEGG), and Reactome.
 3. Creating signs (sign is a general biological term representing cell type and various biological functions)
 4. Creating sign-by-sample matrices (SSMs)
 5. Unsupervised clustering of cells
