@@ -26,8 +26,7 @@ https://www.biorxiv.org/content/10.1101/2021.06.09.447731v1
 
 ## Quick start inputting a Seurat object
 
-Although the above [URL](https://keita-iida.github.io/ASURAT/) does not assume Seurat-based analyses, it may be beneficial to begin with a Seurat object `obj` including `obj@assays[["RNA"]]@counts` data.
-) does not assume Seurat-based analyses, it is beneficial to begin with a Seurat object `obj` including `obj@assays[["RNA"]]@counts` data.
+Although the above [URL](https://keita-iida.github.io/ASURAT/) does not assume Seurat-based analyses, it might be beneficial to begin with a Seurat object `obj` including `obj@assays[["RNA"]]@counts`.
 
 Load a Seurat object for human scRNA-seq data (below is an example).
 
