@@ -6,7 +6,7 @@ Introduction, documentation, and tutorial can be found at
 
 https://keita-iida.github.io/ASURAT/index.html
 
-Our preprint was released on bioRxiv.
+Our preprint was released on bioRxiv (12th June, 2021).
 
 https://www.biorxiv.org/content/10.1101/2021.06.09.447731v1
 
