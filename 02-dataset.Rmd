@@ -7,7 +7,7 @@ source("R/function_general.R")
 The following single-cell RNA sequencing (scRNA-seq) data sets were generated
 from cancer tissue originated spheroids (CTOSs) obtained from cervix cancer
 patients, which were then processed by Nx1-seq protocol.
-The accession numbers are DRR165196 and DRR165197.
+The accession numbers are DRA007915: DRX155816 and DRX155817
 ```{r, eval = FALSE}
 mat1 <- readRDS(file = "data/2020_001_iida/day1_norm/day1_norm.rds")
 mat7 <- readRDS(file = "data/2020_001_iida/day7_hypo/day7_hypo.rds")
