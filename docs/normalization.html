@@ -24,7 +24,7 @@
 <meta name="author" content="Keita Iida" />
 
 
-<meta name="date" content="2021-06-09" />
+<meta name="date" content="2021-06-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -262,20 +262,21 @@ analyses.</p>
 <p>Perform <code>bayNorm()</code> to infer the true copy numbers of transcripts.
 Below is the default setting of <code>bayNorm()</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="normalization.html#cb4-1"></a>doBayNorm &lt;-<span class="st"> </span><span class="cf">function</span>(obj){</span>
-<span id="cb4-2"><a href="normalization.html#cb4-2"></a>  obj[[<span class="st">&quot;history&quot;</span>]][[<span class="st">&quot;doBayNorm&quot;</span>]][[<span class="st">&quot;MeanBETA&quot;</span>]] &lt;-<span class="st"> </span>MeanBETA</span>
-<span id="cb4-3"><a href="normalization.html#cb4-3"></a>  mat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(obj[[<span class="st">&quot;data&quot;</span>]][[<span class="st">&quot;raw&quot;</span>]])</span>
-<span id="cb4-4"><a href="normalization.html#cb4-4"></a>  BETA &lt;-<span class="st"> </span><span class="kw">BetaFun</span>(<span class="dt">Data =</span> mat, <span class="dt">MeanBETA =</span> <span class="fl">0.06</span>)  <span class="co"># 0.06 is the default value</span></span>
-<span id="cb4-5"><a href="normalization.html#cb4-5"></a>  bay_out &lt;-<span class="st"> </span><span class="kw">bayNorm</span>(mat, <span class="dt">BETA_vec =</span> BETA[[<span class="st">&quot;BETA&quot;</span>]], <span class="dt">mode_version =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb4-6"><a href="normalization.html#cb4-6"></a>  obj[[<span class="st">&quot;data&quot;</span>]][[<span class="st">&quot;bayNorm&quot;</span>]] &lt;-<span class="st"> </span>bay_out</span>
-<span id="cb4-7"><a href="normalization.html#cb4-7"></a>  <span class="kw">return</span>(obj)</span>
-<span id="cb4-8"><a href="normalization.html#cb4-8"></a>}</span>
-<span id="cb4-9"><a href="normalization.html#cb4-9"></a></span>
-<span id="cb4-10"><a href="normalization.html#cb4-10"></a>day1_norm &lt;-<span class="st"> </span><span class="kw">doBayNorm</span>(<span class="dt">obj =</span> day1_norm)</span>
-<span id="cb4-11"><a href="normalization.html#cb4-11"></a>day7_hypo &lt;-<span class="st"> </span><span class="kw">doBayNorm</span>(<span class="dt">obj =</span> day7_hypo)</span>
-<span id="cb4-12"><a href="normalization.html#cb4-12"></a>sc68_vehi &lt;-<span class="st"> </span><span class="kw">doBayNorm</span>(<span class="dt">obj =</span> sc68_vehi)</span>
-<span id="cb4-13"><a href="normalization.html#cb4-13"></a>sc68_cisp &lt;-<span class="st"> </span><span class="kw">doBayNorm</span>(<span class="dt">obj =</span> sc68_cisp)</span>
-<span id="cb4-14"><a href="normalization.html#cb4-14"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">doBayNorm</span>(<span class="dt">obj =</span> pbmc_<span class="dv">4000</span>)</span>
-<span id="cb4-15"><a href="normalization.html#cb4-15"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">doBayNorm</span>(<span class="dt">obj =</span> pbmc_<span class="dv">6000</span>)</span></code></pre></div>
+<span id="cb4-2"><a href="normalization.html#cb4-2"></a>  MeanBETA =<span class="st"> </span><span class="fl">0.06</span></span>
+<span id="cb4-3"><a href="normalization.html#cb4-3"></a>  obj[[<span class="st">&quot;history&quot;</span>]][[<span class="st">&quot;doBayNorm&quot;</span>]][[<span class="st">&quot;MeanBETA&quot;</span>]] &lt;-<span class="st"> </span>MeanBETA</span>
+<span id="cb4-4"><a href="normalization.html#cb4-4"></a>  mat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(obj[[<span class="st">&quot;data&quot;</span>]][[<span class="st">&quot;raw&quot;</span>]])</span>
+<span id="cb4-5"><a href="normalization.html#cb4-5"></a>  BETA &lt;-<span class="st"> </span><span class="kw">BetaFun</span>(<span class="dt">Data =</span> mat, <span class="dt">MeanBETA =</span> MeanBETA)  <span class="co"># 0.06 is the default value</span></span>
+<span id="cb4-6"><a href="normalization.html#cb4-6"></a>  bay_out &lt;-<span class="st"> </span><span class="kw">bayNorm</span>(mat, <span class="dt">BETA_vec =</span> BETA[[<span class="st">&quot;BETA&quot;</span>]], <span class="dt">mode_version =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb4-7"><a href="normalization.html#cb4-7"></a>  obj[[<span class="st">&quot;data&quot;</span>]][[<span class="st">&quot;bayNorm&quot;</span>]] &lt;-<span class="st"> </span>bay_out</span>
+<span id="cb4-8"><a href="normalization.html#cb4-8"></a>  <span class="kw">return</span>(obj)</span>
+<span id="cb4-9"><a href="normalization.html#cb4-9"></a>}</span>
+<span id="cb4-10"><a href="normalization.html#cb4-10"></a></span>
+<span id="cb4-11"><a href="normalization.html#cb4-11"></a>day1_norm &lt;-<span class="st"> </span><span class="kw">doBayNorm</span>(<span class="dt">obj =</span> day1_norm)</span>
+<span id="cb4-12"><a href="normalization.html#cb4-12"></a>day7_hypo &lt;-<span class="st"> </span><span class="kw">doBayNorm</span>(<span class="dt">obj =</span> day7_hypo)</span>
+<span id="cb4-13"><a href="normalization.html#cb4-13"></a>sc68_vehi &lt;-<span class="st"> </span><span class="kw">doBayNorm</span>(<span class="dt">obj =</span> sc68_vehi)</span>
+<span id="cb4-14"><a href="normalization.html#cb4-14"></a>sc68_cisp &lt;-<span class="st"> </span><span class="kw">doBayNorm</span>(<span class="dt">obj =</span> sc68_cisp)</span>
+<span id="cb4-15"><a href="normalization.html#cb4-15"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">doBayNorm</span>(<span class="dt">obj =</span> pbmc_<span class="dv">4000</span>)</span>
+<span id="cb4-16"><a href="normalization.html#cb4-16"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">doBayNorm</span>(<span class="dt">obj =</span> pbmc_<span class="dv">6000</span>)</span></code></pre></div>
 <p>The following function <code>log1p_data()</code> performs log (natural logarithm)
 transform of the input data with a pseudo count <code>eps</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="normalization.html#cb5-1"></a>log1p_data &lt;-<span class="st"> </span><span class="cf">function</span>(obj, eps){</span>
