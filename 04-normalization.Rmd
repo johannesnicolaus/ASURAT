@@ -37,9 +37,10 @@ Perform `bayNorm()` to infer the true copy numbers of transcripts.
 Below is the default setting of `bayNorm()`.
 ```{r, eval = FALSE}
 doBayNorm <- function(obj){
+  MeanBETA = 0.06
   obj[["history"]][["doBayNorm"]][["MeanBETA"]] <- MeanBETA
   mat <- as.matrix(obj[["data"]][["raw"]])
-  BETA <- BetaFun(Data = mat, MeanBETA = 0.06)  # 0.06 is the default value
+  BETA <- BetaFun(Data = mat, MeanBETA = MeanBETA)  # 0.06 is the default value
   bay_out <- bayNorm(mat, BETA_vec = BETA[["BETA"]], mode_version = TRUE)
   obj[["data"]][["bayNorm"]] <- bay_out
   return(obj)
