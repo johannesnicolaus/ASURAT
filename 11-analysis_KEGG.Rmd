@@ -107,7 +107,7 @@ day7_hypo_red <- separate_variables_sign(obj = day7_hypo,
                                          obj_cor = day7_hypo_cor,
                                          data_type = "KEGG",
                                          method = "spearman",
-                                         th_posi = 0.25, th_nega = -0.20)
+                                         th_posi = 0.28, th_nega = -0.23)
 sc68_vehi_red <- separate_variables_sign(obj = sc68_vehi,
                                          obj_cor = sc68_vehi_cor,
                                          data_type = "KEGG",
@@ -155,7 +155,7 @@ others with few.
 day1_norm_red <- select_sign(obj = day1_norm_red, data_type = "KEGG",
                              min_cnt = 2, min_cnt_weak = 2)
 day7_hypo_red <- select_sign(obj = day7_hypo_red, data_type = "KEGG",
-                             min_cnt = 2, min_cnt_weak = 2)
+                             min_cnt = 3, min_cnt_weak = 2)
 sc68_vehi_red <- select_sign(obj = sc68_vehi_red, data_type = "KEGG",
                              min_cnt = 2, min_cnt_weak = 2)
 sc68_cisp_red <- select_sign(obj = sc68_cisp_red, data_type = "KEGG",
@@ -642,7 +642,7 @@ dev.off()
 #
 # Below is a memo for using plot_ly()
 #
- library(plotly)
+# library(plotly)
 # x <- day1_norm[["reduction"]][["dmap"]][["KEGG"]][["pathway"]]@eigenvectors
 # df <- as.data.frame(x)
 # plot_ly(df, x = df[,1], y = df[,2], z = df[,3], mode = "markers",
@@ -741,6 +741,7 @@ Load the objects.
 ```{r, eval = FALSE}
 source("R/plot.R")
 source("R/function_sign.R")
+day7_hypo <- readRDS(file = "backup/02_302_day7_hypo_reduction_KEGG.rds")
 pbmc_4000 <- readRDS(file = "backup/05_302_pbmc_4000_reduction_KEGG.rds")
 pbmc_6000 <- readRDS(file = "backup/06_302_pbmc_6000_reduction_KEGG.rds")
 ```
@@ -761,14 +762,14 @@ The following function `classify_samples_pam_sign()` performs `pam()` in
 `cluster` package.
 The arguments are `obj`, `data_type`, `category`, and `k` (argument of `pam()`).
 ```{r, eval = FALSE}
-# day1_norm <- classify_samples_pam_sign(
-#   obj = day1_norm, data_type = "KEGG",category = "pathway", k = 4)
+# day7_hypo <- classify_samples_pam_sign(
+#   obj = day7_hypo, data_type = "KEGG",category = "pathway", k = 2)
 
 #
 # Below is a memo for plotting the result.
 #
-# mat <- day1_norm[["reduction"]][["tsne"]][["KEGG"]][["pathway"]]$Y
-# lab <- day1_norm[["sample"]][["pam_KEGG_pathway"]]
+# mat <- day7_hypo[["reduction"]][["tsne"]][["KEGG"]][["pathway"]]$Y
+# lab <- day7_hypo[["sample"]][["pam_KEGG_pathway"]]
 # col <- rainbow(length(unique(lab)))
 # plot(mat, pch=21, bg=col[lab])
 # legend("bottomright", legend=unique(sort(lab)), pch=21, pt.bg=col)
@@ -784,15 +785,15 @@ The following function `classify_samples_hclustCutree_sign()` performs
 The arguments are `obj`, `data_type`, `category`, `method`
 (argument of `hclust()`) and `k` (argument of `cutree()`).
 ```{r, eval = FALSE}
-# pbmc_4000 <- classify_samples_hclustCutree_sign(
-#  obj = pbmc_4000, data_type = "KEGG", category = "pathway",
-#  method = "ward.D2", k = 4)
+# day7_hypo <- classify_samples_hclustCutree_sign(
+#   obj = day7_hypo, data_type = "KEGG", category = "pathway",
+#   method = "ward.D2", k = 2)
 
 #
 # Below is a memo for plotting the result.
 #
-# mat <- pbmc_4000[["reduction"]][["tsne"]][["KEGG"]][["pathway"]]$Y
-# lab <- pbmc_4000[["sample"]][["hclustCutree_KEGG_pathway"]]
+# mat <- day7_hypo[["reduction"]][["tsne"]][["KEGG"]][["pathway"]]$Y
+# lab <- day7_hypo[["sample"]][["hclustCutree_KEGG_pathway"]]
 # col <- rainbow(length(unique(lab)))
 # plot(mat, pch=21, bg=col[lab])
 # legend("bottomright", legend=unique(sort(lab)), pch=21, pt.bg=col)
@@ -810,6 +811,11 @@ The arguments are `obj`, `data_type`, `category`, `reduction`, `dims`,
 `k.param`, `prune.SNN`, `resolution`, and `algorithm`, where the latter six
 parameters are used in `FindNeighbors()` and `FindClusters()`.
 ```{r, eval = FALSE}
+day7_hypo <- classify_samples_seuratFindClusters_sign(
+  obj = day7_hypo, data_type = "KEGG", category = "pathway", reduction = "pca",
+  dims = 1:20, k.param = 10, prune.SNN = 1./15, resolution = 0.1,
+  algorithm = 1)
+
 pbmc_4000 <- classify_samples_seuratFindClusters_sign(
   obj = pbmc_4000, data_type = "KEGG", category = "pathway", reduction = "pca",
   dims = 1:20, k.param = 10, prune.SNN = 1./15, resolution = 0.15,
@@ -839,12 +845,14 @@ Please see the previous subsection for the details.
 
 Save the objects.
 ```{r, eval = FALSE}
+saveRDS(day7_hypo, file = "backup/02_303_day7_hypo_classification_KEGG.rds")
 saveRDS(pbmc_4000, file = "backup/05_303_pbmc_4000_classification_KEGG.rds")
 saveRDS(pbmc_6000, file = "backup/06_303_pbmc_6000_classification_KEGG.rds")
 ```
 
 Load the objects.
 ```{r, eval = FALSE}
+day7_hypo <- readRDS(file = "backup/02_303_day7_hypo_classification_KEGG.rds")
 pbmc_4000 <- readRDS(file = "backup/05_303_pbmc_4000_classification_KEGG.rds")
 pbmc_6000 <- readRDS(file = "backup/06_303_pbmc_6000_classification_KEGG.rds")
 ```
@@ -859,6 +867,22 @@ sample clustering by identifying `algo_name` (in the current version,
 one of `"pam"`, `"hclustCutree"`, `"seuratFindClusters"`, and `"merlot"`).
 ```{r, eval = FALSE}
 # ----------------------------------------
+# For `day7_hypo`
+# ----------------------------------------
+filename <- "figures/figure_02_0330.png"
+png(file = filename, height = 1000, width = 1250, res = 200)
+plot_Heatmap_SignxSamp(obj = day7_hypo,
+                       data_type = "KEGG", category = "pathway",
+                       algo_name = "seuratFindClusters", method = "ward.D2",
+                       show_nReads = FALSE, title = "day7_hypo (KEGG: pathway)",
+                       name = "KEGGxSamp",
+                       show_rownames_sign = FALSE, show_rownames_label = FALSE,
+                       show_rownames_nReads = FALSE, default_color = FALSE)
+dev.off()
+```
+
+```{r, eval = FALSE, echo = FALSE, results = "hide"}
+# ----------------------------------------
 # For `pbmc_4000`
 # ----------------------------------------
 filename <- "figures/figure_05_0330.png"
@@ -871,9 +895,6 @@ plot_Heatmap_SignxSamp(obj = pbmc_4000,
                        show_rownames_sign = FALSE, show_rownames_label = FALSE,
                        show_rownames_nReads = FALSE, default_color = FALSE)
 dev.off()
-```
-
-```{r, eval = FALSE, echo = FALSE, results = "hide"}
 # ----------------------------------------
 # For `pbmc_6000`
 # ----------------------------------------
@@ -889,10 +910,34 @@ plot_Heatmap_SignxSamp(obj = pbmc_6000,
 dev.off()
 ```
 
+<img src="figures/figure_02_0330.png" width="300px">
 <img src="figures/figure_05_0330.png" width="300px">
 <img src="figures/figure_06_0330.png" width="300px">
 
 ```{r, eval = FALSE}
+# ----------------------------------------
+# For `day7_hypo`
+# ----------------------------------------
+p <- plot_tsne_sign(obj = day7_hypo, data_type = "KEGG", category = "pathway",
+                    algo_name = "seuratFindClusters",
+                    theta = NULL, phi = NULL,
+                    title = "day7_hypo (KEGG: pathway)", title_size = 16,
+                    xlabel = "tSNE_1", ylabel = "tSNE_2", zlabel = NULL,
+                    default_color = FALSE)
+filename <- "figures/figure_02_0331.png"
+ggsave(file = filename, plot =  p, dpi = 250, width = 4.9, height = 4)
+
+p <- plot_umap_sign(obj = day7_hypo, data_type = "KEGG", category = "pathway",
+                    algo_name = "seuratFindClusters",
+                    theta = NULL, phi = NULL,
+                    title = "day7_hypo (KEGG: pathway)", title_size = 16,
+                    xlabel = "UMAP_1", ylabel = "UMAP_2", zlabel = NULL,
+                    default_color = FALSE)
+filename <- "figures/figure_02_0332.png"
+ggsave(file = filename, plot =  p, dpi = 250, width = 4.9, height = 4)
+```
+
+```{r, eval = FALSE, echo = FALSE, results = "hide"}
 # ----------------------------------------
 # For `pbmc_4000`
 # ----------------------------------------
@@ -904,9 +949,6 @@ p <- plot_tsne_sign(obj = pbmc_4000, data_type = "KEGG", category = "pathway",
                     default_color = FALSE)
 filename <- "figures/figure_05_0331.png"
 ggsave(file = filename, plot =  p, dpi = 250, width = 4.9, height = 4)
-```
-
-```{r, eval = FALSE, echo = FALSE, results = "hide"}
 # ----------------------------------------
 # For `pbmc_6000`
 # ----------------------------------------
@@ -920,11 +962,27 @@ filename <- "figures/figure_06_0331.png"
 ggsave(file = filename, plot =  p, dpi = 250, width = 4.9, height = 4)
 ```
 
+<img src="figures/figure_02_0331.png" width="250px">
+<img src="figures/figure_02_0332.png" width="250px">
 <img src="figures/figure_05_0331.png" width="250px">
 <img src="figures/figure_06_0331.png" width="250px">
 
 The following command shows the population sizes by bar graph.
 ```{r, eval = FALSE}
+# ----------------------------------------
+# For `day7_hypo`
+# ----------------------------------------
+p <- plot_bargraph_sign(obj = day7_hypo,
+                        data_type = "KEGG", category = "pathway",
+                        algo_name = "seuratFindClusters",
+                        title = "day7_hypo", title_size = 20,
+                        xlabel = "Label (KEGG: pathway)",
+                        ylabel = "Number of samples", ymax = 1500)
+filename <- "figures/figure_02_0335.png"
+ggsave(file = filename, plot = p, dpi = 200, width = 4.3, height = 4)
+```
+
+```{r, eval = FALSE, echo = FALSE, results = "hide"}
 # ----------------------------------------
 # For `pbmc_4000`
 # ----------------------------------------
@@ -936,9 +994,6 @@ p <- plot_bargraph_sign(obj = pbmc_4000,
                         ylabel = "Number of samples", ymax = 1500)
 filename <- "figures/figure_05_0335.png"
 ggsave(file = filename, plot = p, dpi = 200, width = 4.3, height = 4)
-```
-
-```{r, eval = FALSE, echo = FALSE, results = "hide"}
 # ----------------------------------------
 # For `pbmc_6000`
 # ----------------------------------------
@@ -952,6 +1007,7 @@ filename <- "figures/figure_06_0335.png"
 ggsave(file = filename, plot = p, dpi = 200, width = 4.3, height = 4)
 ```
 
+<img src="figures/figure_02_0335.png" width="150px">
 <img src="figures/figure_05_0335.png" width="150px">
 <img src="figures/figure_06_0335.png" width="150px">
 
@@ -967,6 +1023,7 @@ Load the objects.
 ```{r, eval = FALSE}
 source("R/plot.R")
 source("R/function_sign.R")
+day7_hypo <- readRDS(file = "backup/02_303_day7_hypo_classification_KEGG.rds")
 pbmc_4000 <- readRDS(file = "backup/05_303_pbmc_4000_classification_KEGG.rds")
 pbmc_6000 <- readRDS(file = "backup/06_303_pbmc_6000_classification_KEGG.rds")
 ```
@@ -984,6 +1041,12 @@ be compared: both integer and vector forms are accepted).
 This function helps users find positive and negative marker signs of `label_1`
 with the positive and negative values of the indices, respectively.
 ```{r, eval = FALSE}
+day7_hypo <- auto_find_marker_sign(obj = day7_hypo,
+                                   data_type_for_label = "KEGG",
+                                   category_for_label = "pathway",
+                                   algo_name_for_label = "seuratFindClusters",
+                                   data_type_for_expr = "KEGG",
+                                   category_for_expr = "pathway")
 pbmc_4000 <- auto_find_marker_sign(obj = pbmc_4000,
                                    data_type_for_label = "KEGG",
                                    category_for_label = "pathway",
@@ -1007,6 +1070,8 @@ extent of separation between two different sets of random variables.
 Note that `auto_find_marker_sign()` computes `sep_I` for the given group versus
 all other cells.
 ```{r, eval = FALSE}
+datatable(day7_hypo[["marker"]][["KEGG"]][["pathway"]][["all"]],
+          rownames = FALSE)
 datatable(pbmc_4000[["marker"]][["KEGG"]][["pathway"]][["all"]],
           rownames = FALSE)
 datatable(pbmc_6000[["marker"]][["KEGG"]][["pathway"]][["all"]],
@@ -1029,9 +1094,37 @@ gene expression), and `category_for_expr` (`category` of interest for
 investigating gene expression).
 ```{r, eval = FALSE}
 # ----------------------------------------
+# For `day7_hypo`
+# ----------------------------------------
+p <- plot_violin_signScore(
+  obj = day7_hypo, sign_name = "path:hsa05222_S",
+  data_type_for_label = "KEGG", category_for_label = "pathway",
+  algo_name_for_label = "seuratFindClusters",
+  data_type_for_expr = "KEGG", category_for_expr = "pathway",
+  title = "KEGG:hsa05222_S\nSmall cell lung cancer\n(LAMC2/CDKN1A/..)",
+  title_size = 16, default_color = FALSE)
+filename <- "figures/figure_02_0340.png"
+ggsave(file = filename, plot = p, dpi = 200, width = 4, height = 4)
+```
+
+```{r, eval = FALSE, echo = FALSE, results = "hide"}
+# ----------------------------------------
+# For `day7_hypo`
+# ----------------------------------------
+p <- plot_violin_signScore(
+  obj = day7_hypo, sign_name = "path:hsa05165_S",
+  data_type_for_label = "KEGG", category_for_label = "pathway",
+  algo_name_for_label = "seuratFindClusters",
+  data_type_for_expr = "KEGG", category_for_expr = "pathway",
+  title = "KEGG:hsa05165_S\nHuman papillomavirus..\n(CDKN1A/COL6A1/..)",
+  title_size = 16, default_color = FALSE)
+filename <- "figures/figure_02_0341.png"
+ggsave(file = filename, plot = p, dpi = 200, width = 4, height = 4)
+
+# ----------------------------------------
 # For `pbmc_4000`
 # ----------------------------------------
-p <- plot_violin_signExpression(
+p <- plot_violin_signScore(
   obj = pbmc_4000, sign_name = "path:hsa04650_S",
   data_type_for_label = "KEGG", category_for_label = "pathway",
   algo_name_for_label = "seuratFindClusters",
@@ -1040,13 +1133,8 @@ p <- plot_violin_signExpression(
   title_size = 16, default_color = FALSE)
 filename <- "figures/figure_05_0340.png"
 ggsave(file = filename, plot = p, dpi = 200, width = 4, height = 4)
-```
 
-```{r, eval = FALSE, echo = FALSE, results = "hide"}
-# ----------------------------------------
-# For `pbmc_4000`
-# ----------------------------------------
-p <- plot_violin_signExpression(
+p <- plot_violin_signScore(
   obj = pbmc_4000, sign_name = "path:hsa04662_S",
   data_type_for_label = "KEGG", category_for_label = "pathway",
   algo_name_for_label = "seuratFindClusters",
@@ -1056,7 +1144,7 @@ p <- plot_violin_signExpression(
 filename <- "figures/figure_05_0341.png"
 ggsave(file = filename, plot = p, dpi = 200, width = 4, height = 4)
 
-p <- plot_violin_signExpression(
+p <- plot_violin_signScore(
   obj = pbmc_4000, sign_name = "path:hsa04662_V",
   data_type_for_label = "KEGG", category_for_label = "pathway",
   algo_name_for_label = "seuratFindClusters",
@@ -1068,7 +1156,7 @@ ggsave(file = filename, plot = p, dpi = 200, width = 4, height = 4)
 # ----------------------------------------
 # For `pbmc_6000`
 # ----------------------------------------
-p <- plot_violin_signExpression(
+p <- plot_violin_signScore(
   obj = pbmc_6000, sign_name = "path:hsa04658_V",
   data_type_for_label = "KEGG", category_for_label = "pathway",
   algo_name_for_label = "seuratFindClusters",
@@ -1078,7 +1166,7 @@ p <- plot_violin_signExpression(
 filename <- "figures/figure_06_0340.png"
 ggsave(file = filename, plot = p, dpi = 200, width = 4, height = 4)
 
-p <- plot_violin_signExpression(
+p <- plot_violin_signScore(
   obj = pbmc_6000, sign_name = "path:hsa04650_S",
   data_type_for_label = "KEGG", category_for_label = "pathway",
   algo_name_for_label = "seuratFindClusters",
@@ -1088,7 +1176,7 @@ p <- plot_violin_signExpression(
 filename <- "figures/figure_06_0341.png"
 ggsave(file = filename, plot = p, dpi = 200, width = 4, height = 4)
 
-p <- plot_violin_signExpression(
+p <- plot_violin_signScore(
   obj = pbmc_6000, sign_name = "path:hsa04662_S",
   data_type_for_label = "KEGG", category_for_label = "pathway",
   algo_name_for_label = "seuratFindClusters",
@@ -1098,6 +1186,11 @@ p <- plot_violin_signExpression(
 filename <- "figures/figure_06_0342.png"
 ggsave(file = filename, plot = p, dpi = 200, width = 4, height = 4)
 ```
+
+* `day7_hypo`
+
+<img src="figures/figure_02_0340.png" width="230px">
+<img src="figures/figure_02_0341.png" width="230px">
 
 * `pbmc_4000`
 
@@ -1135,12 +1228,14 @@ ggsave(file = filename, plot = p, dpi = 300, width = 5.6, height = 4.4)
 
 Save the objects.
 ```{r, eval = FALSE}
+saveRDS(day7_hypo, file = "backup/02_304_day7_hypo_DES_KEGG.rds")
 saveRDS(pbmc_4000, file = "backup/05_304_pbmc_4000_DES_KEGG.rds")
 saveRDS(pbmc_6000, file = "backup/06_304_pbmc_6000_DES_KEGG.rds")
 ```
 
 Load the objects.
 ```{r, eval = FALSE}
+day7_hypo <- readRDS(file = "backup/02_304_day7_hypo_DES_KEGG.rds")
 pbmc_4000 <- readRDS(file = "backup/05_304_pbmc_4000_DES_KEGG.rds")
 pbmc_6000 <- readRDS(file = "backup/06_304_pbmc_6000_DES_KEGG.rds")
 ```
