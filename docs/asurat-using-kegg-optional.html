@@ -24,7 +24,7 @@
 <meta name="author" content="Keita Iida" />
 
 
-<meta name="date" content="2021-06-16" />
+<meta name="date" content="2021-06-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -327,7 +327,7 @@ biological terms (signs) of interest are included in the results.</p>
 <span id="cb5-7"><a href="asurat-using-kegg-optional.html#cb5-7"></a>                                         <span class="dt">obj_cor =</span> day7_hypo_cor,</span>
 <span id="cb5-8"><a href="asurat-using-kegg-optional.html#cb5-8"></a>                                         <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
 <span id="cb5-9"><a href="asurat-using-kegg-optional.html#cb5-9"></a>                                         <span class="dt">method =</span> <span class="st">&quot;spearman&quot;</span>,</span>
-<span id="cb5-10"><a href="asurat-using-kegg-optional.html#cb5-10"></a>                                         <span class="dt">th_posi =</span> <span class="fl">0.25</span>, <span class="dt">th_nega =</span> <span class="fl">-0.20</span>)</span>
+<span id="cb5-10"><a href="asurat-using-kegg-optional.html#cb5-10"></a>                                         <span class="dt">th_posi =</span> <span class="fl">0.28</span>, <span class="dt">th_nega =</span> <span class="fl">-0.23</span>)</span>
 <span id="cb5-11"><a href="asurat-using-kegg-optional.html#cb5-11"></a>sc68_vehi_red &lt;-<span class="st"> </span><span class="kw">separate_variables_sign</span>(<span class="dt">obj =</span> sc68_vehi,</span>
 <span id="cb5-12"><a href="asurat-using-kegg-optional.html#cb5-12"></a>                                         <span class="dt">obj_cor =</span> sc68_vehi_cor,</span>
 <span id="cb5-13"><a href="asurat-using-kegg-optional.html#cb5-13"></a>                                         <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
@@ -371,7 +371,7 @@ others with few.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="asurat-using-kegg-optional.html#cb6-1"></a>day1_norm_red &lt;-<span class="st"> </span><span class="kw">select_sign</span>(<span class="dt">obj =</span> day1_norm_red, <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
 <span id="cb6-2"><a href="asurat-using-kegg-optional.html#cb6-2"></a>                             <span class="dt">min_cnt =</span> <span class="dv">2</span>, <span class="dt">min_cnt_weak =</span> <span class="dv">2</span>)</span>
 <span id="cb6-3"><a href="asurat-using-kegg-optional.html#cb6-3"></a>day7_hypo_red &lt;-<span class="st"> </span><span class="kw">select_sign</span>(<span class="dt">obj =</span> day7_hypo_red, <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
-<span id="cb6-4"><a href="asurat-using-kegg-optional.html#cb6-4"></a>                             <span class="dt">min_cnt =</span> <span class="dv">2</span>, <span class="dt">min_cnt_weak =</span> <span class="dv">2</span>)</span>
+<span id="cb6-4"><a href="asurat-using-kegg-optional.html#cb6-4"></a>                             <span class="dt">min_cnt =</span> <span class="dv">3</span>, <span class="dt">min_cnt_weak =</span> <span class="dv">2</span>)</span>
 <span id="cb6-5"><a href="asurat-using-kegg-optional.html#cb6-5"></a>sc68_vehi_red &lt;-<span class="st"> </span><span class="kw">select_sign</span>(<span class="dt">obj =</span> sc68_vehi_red, <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
 <span id="cb6-6"><a href="asurat-using-kegg-optional.html#cb6-6"></a>                             <span class="dt">min_cnt =</span> <span class="dv">2</span>, <span class="dt">min_cnt_weak =</span> <span class="dv">2</span>)</span>
 <span id="cb6-7"><a href="asurat-using-kegg-optional.html#cb6-7"></a>sc68_cisp_red &lt;-<span class="st"> </span><span class="kw">select_sign</span>(<span class="dt">obj =</span> sc68_cisp_red, <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
@@ -637,7 +637,7 @@ The arguments are <code>obj</code>, <code>data_type</code>, <code>category</code
 <span id="cb20-12"><a href="asurat-using-kegg-optional.html#cb20-12"></a><span class="co">#</span></span>
 <span id="cb20-13"><a href="asurat-using-kegg-optional.html#cb20-13"></a><span class="co"># Below is a memo for using plot_ly()</span></span>
 <span id="cb20-14"><a href="asurat-using-kegg-optional.html#cb20-14"></a><span class="co">#</span></span>
-<span id="cb20-15"><a href="asurat-using-kegg-optional.html#cb20-15"></a> <span class="kw">library</span>(plotly)</span>
+<span id="cb20-15"><a href="asurat-using-kegg-optional.html#cb20-15"></a><span class="co"># library(plotly)</span></span>
 <span id="cb20-16"><a href="asurat-using-kegg-optional.html#cb20-16"></a><span class="co"># x &lt;- day1_norm[[&quot;reduction&quot;]][[&quot;dmap&quot;]][[&quot;KEGG&quot;]][[&quot;pathway&quot;]]@eigenvectors</span></span>
 <span id="cb20-17"><a href="asurat-using-kegg-optional.html#cb20-17"></a><span class="co"># df &lt;- as.data.frame(x)</span></span>
 <span id="cb20-18"><a href="asurat-using-kegg-optional.html#cb20-18"></a><span class="co"># plot_ly(df, x = df[,1], y = df[,2], z = df[,3], mode = &quot;markers&quot;,</span></span>
@@ -668,8 +668,9 @@ The arguments are <code>obj</code>, <code>data_type</code>, <code>category</code
 <p>Load the objects.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="asurat-using-kegg-optional.html#cb23-1"></a><span class="kw">source</span>(<span class="st">&quot;R/plot.R&quot;</span>)</span>
 <span id="cb23-2"><a href="asurat-using-kegg-optional.html#cb23-2"></a><span class="kw">source</span>(<span class="st">&quot;R/function_sign.R&quot;</span>)</span>
-<span id="cb23-3"><a href="asurat-using-kegg-optional.html#cb23-3"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/05_302_pbmc_4000_reduction_KEGG.rds&quot;</span>)</span>
-<span id="cb23-4"><a href="asurat-using-kegg-optional.html#cb23-4"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/06_302_pbmc_6000_reduction_KEGG.rds&quot;</span>)</span></code></pre></div>
+<span id="cb23-3"><a href="asurat-using-kegg-optional.html#cb23-3"></a>day7_hypo &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/02_302_day7_hypo_reduction_KEGG.rds&quot;</span>)</span>
+<span id="cb23-4"><a href="asurat-using-kegg-optional.html#cb23-4"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/05_302_pbmc_4000_reduction_KEGG.rds&quot;</span>)</span>
+<span id="cb23-5"><a href="asurat-using-kegg-optional.html#cb23-5"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/06_302_pbmc_6000_reduction_KEGG.rds&quot;</span>)</span></code></pre></div>
 <p>Here users can choose one of the following unsupervised clustering methods.</p>
 <p><strong>Tips:</strong>
 A medoid-and-flat type of unsupervised clustering such as k-medoids method is
@@ -682,14 +683,14 @@ simple and translatable method.</p>
 <p>The following function <code>classify_samples_pam_sign()</code> performs <code>pam()</code> in
 <code>cluster</code> package.
 The arguments are <code>obj</code>, <code>data_type</code>, <code>category</code>, and <code>k</code> (argument of <code>pam()</code>).</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="asurat-using-kegg-optional.html#cb24-1"></a><span class="co"># day1_norm &lt;- classify_samples_pam_sign(</span></span>
-<span id="cb24-2"><a href="asurat-using-kegg-optional.html#cb24-2"></a><span class="co">#   obj = day1_norm, data_type = &quot;KEGG&quot;,category = &quot;pathway&quot;, k = 4)</span></span>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="asurat-using-kegg-optional.html#cb24-1"></a><span class="co"># day7_hypo &lt;- classify_samples_pam_sign(</span></span>
+<span id="cb24-2"><a href="asurat-using-kegg-optional.html#cb24-2"></a><span class="co">#   obj = day7_hypo, data_type = &quot;KEGG&quot;,category = &quot;pathway&quot;, k = 2)</span></span>
 <span id="cb24-3"><a href="asurat-using-kegg-optional.html#cb24-3"></a></span>
 <span id="cb24-4"><a href="asurat-using-kegg-optional.html#cb24-4"></a><span class="co">#</span></span>
 <span id="cb24-5"><a href="asurat-using-kegg-optional.html#cb24-5"></a><span class="co"># Below is a memo for plotting the result.</span></span>
 <span id="cb24-6"><a href="asurat-using-kegg-optional.html#cb24-6"></a><span class="co">#</span></span>
-<span id="cb24-7"><a href="asurat-using-kegg-optional.html#cb24-7"></a><span class="co"># mat &lt;- day1_norm[[&quot;reduction&quot;]][[&quot;tsne&quot;]][[&quot;KEGG&quot;]][[&quot;pathway&quot;]]$Y</span></span>
-<span id="cb24-8"><a href="asurat-using-kegg-optional.html#cb24-8"></a><span class="co"># lab &lt;- day1_norm[[&quot;sample&quot;]][[&quot;pam_KEGG_pathway&quot;]]</span></span>
+<span id="cb24-7"><a href="asurat-using-kegg-optional.html#cb24-7"></a><span class="co"># mat &lt;- day7_hypo[[&quot;reduction&quot;]][[&quot;tsne&quot;]][[&quot;KEGG&quot;]][[&quot;pathway&quot;]]$Y</span></span>
+<span id="cb24-8"><a href="asurat-using-kegg-optional.html#cb24-8"></a><span class="co"># lab &lt;- day7_hypo[[&quot;sample&quot;]][[&quot;pam_KEGG_pathway&quot;]]</span></span>
 <span id="cb24-9"><a href="asurat-using-kegg-optional.html#cb24-9"></a><span class="co"># col &lt;- rainbow(length(unique(lab)))</span></span>
 <span id="cb24-10"><a href="asurat-using-kegg-optional.html#cb24-10"></a><span class="co"># plot(mat, pch=21, bg=col[lab])</span></span>
 <span id="cb24-11"><a href="asurat-using-kegg-optional.html#cb24-11"></a><span class="co"># legend(&quot;bottomright&quot;, legend=unique(sort(lab)), pch=21, pt.bg=col)</span></span></code></pre></div>
@@ -701,15 +702,15 @@ The arguments are <code>obj</code>, <code>data_type</code>, <code>category</code
 <code>hclust()</code> and <code>cutree()</code> in <code>stats</code> package.
 The arguments are <code>obj</code>, <code>data_type</code>, <code>category</code>, <code>method</code>
 (argument of <code>hclust()</code>) and <code>k</code> (argument of <code>cutree()</code>).</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="asurat-using-kegg-optional.html#cb25-1"></a><span class="co"># pbmc_4000 &lt;- classify_samples_hclustCutree_sign(</span></span>
-<span id="cb25-2"><a href="asurat-using-kegg-optional.html#cb25-2"></a><span class="co">#  obj = pbmc_4000, data_type = &quot;KEGG&quot;, category = &quot;pathway&quot;,</span></span>
-<span id="cb25-3"><a href="asurat-using-kegg-optional.html#cb25-3"></a><span class="co">#  method = &quot;ward.D2&quot;, k = 4)</span></span>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="asurat-using-kegg-optional.html#cb25-1"></a><span class="co"># day7_hypo &lt;- classify_samples_hclustCutree_sign(</span></span>
+<span id="cb25-2"><a href="asurat-using-kegg-optional.html#cb25-2"></a><span class="co">#   obj = day7_hypo, data_type = &quot;KEGG&quot;, category = &quot;pathway&quot;,</span></span>
+<span id="cb25-3"><a href="asurat-using-kegg-optional.html#cb25-3"></a><span class="co">#   method = &quot;ward.D2&quot;, k = 2)</span></span>
 <span id="cb25-4"><a href="asurat-using-kegg-optional.html#cb25-4"></a></span>
 <span id="cb25-5"><a href="asurat-using-kegg-optional.html#cb25-5"></a><span class="co">#</span></span>
 <span id="cb25-6"><a href="asurat-using-kegg-optional.html#cb25-6"></a><span class="co"># Below is a memo for plotting the result.</span></span>
 <span id="cb25-7"><a href="asurat-using-kegg-optional.html#cb25-7"></a><span class="co">#</span></span>
-<span id="cb25-8"><a href="asurat-using-kegg-optional.html#cb25-8"></a><span class="co"># mat &lt;- pbmc_4000[[&quot;reduction&quot;]][[&quot;tsne&quot;]][[&quot;KEGG&quot;]][[&quot;pathway&quot;]]$Y</span></span>
-<span id="cb25-9"><a href="asurat-using-kegg-optional.html#cb25-9"></a><span class="co"># lab &lt;- pbmc_4000[[&quot;sample&quot;]][[&quot;hclustCutree_KEGG_pathway&quot;]]</span></span>
+<span id="cb25-8"><a href="asurat-using-kegg-optional.html#cb25-8"></a><span class="co"># mat &lt;- day7_hypo[[&quot;reduction&quot;]][[&quot;tsne&quot;]][[&quot;KEGG&quot;]][[&quot;pathway&quot;]]$Y</span></span>
+<span id="cb25-9"><a href="asurat-using-kegg-optional.html#cb25-9"></a><span class="co"># lab &lt;- day7_hypo[[&quot;sample&quot;]][[&quot;hclustCutree_KEGG_pathway&quot;]]</span></span>
 <span id="cb25-10"><a href="asurat-using-kegg-optional.html#cb25-10"></a><span class="co"># col &lt;- rainbow(length(unique(lab)))</span></span>
 <span id="cb25-11"><a href="asurat-using-kegg-optional.html#cb25-11"></a><span class="co"># plot(mat, pch=21, bg=col[lab])</span></span>
 <span id="cb25-12"><a href="asurat-using-kegg-optional.html#cb25-12"></a><span class="co"># legend(&quot;bottomright&quot;, legend=unique(sort(lab)), pch=21, pt.bg=col)</span></span></code></pre></div>
@@ -723,35 +724,42 @@ The arguments are <code>obj</code>, <code>data_type</code>, <code>category</code
 The arguments are <code>obj</code>, <code>data_type</code>, <code>category</code>, <code>reduction</code>, <code>dims</code>,
 <code>k.param</code>, <code>prune.SNN</code>, <code>resolution</code>, and <code>algorithm</code>, where the latter six
 parameters are used in <code>FindNeighbors()</code> and <code>FindClusters()</code>.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="asurat-using-kegg-optional.html#cb26-1"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">classify_samples_seuratFindClusters_sign</span>(</span>
-<span id="cb26-2"><a href="asurat-using-kegg-optional.html#cb26-2"></a>  <span class="dt">obj =</span> pbmc_<span class="dv">4000</span>, <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="dt">category =</span> <span class="st">&quot;pathway&quot;</span>, <span class="dt">reduction =</span> <span class="st">&quot;pca&quot;</span>,</span>
-<span id="cb26-3"><a href="asurat-using-kegg-optional.html#cb26-3"></a>  <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">k.param =</span> <span class="dv">10</span>, <span class="dt">prune.SNN =</span> <span class="fl">1.</span><span class="op">/</span><span class="dv">15</span>, <span class="dt">resolution =</span> <span class="fl">0.15</span>,</span>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="asurat-using-kegg-optional.html#cb26-1"></a>day7_hypo &lt;-<span class="st"> </span><span class="kw">classify_samples_seuratFindClusters_sign</span>(</span>
+<span id="cb26-2"><a href="asurat-using-kegg-optional.html#cb26-2"></a>  <span class="dt">obj =</span> day7_hypo, <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="dt">category =</span> <span class="st">&quot;pathway&quot;</span>, <span class="dt">reduction =</span> <span class="st">&quot;pca&quot;</span>,</span>
+<span id="cb26-3"><a href="asurat-using-kegg-optional.html#cb26-3"></a>  <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">k.param =</span> <span class="dv">10</span>, <span class="dt">prune.SNN =</span> <span class="fl">1.</span><span class="op">/</span><span class="dv">15</span>, <span class="dt">resolution =</span> <span class="fl">0.1</span>,</span>
 <span id="cb26-4"><a href="asurat-using-kegg-optional.html#cb26-4"></a>  <span class="dt">algorithm =</span> <span class="dv">1</span>)</span>
 <span id="cb26-5"><a href="asurat-using-kegg-optional.html#cb26-5"></a></span>
-<span id="cb26-6"><a href="asurat-using-kegg-optional.html#cb26-6"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">classify_samples_seuratFindClusters_sign</span>(</span>
-<span id="cb26-7"><a href="asurat-using-kegg-optional.html#cb26-7"></a>  <span class="dt">obj =</span> pbmc_<span class="dv">6000</span>, <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="dt">category =</span> <span class="st">&quot;pathway&quot;</span>, <span class="dt">reduction =</span> <span class="st">&quot;pca&quot;</span>,</span>
+<span id="cb26-6"><a href="asurat-using-kegg-optional.html#cb26-6"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">classify_samples_seuratFindClusters_sign</span>(</span>
+<span id="cb26-7"><a href="asurat-using-kegg-optional.html#cb26-7"></a>  <span class="dt">obj =</span> pbmc_<span class="dv">4000</span>, <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="dt">category =</span> <span class="st">&quot;pathway&quot;</span>, <span class="dt">reduction =</span> <span class="st">&quot;pca&quot;</span>,</span>
 <span id="cb26-8"><a href="asurat-using-kegg-optional.html#cb26-8"></a>  <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">k.param =</span> <span class="dv">10</span>, <span class="dt">prune.SNN =</span> <span class="fl">1.</span><span class="op">/</span><span class="dv">15</span>, <span class="dt">resolution =</span> <span class="fl">0.15</span>,</span>
 <span id="cb26-9"><a href="asurat-using-kegg-optional.html#cb26-9"></a>  <span class="dt">algorithm =</span> <span class="dv">1</span>)</span>
 <span id="cb26-10"><a href="asurat-using-kegg-optional.html#cb26-10"></a></span>
-<span id="cb26-11"><a href="asurat-using-kegg-optional.html#cb26-11"></a><span class="co">#</span></span>
-<span id="cb26-12"><a href="asurat-using-kegg-optional.html#cb26-12"></a><span class="co"># Below is a memo for plotting the result.</span></span>
-<span id="cb26-13"><a href="asurat-using-kegg-optional.html#cb26-13"></a><span class="co">#</span></span>
-<span id="cb26-14"><a href="asurat-using-kegg-optional.html#cb26-14"></a><span class="co"># mat &lt;- pbmc_4000[[&quot;reduction&quot;]][[&quot;tsne&quot;]][[&quot;KEGG&quot;]][[&quot;pathway&quot;]]$Y</span></span>
-<span id="cb26-15"><a href="asurat-using-kegg-optional.html#cb26-15"></a><span class="co"># lab &lt;- pbmc_4000[[&quot;sample&quot;]][[&quot;seuratFindClusters_KEGG_pathway&quot;]]</span></span>
-<span id="cb26-16"><a href="asurat-using-kegg-optional.html#cb26-16"></a><span class="co"># col &lt;- rainbow(length(unique(lab)))</span></span>
-<span id="cb26-17"><a href="asurat-using-kegg-optional.html#cb26-17"></a><span class="co"># plot(mat, pch=21, bg=col[lab])</span></span>
-<span id="cb26-18"><a href="asurat-using-kegg-optional.html#cb26-18"></a><span class="co"># legend(&quot;bottomright&quot;, legend=unique(sort(lab)), pch=21, pt.bg=col)</span></span></code></pre></div>
+<span id="cb26-11"><a href="asurat-using-kegg-optional.html#cb26-11"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">classify_samples_seuratFindClusters_sign</span>(</span>
+<span id="cb26-12"><a href="asurat-using-kegg-optional.html#cb26-12"></a>  <span class="dt">obj =</span> pbmc_<span class="dv">6000</span>, <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="dt">category =</span> <span class="st">&quot;pathway&quot;</span>, <span class="dt">reduction =</span> <span class="st">&quot;pca&quot;</span>,</span>
+<span id="cb26-13"><a href="asurat-using-kegg-optional.html#cb26-13"></a>  <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">k.param =</span> <span class="dv">10</span>, <span class="dt">prune.SNN =</span> <span class="fl">1.</span><span class="op">/</span><span class="dv">15</span>, <span class="dt">resolution =</span> <span class="fl">0.15</span>,</span>
+<span id="cb26-14"><a href="asurat-using-kegg-optional.html#cb26-14"></a>  <span class="dt">algorithm =</span> <span class="dv">1</span>)</span>
+<span id="cb26-15"><a href="asurat-using-kegg-optional.html#cb26-15"></a></span>
+<span id="cb26-16"><a href="asurat-using-kegg-optional.html#cb26-16"></a><span class="co">#</span></span>
+<span id="cb26-17"><a href="asurat-using-kegg-optional.html#cb26-17"></a><span class="co"># Below is a memo for plotting the result.</span></span>
+<span id="cb26-18"><a href="asurat-using-kegg-optional.html#cb26-18"></a><span class="co">#</span></span>
+<span id="cb26-19"><a href="asurat-using-kegg-optional.html#cb26-19"></a><span class="co"># mat &lt;- pbmc_4000[[&quot;reduction&quot;]][[&quot;tsne&quot;]][[&quot;KEGG&quot;]][[&quot;pathway&quot;]]$Y</span></span>
+<span id="cb26-20"><a href="asurat-using-kegg-optional.html#cb26-20"></a><span class="co"># lab &lt;- pbmc_4000[[&quot;sample&quot;]][[&quot;seuratFindClusters_KEGG_pathway&quot;]]</span></span>
+<span id="cb26-21"><a href="asurat-using-kegg-optional.html#cb26-21"></a><span class="co"># col &lt;- rainbow(length(unique(lab)))</span></span>
+<span id="cb26-22"><a href="asurat-using-kegg-optional.html#cb26-22"></a><span class="co"># plot(mat, pch=21, bg=col[lab])</span></span>
+<span id="cb26-23"><a href="asurat-using-kegg-optional.html#cb26-23"></a><span class="co"># legend(&quot;bottomright&quot;, legend=unique(sort(lab)), pch=21, pt.bg=col)</span></span></code></pre></div>
 <p>The results are stored in <code>obj[["sample"]][["seuratFindClusters_KEGG_pathway"]]</code>
 and <code>obj[["classification"]][["seuratFindClusters"]][["KEGG"]][["pathway"]]</code>.</p>
 <p><strong>4. Clustering by branch detection along pseudotime</strong></p>
 <p>In this subsection, we do not use the branch-based clustering.
 Please see the previous subsection for the details.</p>
 <p>Save the objects.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="asurat-using-kegg-optional.html#cb27-1"></a><span class="kw">saveRDS</span>(pbmc_<span class="dv">4000</span>, <span class="dt">file =</span> <span class="st">&quot;backup/05_303_pbmc_4000_classification_KEGG.rds&quot;</span>)</span>
-<span id="cb27-2"><a href="asurat-using-kegg-optional.html#cb27-2"></a><span class="kw">saveRDS</span>(pbmc_<span class="dv">6000</span>, <span class="dt">file =</span> <span class="st">&quot;backup/06_303_pbmc_6000_classification_KEGG.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="asurat-using-kegg-optional.html#cb27-1"></a><span class="kw">saveRDS</span>(day7_hypo, <span class="dt">file =</span> <span class="st">&quot;backup/02_303_day7_hypo_classification_KEGG.rds&quot;</span>)</span>
+<span id="cb27-2"><a href="asurat-using-kegg-optional.html#cb27-2"></a><span class="kw">saveRDS</span>(pbmc_<span class="dv">4000</span>, <span class="dt">file =</span> <span class="st">&quot;backup/05_303_pbmc_4000_classification_KEGG.rds&quot;</span>)</span>
+<span id="cb27-3"><a href="asurat-using-kegg-optional.html#cb27-3"></a><span class="kw">saveRDS</span>(pbmc_<span class="dv">6000</span>, <span class="dt">file =</span> <span class="st">&quot;backup/06_303_pbmc_6000_classification_KEGG.rds&quot;</span>)</span></code></pre></div>
 <p>Load the objects.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="asurat-using-kegg-optional.html#cb28-1"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/05_303_pbmc_4000_classification_KEGG.rds&quot;</span>)</span>
-<span id="cb28-2"><a href="asurat-using-kegg-optional.html#cb28-2"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/06_303_pbmc_6000_classification_KEGG.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="asurat-using-kegg-optional.html#cb28-1"></a>day7_hypo &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/02_303_day7_hypo_classification_KEGG.rds&quot;</span>)</span>
+<span id="cb28-2"><a href="asurat-using-kegg-optional.html#cb28-2"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/05_303_pbmc_4000_classification_KEGG.rds&quot;</span>)</span>
+<span id="cb28-3"><a href="asurat-using-kegg-optional.html#cb28-3"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/06_303_pbmc_6000_classification_KEGG.rds&quot;</span>)</span></code></pre></div>
 </div>
 <div id="visualizing" class="section level2">
 <h2><span class="header-section-number">11.4</span> Visualizing</h2>
@@ -760,46 +768,59 @@ Please see the previous subsection for the details.</p>
 sample clustering by identifying <code>algo_name</code> (in the current version,
 one of <code>"pam"</code>, <code>"hclustCutree"</code>, <code>"seuratFindClusters"</code>, and <code>"merlot"</code>).</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="asurat-using-kegg-optional.html#cb29-1"></a><span class="co"># ----------------------------------------</span></span>
-<span id="cb29-2"><a href="asurat-using-kegg-optional.html#cb29-2"></a><span class="co"># For `pbmc_4000`</span></span>
+<span id="cb29-2"><a href="asurat-using-kegg-optional.html#cb29-2"></a><span class="co"># For `day7_hypo`</span></span>
 <span id="cb29-3"><a href="asurat-using-kegg-optional.html#cb29-3"></a><span class="co"># ----------------------------------------</span></span>
-<span id="cb29-4"><a href="asurat-using-kegg-optional.html#cb29-4"></a>filename &lt;-<span class="st"> &quot;figures/figure_05_0330.png&quot;</span></span>
+<span id="cb29-4"><a href="asurat-using-kegg-optional.html#cb29-4"></a>filename &lt;-<span class="st"> &quot;figures/figure_02_0330.png&quot;</span></span>
 <span id="cb29-5"><a href="asurat-using-kegg-optional.html#cb29-5"></a><span class="kw">png</span>(<span class="dt">file =</span> filename, <span class="dt">height =</span> <span class="dv">1000</span>, <span class="dt">width =</span> <span class="dv">1250</span>, <span class="dt">res =</span> <span class="dv">200</span>)</span>
-<span id="cb29-6"><a href="asurat-using-kegg-optional.html#cb29-6"></a><span class="kw">plot_Heatmap_SignxSamp</span>(<span class="dt">obj =</span> pbmc_<span class="dv">4000</span>,</span>
+<span id="cb29-6"><a href="asurat-using-kegg-optional.html#cb29-6"></a><span class="kw">plot_Heatmap_SignxSamp</span>(<span class="dt">obj =</span> day7_hypo,</span>
 <span id="cb29-7"><a href="asurat-using-kegg-optional.html#cb29-7"></a>                       <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="dt">category =</span> <span class="st">&quot;pathway&quot;</span>,</span>
 <span id="cb29-8"><a href="asurat-using-kegg-optional.html#cb29-8"></a>                       <span class="dt">algo_name =</span> <span class="st">&quot;seuratFindClusters&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;ward.D2&quot;</span>,</span>
-<span id="cb29-9"><a href="asurat-using-kegg-optional.html#cb29-9"></a>                       <span class="dt">show_nReads =</span> <span class="ot">FALSE</span>, <span class="dt">title =</span> <span class="st">&quot;pbmc_4000 (KEGG: pathway)&quot;</span>,</span>
+<span id="cb29-9"><a href="asurat-using-kegg-optional.html#cb29-9"></a>                       <span class="dt">show_nReads =</span> <span class="ot">FALSE</span>, <span class="dt">title =</span> <span class="st">&quot;day7_hypo (KEGG: pathway)&quot;</span>,</span>
 <span id="cb29-10"><a href="asurat-using-kegg-optional.html#cb29-10"></a>                       <span class="dt">name =</span> <span class="st">&quot;KEGGxSamp&quot;</span>,</span>
 <span id="cb29-11"><a href="asurat-using-kegg-optional.html#cb29-11"></a>                       <span class="dt">show_rownames_sign =</span> <span class="ot">FALSE</span>, <span class="dt">show_rownames_label =</span> <span class="ot">FALSE</span>,</span>
 <span id="cb29-12"><a href="asurat-using-kegg-optional.html#cb29-12"></a>                       <span class="dt">show_rownames_nReads =</span> <span class="ot">FALSE</span>, <span class="dt">default_color =</span> <span class="ot">FALSE</span>)</span>
 <span id="cb29-13"><a href="asurat-using-kegg-optional.html#cb29-13"></a><span class="kw">dev.off</span>()</span></code></pre></div>
-<p><img src="figures/figure_05_0330.png" width="300px">
+<p><img src="figures/figure_02_0330.png" width="300px">
+<img src="figures/figure_05_0330.png" width="300px">
 <img src="figures/figure_06_0330.png" width="300px"></p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="asurat-using-kegg-optional.html#cb30-1"></a><span class="co"># ----------------------------------------</span></span>
-<span id="cb30-2"><a href="asurat-using-kegg-optional.html#cb30-2"></a><span class="co"># For `pbmc_4000`</span></span>
+<span id="cb30-2"><a href="asurat-using-kegg-optional.html#cb30-2"></a><span class="co"># For `day7_hypo`</span></span>
 <span id="cb30-3"><a href="asurat-using-kegg-optional.html#cb30-3"></a><span class="co"># ----------------------------------------</span></span>
-<span id="cb30-4"><a href="asurat-using-kegg-optional.html#cb30-4"></a>p &lt;-<span class="st"> </span><span class="kw">plot_tsne_sign</span>(<span class="dt">obj =</span> pbmc_<span class="dv">4000</span>, <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="dt">category =</span> <span class="st">&quot;pathway&quot;</span>,</span>
+<span id="cb30-4"><a href="asurat-using-kegg-optional.html#cb30-4"></a>p &lt;-<span class="st"> </span><span class="kw">plot_tsne_sign</span>(<span class="dt">obj =</span> day7_hypo, <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="dt">category =</span> <span class="st">&quot;pathway&quot;</span>,</span>
 <span id="cb30-5"><a href="asurat-using-kegg-optional.html#cb30-5"></a>                    <span class="dt">algo_name =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
 <span id="cb30-6"><a href="asurat-using-kegg-optional.html#cb30-6"></a>                    <span class="dt">theta =</span> <span class="ot">NULL</span>, <span class="dt">phi =</span> <span class="ot">NULL</span>,</span>
-<span id="cb30-7"><a href="asurat-using-kegg-optional.html#cb30-7"></a>                    <span class="dt">title =</span> <span class="st">&quot;pbmc_4000 (KEGG: pathway)&quot;</span>, <span class="dt">title_size =</span> <span class="dv">16</span>,</span>
+<span id="cb30-7"><a href="asurat-using-kegg-optional.html#cb30-7"></a>                    <span class="dt">title =</span> <span class="st">&quot;day7_hypo (KEGG: pathway)&quot;</span>, <span class="dt">title_size =</span> <span class="dv">16</span>,</span>
 <span id="cb30-8"><a href="asurat-using-kegg-optional.html#cb30-8"></a>                    <span class="dt">xlabel =</span> <span class="st">&quot;tSNE_1&quot;</span>, <span class="dt">ylabel =</span> <span class="st">&quot;tSNE_2&quot;</span>, <span class="dt">zlabel =</span> <span class="ot">NULL</span>,</span>
 <span id="cb30-9"><a href="asurat-using-kegg-optional.html#cb30-9"></a>                    <span class="dt">default_color =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb30-10"><a href="asurat-using-kegg-optional.html#cb30-10"></a>filename &lt;-<span class="st"> &quot;figures/figure_05_0331.png&quot;</span></span>
-<span id="cb30-11"><a href="asurat-using-kegg-optional.html#cb30-11"></a><span class="kw">ggsave</span>(<span class="dt">file =</span> filename, <span class="dt">plot =</span>  p, <span class="dt">dpi =</span> <span class="dv">250</span>, <span class="dt">width =</span> <span class="fl">4.9</span>, <span class="dt">height =</span> <span class="dv">4</span>)</span></code></pre></div>
-<p><img src="figures/figure_05_0331.png" width="250px">
+<span id="cb30-10"><a href="asurat-using-kegg-optional.html#cb30-10"></a>filename &lt;-<span class="st"> &quot;figures/figure_02_0331.png&quot;</span></span>
+<span id="cb30-11"><a href="asurat-using-kegg-optional.html#cb30-11"></a><span class="kw">ggsave</span>(<span class="dt">file =</span> filename, <span class="dt">plot =</span>  p, <span class="dt">dpi =</span> <span class="dv">250</span>, <span class="dt">width =</span> <span class="fl">4.9</span>, <span class="dt">height =</span> <span class="dv">4</span>)</span>
+<span id="cb30-12"><a href="asurat-using-kegg-optional.html#cb30-12"></a></span>
+<span id="cb30-13"><a href="asurat-using-kegg-optional.html#cb30-13"></a>p &lt;-<span class="st"> </span><span class="kw">plot_umap_sign</span>(<span class="dt">obj =</span> day7_hypo, <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="dt">category =</span> <span class="st">&quot;pathway&quot;</span>,</span>
+<span id="cb30-14"><a href="asurat-using-kegg-optional.html#cb30-14"></a>                    <span class="dt">algo_name =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
+<span id="cb30-15"><a href="asurat-using-kegg-optional.html#cb30-15"></a>                    <span class="dt">theta =</span> <span class="ot">NULL</span>, <span class="dt">phi =</span> <span class="ot">NULL</span>,</span>
+<span id="cb30-16"><a href="asurat-using-kegg-optional.html#cb30-16"></a>                    <span class="dt">title =</span> <span class="st">&quot;day7_hypo (KEGG: pathway)&quot;</span>, <span class="dt">title_size =</span> <span class="dv">16</span>,</span>
+<span id="cb30-17"><a href="asurat-using-kegg-optional.html#cb30-17"></a>                    <span class="dt">xlabel =</span> <span class="st">&quot;UMAP_1&quot;</span>, <span class="dt">ylabel =</span> <span class="st">&quot;UMAP_2&quot;</span>, <span class="dt">zlabel =</span> <span class="ot">NULL</span>,</span>
+<span id="cb30-18"><a href="asurat-using-kegg-optional.html#cb30-18"></a>                    <span class="dt">default_color =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb30-19"><a href="asurat-using-kegg-optional.html#cb30-19"></a>filename &lt;-<span class="st"> &quot;figures/figure_02_0332.png&quot;</span></span>
+<span id="cb30-20"><a href="asurat-using-kegg-optional.html#cb30-20"></a><span class="kw">ggsave</span>(<span class="dt">file =</span> filename, <span class="dt">plot =</span>  p, <span class="dt">dpi =</span> <span class="dv">250</span>, <span class="dt">width =</span> <span class="fl">4.9</span>, <span class="dt">height =</span> <span class="dv">4</span>)</span></code></pre></div>
+<p><img src="figures/figure_02_0331.png" width="250px">
+<img src="figures/figure_02_0332.png" width="250px">
+<img src="figures/figure_05_0331.png" width="250px">
 <img src="figures/figure_06_0331.png" width="250px"></p>
 <p>The following command shows the population sizes by bar graph.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="asurat-using-kegg-optional.html#cb31-1"></a><span class="co"># ----------------------------------------</span></span>
-<span id="cb31-2"><a href="asurat-using-kegg-optional.html#cb31-2"></a><span class="co"># For `pbmc_4000`</span></span>
+<span id="cb31-2"><a href="asurat-using-kegg-optional.html#cb31-2"></a><span class="co"># For `day7_hypo`</span></span>
 <span id="cb31-3"><a href="asurat-using-kegg-optional.html#cb31-3"></a><span class="co"># ----------------------------------------</span></span>
-<span id="cb31-4"><a href="asurat-using-kegg-optional.html#cb31-4"></a>p &lt;-<span class="st"> </span><span class="kw">plot_bargraph_sign</span>(<span class="dt">obj =</span> pbmc_<span class="dv">4000</span>,</span>
+<span id="cb31-4"><a href="asurat-using-kegg-optional.html#cb31-4"></a>p &lt;-<span class="st"> </span><span class="kw">plot_bargraph_sign</span>(<span class="dt">obj =</span> day7_hypo,</span>
 <span id="cb31-5"><a href="asurat-using-kegg-optional.html#cb31-5"></a>                        <span class="dt">data_type =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="dt">category =</span> <span class="st">&quot;pathway&quot;</span>,</span>
 <span id="cb31-6"><a href="asurat-using-kegg-optional.html#cb31-6"></a>                        <span class="dt">algo_name =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
-<span id="cb31-7"><a href="asurat-using-kegg-optional.html#cb31-7"></a>                        <span class="dt">title =</span> <span class="st">&quot;pbmc_4000&quot;</span>, <span class="dt">title_size =</span> <span class="dv">20</span>,</span>
+<span id="cb31-7"><a href="asurat-using-kegg-optional.html#cb31-7"></a>                        <span class="dt">title =</span> <span class="st">&quot;day7_hypo&quot;</span>, <span class="dt">title_size =</span> <span class="dv">20</span>,</span>
 <span id="cb31-8"><a href="asurat-using-kegg-optional.html#cb31-8"></a>                        <span class="dt">xlabel =</span> <span class="st">&quot;Label (KEGG: pathway)&quot;</span>,</span>
 <span id="cb31-9"><a href="asurat-using-kegg-optional.html#cb31-9"></a>                        <span class="dt">ylabel =</span> <span class="st">&quot;Number of samples&quot;</span>, <span class="dt">ymax =</span> <span class="dv">1500</span>)</span>
-<span id="cb31-10"><a href="asurat-using-kegg-optional.html#cb31-10"></a>filename &lt;-<span class="st"> &quot;figures/figure_05_0335.png&quot;</span></span>
+<span id="cb31-10"><a href="asurat-using-kegg-optional.html#cb31-10"></a>filename &lt;-<span class="st"> &quot;figures/figure_02_0335.png&quot;</span></span>
 <span id="cb31-11"><a href="asurat-using-kegg-optional.html#cb31-11"></a><span class="kw">ggsave</span>(<span class="dt">file =</span> filename, <span class="dt">plot =</span> p, <span class="dt">dpi =</span> <span class="dv">200</span>, <span class="dt">width =</span> <span class="fl">4.3</span>, <span class="dt">height =</span> <span class="dv">4</span>)</span></code></pre></div>
-<p><img src="figures/figure_05_0335.png" width="150px">
+<p><img src="figures/figure_02_0335.png" width="150px">
+<img src="figures/figure_05_0335.png" width="150px">
 <img src="figures/figure_06_0335.png" width="150px"></p>
 </div>
 <div id="significant-signs-3" class="section level2">
@@ -811,8 +832,9 @@ genes (DEGs).</p>
 <p>Load the objects.</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="asurat-using-kegg-optional.html#cb32-1"></a><span class="kw">source</span>(<span class="st">&quot;R/plot.R&quot;</span>)</span>
 <span id="cb32-2"><a href="asurat-using-kegg-optional.html#cb32-2"></a><span class="kw">source</span>(<span class="st">&quot;R/function_sign.R&quot;</span>)</span>
-<span id="cb32-3"><a href="asurat-using-kegg-optional.html#cb32-3"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/05_303_pbmc_4000_classification_KEGG.rds&quot;</span>)</span>
-<span id="cb32-4"><a href="asurat-using-kegg-optional.html#cb32-4"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/06_303_pbmc_6000_classification_KEGG.rds&quot;</span>)</span></code></pre></div>
+<span id="cb32-3"><a href="asurat-using-kegg-optional.html#cb32-3"></a>day7_hypo &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/02_303_day7_hypo_classification_KEGG.rds&quot;</span>)</span>
+<span id="cb32-4"><a href="asurat-using-kegg-optional.html#cb32-4"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/05_303_pbmc_4000_classification_KEGG.rds&quot;</span>)</span>
+<span id="cb32-5"><a href="asurat-using-kegg-optional.html#cb32-5"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/06_303_pbmc_6000_classification_KEGG.rds&quot;</span>)</span></code></pre></div>
 <p>The following function <code>auto_find_marker_sign()</code> computes separation indices
 (i.e., non-parametric measure of degree in separation of two random variable
 sets) of signs of interest for each subpopulation.
@@ -825,18 +847,24 @@ investigating gene expression), and <code>label_1</code> and <code>label_2</code
 be compared: both integer and vector forms are accepted).
 This function helps users find positive and negative marker signs of <code>label_1</code>
 with the positive and negative values of the indices, respectively.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="asurat-using-kegg-optional.html#cb33-1"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">auto_find_marker_sign</span>(<span class="dt">obj =</span> pbmc_<span class="dv">4000</span>,</span>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="asurat-using-kegg-optional.html#cb33-1"></a>day7_hypo &lt;-<span class="st"> </span><span class="kw">auto_find_marker_sign</span>(<span class="dt">obj =</span> day7_hypo,</span>
 <span id="cb33-2"><a href="asurat-using-kegg-optional.html#cb33-2"></a>                                   <span class="dt">data_type_for_label =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
 <span id="cb33-3"><a href="asurat-using-kegg-optional.html#cb33-3"></a>                                   <span class="dt">category_for_label =</span> <span class="st">&quot;pathway&quot;</span>,</span>
 <span id="cb33-4"><a href="asurat-using-kegg-optional.html#cb33-4"></a>                                   <span class="dt">algo_name_for_label =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
 <span id="cb33-5"><a href="asurat-using-kegg-optional.html#cb33-5"></a>                                   <span class="dt">data_type_for_expr =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
 <span id="cb33-6"><a href="asurat-using-kegg-optional.html#cb33-6"></a>                                   <span class="dt">category_for_expr =</span> <span class="st">&quot;pathway&quot;</span>)</span>
-<span id="cb33-7"><a href="asurat-using-kegg-optional.html#cb33-7"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">auto_find_marker_sign</span>(<span class="dt">obj =</span> pbmc_<span class="dv">6000</span>,</span>
+<span id="cb33-7"><a href="asurat-using-kegg-optional.html#cb33-7"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">auto_find_marker_sign</span>(<span class="dt">obj =</span> pbmc_<span class="dv">4000</span>,</span>
 <span id="cb33-8"><a href="asurat-using-kegg-optional.html#cb33-8"></a>                                   <span class="dt">data_type_for_label =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
 <span id="cb33-9"><a href="asurat-using-kegg-optional.html#cb33-9"></a>                                   <span class="dt">category_for_label =</span> <span class="st">&quot;pathway&quot;</span>,</span>
 <span id="cb33-10"><a href="asurat-using-kegg-optional.html#cb33-10"></a>                                   <span class="dt">algo_name_for_label =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
 <span id="cb33-11"><a href="asurat-using-kegg-optional.html#cb33-11"></a>                                   <span class="dt">data_type_for_expr =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
-<span id="cb33-12"><a href="asurat-using-kegg-optional.html#cb33-12"></a>                                   <span class="dt">category_for_expr =</span> <span class="st">&quot;pathway&quot;</span>)</span></code></pre></div>
+<span id="cb33-12"><a href="asurat-using-kegg-optional.html#cb33-12"></a>                                   <span class="dt">category_for_expr =</span> <span class="st">&quot;pathway&quot;</span>)</span>
+<span id="cb33-13"><a href="asurat-using-kegg-optional.html#cb33-13"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">auto_find_marker_sign</span>(<span class="dt">obj =</span> pbmc_<span class="dv">6000</span>,</span>
+<span id="cb33-14"><a href="asurat-using-kegg-optional.html#cb33-14"></a>                                   <span class="dt">data_type_for_label =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
+<span id="cb33-15"><a href="asurat-using-kegg-optional.html#cb33-15"></a>                                   <span class="dt">category_for_label =</span> <span class="st">&quot;pathway&quot;</span>,</span>
+<span id="cb33-16"><a href="asurat-using-kegg-optional.html#cb33-16"></a>                                   <span class="dt">algo_name_for_label =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
+<span id="cb33-17"><a href="asurat-using-kegg-optional.html#cb33-17"></a>                                   <span class="dt">data_type_for_expr =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
+<span id="cb33-18"><a href="asurat-using-kegg-optional.html#cb33-18"></a>                                   <span class="dt">category_for_expr =</span> <span class="st">&quot;pathway&quot;</span>)</span></code></pre></div>
 <p>The results are stored in
 <code>obj[["marker"]][["KEGG"]][["pathway"]][["Label_KEGG_pathway_1_vs_2/3"]]</code>,
 <code>obj[["marker"]][["KEGG"]][["pathway"]][["Label_KEGG_pathway_2_vs_1/3"]]</code>,
@@ -846,10 +874,12 @@ Here <code>sep_I</code> stands for the separation index of the sign, which quant
 extent of separation between two different sets of random variables.
 Note that <code>auto_find_marker_sign()</code> computes <code>sep_I</code> for the given group versus
 all other cells.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="asurat-using-kegg-optional.html#cb34-1"></a><span class="kw">datatable</span>(pbmc_<span class="dv">4000</span>[[<span class="st">&quot;marker&quot;</span>]][[<span class="st">&quot;KEGG&quot;</span>]][[<span class="st">&quot;pathway&quot;</span>]][[<span class="st">&quot;all&quot;</span>]],</span>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="asurat-using-kegg-optional.html#cb34-1"></a><span class="kw">datatable</span>(day7_hypo[[<span class="st">&quot;marker&quot;</span>]][[<span class="st">&quot;KEGG&quot;</span>]][[<span class="st">&quot;pathway&quot;</span>]][[<span class="st">&quot;all&quot;</span>]],</span>
 <span id="cb34-2"><a href="asurat-using-kegg-optional.html#cb34-2"></a>          <span class="dt">rownames =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb34-3"><a href="asurat-using-kegg-optional.html#cb34-3"></a><span class="kw">datatable</span>(pbmc_<span class="dv">6000</span>[[<span class="st">&quot;marker&quot;</span>]][[<span class="st">&quot;KEGG&quot;</span>]][[<span class="st">&quot;pathway&quot;</span>]][[<span class="st">&quot;all&quot;</span>]],</span>
-<span id="cb34-4"><a href="asurat-using-kegg-optional.html#cb34-4"></a>          <span class="dt">rownames =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<span id="cb34-3"><a href="asurat-using-kegg-optional.html#cb34-3"></a><span class="kw">datatable</span>(pbmc_<span class="dv">4000</span>[[<span class="st">&quot;marker&quot;</span>]][[<span class="st">&quot;KEGG&quot;</span>]][[<span class="st">&quot;pathway&quot;</span>]][[<span class="st">&quot;all&quot;</span>]],</span>
+<span id="cb34-4"><a href="asurat-using-kegg-optional.html#cb34-4"></a>          <span class="dt">rownames =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb34-5"><a href="asurat-using-kegg-optional.html#cb34-5"></a><span class="kw">datatable</span>(pbmc_<span class="dv">6000</span>[[<span class="st">&quot;marker&quot;</span>]][[<span class="st">&quot;KEGG&quot;</span>]][[<span class="st">&quot;pathway&quot;</span>]][[<span class="st">&quot;all&quot;</span>]],</span>
+<span id="cb34-6"><a href="asurat-using-kegg-optional.html#cb34-6"></a>          <span class="dt">rownames =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <ul>
 <li><code>pbmc_4000</code></li>
 </ul>
@@ -865,17 +895,22 @@ classification), <code>data_type_for_expr</code> (<code>data_type</code> of inte
 gene expression), and <code>category_for_expr</code> (<code>category</code> of interest for
 investigating gene expression).</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="asurat-using-kegg-optional.html#cb35-1"></a><span class="co"># ----------------------------------------</span></span>
-<span id="cb35-2"><a href="asurat-using-kegg-optional.html#cb35-2"></a><span class="co"># For `pbmc_4000`</span></span>
+<span id="cb35-2"><a href="asurat-using-kegg-optional.html#cb35-2"></a><span class="co"># For `day7_hypo`</span></span>
 <span id="cb35-3"><a href="asurat-using-kegg-optional.html#cb35-3"></a><span class="co"># ----------------------------------------</span></span>
-<span id="cb35-4"><a href="asurat-using-kegg-optional.html#cb35-4"></a>p &lt;-<span class="st"> </span><span class="kw">plot_violin_signExpression</span>(</span>
-<span id="cb35-5"><a href="asurat-using-kegg-optional.html#cb35-5"></a>  <span class="dt">obj =</span> pbmc_<span class="dv">4000</span>, <span class="dt">sign_name =</span> <span class="st">&quot;path:hsa04650_S&quot;</span>,</span>
+<span id="cb35-4"><a href="asurat-using-kegg-optional.html#cb35-4"></a>p &lt;-<span class="st"> </span><span class="kw">plot_violin_signScore</span>(</span>
+<span id="cb35-5"><a href="asurat-using-kegg-optional.html#cb35-5"></a>  <span class="dt">obj =</span> day7_hypo, <span class="dt">sign_name =</span> <span class="st">&quot;path:hsa05222_S&quot;</span>,</span>
 <span id="cb35-6"><a href="asurat-using-kegg-optional.html#cb35-6"></a>  <span class="dt">data_type_for_label =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="dt">category_for_label =</span> <span class="st">&quot;pathway&quot;</span>,</span>
 <span id="cb35-7"><a href="asurat-using-kegg-optional.html#cb35-7"></a>  <span class="dt">algo_name_for_label =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
 <span id="cb35-8"><a href="asurat-using-kegg-optional.html#cb35-8"></a>  <span class="dt">data_type_for_expr =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="dt">category_for_expr =</span> <span class="st">&quot;pathway&quot;</span>,</span>
-<span id="cb35-9"><a href="asurat-using-kegg-optional.html#cb35-9"></a>  <span class="dt">title =</span> <span class="st">&quot;KEGG:hsa04650_S</span><span class="ch">\n</span><span class="st">Natural killer cell mediated..</span><span class="ch">\n</span><span class="st">(NCR3/GZMB/..)&quot;</span>,</span>
+<span id="cb35-9"><a href="asurat-using-kegg-optional.html#cb35-9"></a>  <span class="dt">title =</span> <span class="st">&quot;KEGG:hsa05222_S</span><span class="ch">\n</span><span class="st">Small cell lung cancer</span><span class="ch">\n</span><span class="st">(LAMC2/CDKN1A/..)&quot;</span>,</span>
 <span id="cb35-10"><a href="asurat-using-kegg-optional.html#cb35-10"></a>  <span class="dt">title_size =</span> <span class="dv">16</span>, <span class="dt">default_color =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb35-11"><a href="asurat-using-kegg-optional.html#cb35-11"></a>filename &lt;-<span class="st"> &quot;figures/figure_05_0340.png&quot;</span></span>
+<span id="cb35-11"><a href="asurat-using-kegg-optional.html#cb35-11"></a>filename &lt;-<span class="st"> &quot;figures/figure_02_0340.png&quot;</span></span>
 <span id="cb35-12"><a href="asurat-using-kegg-optional.html#cb35-12"></a><span class="kw">ggsave</span>(<span class="dt">file =</span> filename, <span class="dt">plot =</span> p, <span class="dt">dpi =</span> <span class="dv">200</span>, <span class="dt">width =</span> <span class="dv">4</span>, <span class="dt">height =</span> <span class="dv">4</span>)</span></code></pre></div>
+<ul>
+<li><code>day7_hypo</code></li>
+</ul>
+<p><img src="figures/figure_02_0340.png" width="230px">
+<img src="figures/figure_02_0341.png" width="230px"></p>
 <ul>
 <li><code>pbmc_4000</code></li>
 </ul>
@@ -908,11 +943,13 @@ UMAP, and diffusion map spaces, respectively.</p>
 </ul>
 <p><img src="figures/figure_05_0350.png" width="250px"></p>
 <p>Save the objects.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="asurat-using-kegg-optional.html#cb37-1"></a><span class="kw">saveRDS</span>(pbmc_<span class="dv">4000</span>, <span class="dt">file =</span> <span class="st">&quot;backup/05_304_pbmc_4000_DES_KEGG.rds&quot;</span>)</span>
-<span id="cb37-2"><a href="asurat-using-kegg-optional.html#cb37-2"></a><span class="kw">saveRDS</span>(pbmc_<span class="dv">6000</span>, <span class="dt">file =</span> <span class="st">&quot;backup/06_304_pbmc_6000_DES_KEGG.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="asurat-using-kegg-optional.html#cb37-1"></a><span class="kw">saveRDS</span>(day7_hypo, <span class="dt">file =</span> <span class="st">&quot;backup/02_304_day7_hypo_DES_KEGG.rds&quot;</span>)</span>
+<span id="cb37-2"><a href="asurat-using-kegg-optional.html#cb37-2"></a><span class="kw">saveRDS</span>(pbmc_<span class="dv">4000</span>, <span class="dt">file =</span> <span class="st">&quot;backup/05_304_pbmc_4000_DES_KEGG.rds&quot;</span>)</span>
+<span id="cb37-3"><a href="asurat-using-kegg-optional.html#cb37-3"></a><span class="kw">saveRDS</span>(pbmc_<span class="dv">6000</span>, <span class="dt">file =</span> <span class="st">&quot;backup/06_304_pbmc_6000_DES_KEGG.rds&quot;</span>)</span></code></pre></div>
 <p>Load the objects.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="asurat-using-kegg-optional.html#cb38-1"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/05_304_pbmc_4000_DES_KEGG.rds&quot;</span>)</span>
-<span id="cb38-2"><a href="asurat-using-kegg-optional.html#cb38-2"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/06_304_pbmc_6000_DES_KEGG.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="asurat-using-kegg-optional.html#cb38-1"></a>day7_hypo &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/02_304_day7_hypo_DES_KEGG.rds&quot;</span>)</span>
+<span id="cb38-2"><a href="asurat-using-kegg-optional.html#cb38-2"></a>pbmc_<span class="dv">4000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/05_304_pbmc_4000_DES_KEGG.rds&quot;</span>)</span>
+<span id="cb38-3"><a href="asurat-using-kegg-optional.html#cb38-3"></a>pbmc_<span class="dv">6000</span> &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/06_304_pbmc_6000_DES_KEGG.rds&quot;</span>)</span></code></pre></div>
 
 </div>
 </div>

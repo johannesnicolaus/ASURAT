@@ -24,7 +24,7 @@
 <meta name="author" content="Keita Iida" />
 
 
-<meta name="date" content="2021-06-16" />
+<meta name="date" content="2021-06-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -237,7 +237,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 15</span> Appendix B: automatically tuning ASURAT’s parameters</h1>
 <p>In this section, we demonstrate tuning the parameters of ASURAT for creating
 an interpretable system of signs as well as a sign-by-sample matrix (SSM) for
-Disease Ontology (DO) by using a single-cell RNA sequencing data <code>day1_norm</code>
+Disease Ontology (DO) by using a single-cell RNA sequencing data <code>day7_hypo</code>
 (cervical cancer data under normoxic condition).</p>
 <p>Below are the R scripts to produce a series of plots of UMAP of the SSMs for DO.
 Please note that the R codes in <code>function_movie.R</code> is almost the same with
@@ -270,19 +270,19 @@ an argument <code>category</code> as input and it does not record the parameters
 <span id="cb1-24"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-24"></a><span class="co"># Reading files</span></span>
 <span id="cb1-25"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-25"></a><span class="co"># ----------------------------------------</span></span>
 <span id="cb1-26"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-26"></a><span class="kw">source</span>(<span class="st">&quot;R/function_movie.R&quot;</span>)</span>
-<span id="cb1-27"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-27"></a>tidy_DO &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;data/2020_001_databases/20201213_tidy_DO_human.rds&quot;</span>)</span>
-<span id="cb1-28"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-28"></a>IC_DO &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;data/2020_001_databases/20201213_IC_DO_human.rds&quot;</span>)</span>
-<span id="cb1-29"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-29"></a>day1_norm &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/01_005_day1_norm_normalized.rds&quot;</span>)</span>
-<span id="cb1-30"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-30"></a>day1_norm_cor &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/01_006_day1_norm_correlation.rds&quot;</span>)</span>
+<span id="cb1-27"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-27"></a>tidy_KEGG &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;data/2020_001_databases/20201213_tidy_KEGG_human.rds&quot;</span>)</span>
+<span id="cb1-28"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-28"></a><span class="co">#IC_DO &lt;- readRDS(file = &quot;data/2020_001_databases/20201213_IC_DO_human.rds&quot;)</span></span>
+<span id="cb1-29"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-29"></a>day7_hypo &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/02_005_day7_hypo_normalized.rds&quot;</span>)</span>
+<span id="cb1-30"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-30"></a>day7_hypo_cor &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/02_006_day7_hypo_correlation.rds&quot;</span>)</span>
 <span id="cb1-31"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-31"></a><span class="co"># ----------------------------------------</span></span>
 <span id="cb1-32"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-32"></a><span class="co"># Definition</span></span>
 <span id="cb1-33"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-33"></a><span class="co"># ----------------------------------------</span></span>
 <span id="cb1-34"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-34"></a>tidy_DB &lt;-<span class="st"> </span>tidy_DO</span>
-<span id="cb1-35"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-35"></a>obj &lt;-<span class="st"> </span>day1_norm</span>
-<span id="cb1-36"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-36"></a>obj_cor &lt;-<span class="st"> </span>day1_norm_cor</span>
-<span id="cb1-37"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-37"></a>data_type &lt;-<span class="st"> &quot;DO&quot;</span></span>
-<span id="cb1-38"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-38"></a>category &lt;-<span class="st"> &quot;disease&quot;</span></span>
-<span id="cb1-39"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-39"></a>title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;day1_norm (&quot;</span>, data_type, <span class="st">&quot;: &quot;</span>, category, <span class="st">&quot;)&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb1-35"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-35"></a>obj &lt;-<span class="st"> </span>day7_hypo</span>
+<span id="cb1-36"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-36"></a>obj_cor &lt;-<span class="st"> </span>day7_hypo_cor</span>
+<span id="cb1-37"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-37"></a>data_type &lt;-<span class="st"> &quot;KEGG&quot;</span></span>
+<span id="cb1-38"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-38"></a>category &lt;-<span class="st"> &quot;pathway&quot;</span></span>
+<span id="cb1-39"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-39"></a>title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;day7_hypo (&quot;</span>, data_type, <span class="st">&quot;: &quot;</span>, category, <span class="st">&quot;)&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</span>
 <span id="cb1-40"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-40"></a>dirname &lt;-<span class="st"> &quot;movie&quot;</span></span>
 <span id="cb1-41"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-41"></a>do_tsne &lt;-<span class="st"> </span><span class="cf">function</span>(obj_red){</span>
 <span id="cb1-42"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-42"></a>  <span class="kw">do_tsne_sign_movie</span>(<span class="dt">obj =</span> obj_red, <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
@@ -304,9 +304,9 @@ an argument <code>category</code> as input and it does not record the parameters
 <span id="cb1-58"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-58"></a>max_ngenes &lt;-<span class="st"> </span><span class="dv">1000</span></span>
 <span id="cb1-59"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-59"></a>threshold &lt;-<span class="st"> </span><span class="fl">0.8</span></span>
 <span id="cb1-60"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-60"></a>keep_rareID &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
-<span id="cb1-61"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-61"></a>plot_type &lt;-<span class="st"> &quot;tsne&quot;</span></span>
-<span id="cb1-62"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-62"></a>xlabel &lt;-<span class="st"> &quot;tSNE_1&quot;</span></span>
-<span id="cb1-63"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-63"></a>ylabel &lt;-<span class="st"> &quot;tSNE_2&quot;</span></span>
+<span id="cb1-61"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-61"></a>plot_type &lt;-<span class="st"> &quot;umap&quot;</span></span>
+<span id="cb1-62"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-62"></a>xlabel &lt;-<span class="st"> &quot;UMAP_1&quot;</span></span>
+<span id="cb1-63"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-63"></a>ylabel &lt;-<span class="st"> &quot;UMAP_2&quot;</span></span>
 <span id="cb1-64"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-64"></a><span class="co"># ----------------------------------------</span></span>
 <span id="cb1-65"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-65"></a><span class="co"># Preparing</span></span>
 <span id="cb1-66"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-66"></a><span class="co"># ----------------------------------------</span></span>
@@ -318,11 +318,11 @@ an argument <code>category</code> as input and it does not record the parameters
 <span id="cb1-72"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-72"></a><span class="co"># Loop</span></span>
 <span id="cb1-73"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-73"></a><span class="co"># ----------------------------------------</span></span>
 <span id="cb1-74"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-74"></a>cnt &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb1-75"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-75"></a><span class="cf">for</span>(min_cnt <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="dv">2</span>){</span>
-<span id="cb1-76"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-76"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span><span class="dv">20</span>){</span>
-<span id="cb1-77"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-77"></a>    th_posi =<span class="st"> </span><span class="fl">0.20</span> <span class="op">+</span><span class="st"> </span>i <span class="op">*</span><span class="st"> </span><span class="fl">0.01</span></span>
-<span id="cb1-78"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-78"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span><span class="dv">10</span>){</span>
-<span id="cb1-79"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-79"></a>      th_nega =<span class="st"> </span><span class="op">-</span>(<span class="fl">0.2</span> <span class="op">+</span><span class="st"> </span>j <span class="op">*</span><span class="st"> </span><span class="fl">0.02</span>)</span>
+<span id="cb1-75"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-75"></a><span class="cf">for</span>(min_cnt <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>){</span>
+<span id="cb1-76"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-76"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span><span class="dv">35</span>){</span>
+<span id="cb1-77"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-77"></a>    th_posi =<span class="st"> </span><span class="fl">0.15</span> <span class="op">+</span><span class="st"> </span>i <span class="op">*</span><span class="st"> </span><span class="fl">0.01</span></span>
+<span id="cb1-78"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-78"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span><span class="dv">20</span>){</span>
+<span id="cb1-79"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-79"></a>      th_nega =<span class="st"> </span><span class="op">-</span>(<span class="fl">0.15</span> <span class="op">+</span><span class="st"> </span>j <span class="op">*</span><span class="st"> </span><span class="fl">0.02</span>)</span>
 <span id="cb1-80"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-80"></a>      </span>
 <span id="cb1-81"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-81"></a>      obj_red &lt;-<span class="st"> </span><span class="kw">separate_variables_sign_movie</span>(</span>
 <span id="cb1-82"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-82"></a>        <span class="dt">obj =</span> obj, <span class="dt">obj_cor =</span> obj_cor,</span>
