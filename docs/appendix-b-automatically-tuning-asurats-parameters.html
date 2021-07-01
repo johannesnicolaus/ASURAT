@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 15 Appendix B: automatically tuning ASURAT’s parameters | Introduction to ASURAT (version 0.0.0.9000)</title>
+  <meta name="description" content="This is a developmental version of ASURAT." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 15 Appendix B: automatically tuning ASURAT’s parameters | Introduction to ASURAT (version 0.0.0.9000)" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a developmental version of ASURAT." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 15 Appendix B: automatically tuning ASURAT’s parameters | Introduction to ASURAT (version 0.0.0.9000)" />
+  
+  <meta name="twitter:description" content="This is a developmental version of ASURAT." />
+  
+
+<meta name="author" content="Keita Iida" />
+
+
+<meta name="date" content="2021-07-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Overview</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#license-and-description"><i class="fa fa-check"></i><b>1.1</b> License and description</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#computational-environment"><i class="fa fa-check"></i><b>1.2</b> Computational environment</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.3</b> Installation</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="dataset.html"><a href="dataset.html"><i class="fa fa-check"></i><b>2</b> Preparing data sets</a><ul>
+<li class="chapter" data-level="2.1" data-path="dataset.html"><a href="dataset.html#case-i-input-gene-expression-matrix-with-row-and-column-names"><i class="fa fa-check"></i><b>2.1</b> Case I: input gene expression matrix with row and column names</a></li>
+<li class="chapter" data-level="2.2" data-path="dataset.html"><a href="dataset.html#case-ii-input-10x-data"><i class="fa fa-check"></i><b>2.2</b> Case II: input 10x data</a></li>
+<li class="chapter" data-level="2.3" data-path="dataset.html"><a href="dataset.html#case-iii-input-10x-pbmc-data"><i class="fa fa-check"></i><b>2.3</b> Case III: input 10x PBMC data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="dataqc.html"><a href="dataqc.html"><i class="fa fa-check"></i><b>3</b> Data quality control (QC)</a><ul>
+<li class="chapter" data-level="3.1" data-path="dataqc.html"><a href="dataqc.html#quick-qc"><i class="fa fa-check"></i><b>3.1</b> Quick QC</a></li>
+<li class="chapter" data-level="3.2" data-path="dataqc.html"><a href="dataqc.html#sample-qc"><i class="fa fa-check"></i><b>3.2</b> Sample QC</a></li>
+<li class="chapter" data-level="3.3" data-path="dataqc.html"><a href="dataqc.html#variable-qc"><i class="fa fa-check"></i><b>3.3</b> Variable QC</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="normalization.html"><a href="normalization.html"><i class="fa fa-check"></i><b>4</b> Normalizing and centering data</a></li>
+<li class="chapter" data-level="5" data-path="computcorr.html"><a href="computcorr.html"><i class="fa fa-check"></i><b>5</b> Computing correlations among genes</a></li>
+<li class="chapter" data-level="6" data-path="markergenes.html"><a href="markergenes.html"><i class="fa fa-check"></i><b>6</b> Checking expression profiles of marker genes</a></li>
+<li class="chapter" data-level="7" data-path="collectdb.html"><a href="collectdb.html"><i class="fa fa-check"></i><b>7</b> Collecting databases (optional)</a><ul>
+<li class="chapter" data-level="7.1" data-path="collectdb.html"><a href="collectdb.html#disease-ontology-db"><i class="fa fa-check"></i><b>7.1</b> Disease Ontology DB</a></li>
+<li class="chapter" data-level="7.2" data-path="collectdb.html"><a href="collectdb.html#cell-ontology-db"><i class="fa fa-check"></i><b>7.2</b> Cell Ontology DB</a></li>
+<li class="chapter" data-level="7.3" data-path="collectdb.html"><a href="collectdb.html#gene-ontology-db"><i class="fa fa-check"></i><b>7.3</b> Gene Ontology DB</a></li>
+<li class="chapter" data-level="7.4" data-path="collectdb.html"><a href="collectdb.html#kegg"><i class="fa fa-check"></i><b>7.4</b> KEGG</a></li>
+<li class="chapter" data-level="7.5" data-path="collectdb.html"><a href="collectdb.html#reactome"><i class="fa fa-check"></i><b>7.5</b> Reactome</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="asurat-using-disease-ontology-database.html"><a href="asurat-using-disease-ontology-database.html"><i class="fa fa-check"></i><b>8</b> ASURAT using Disease Ontology database</a><ul>
+<li class="chapter" data-level="8.1" data-path="asurat-using-disease-ontology-database.html"><a href="asurat-using-disease-ontology-database.html#creating-sign-by-sample-matrices"><i class="fa fa-check"></i><b>8.1</b> Creating sign-by-sample matrices</a></li>
+<li class="chapter" data-level="8.2" data-path="asurat-using-disease-ontology-database.html"><a href="asurat-using-disease-ontology-database.html#dimensionality-reduction"><i class="fa fa-check"></i><b>8.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="8.3" data-path="asurat-using-disease-ontology-database.html"><a href="asurat-using-disease-ontology-database.html#cell-clustering"><i class="fa fa-check"></i><b>8.3</b> Cell clustering</a></li>
+<li class="chapter" data-level="8.4" data-path="asurat-using-disease-ontology-database.html"><a href="asurat-using-disease-ontology-database.html#visualization"><i class="fa fa-check"></i><b>8.4</b> Visualization</a></li>
+<li class="chapter" data-level="8.5" data-path="asurat-using-disease-ontology-database.html"><a href="asurat-using-disease-ontology-database.html#significant-signs"><i class="fa fa-check"></i><b>8.5</b> Significant signs</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="asurat-using-cell-ontology-database-optional.html"><a href="asurat-using-cell-ontology-database-optional.html"><i class="fa fa-check"></i><b>9</b> ASURAT using Cell Ontology database (optional)</a><ul>
+<li class="chapter" data-level="9.1" data-path="asurat-using-cell-ontology-database-optional.html"><a href="asurat-using-cell-ontology-database-optional.html#creating-sign-by-sample-matrices-1"><i class="fa fa-check"></i><b>9.1</b> Creating sign-by-sample matrices</a></li>
+<li class="chapter" data-level="9.2" data-path="asurat-using-cell-ontology-database-optional.html"><a href="asurat-using-cell-ontology-database-optional.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>9.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="9.3" data-path="asurat-using-cell-ontology-database-optional.html"><a href="asurat-using-cell-ontology-database-optional.html#cell-clustering-1"><i class="fa fa-check"></i><b>9.3</b> Cell clustering</a></li>
+<li class="chapter" data-level="9.4" data-path="asurat-using-cell-ontology-database-optional.html"><a href="asurat-using-cell-ontology-database-optional.html#visualization-1"><i class="fa fa-check"></i><b>9.4</b> Visualization</a></li>
+<li class="chapter" data-level="9.5" data-path="asurat-using-cell-ontology-database-optional.html"><a href="asurat-using-cell-ontology-database-optional.html#significant-signs-1"><i class="fa fa-check"></i><b>9.5</b> Significant signs</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="asurat-using-gene-ontology-database-optional.html"><a href="asurat-using-gene-ontology-database-optional.html"><i class="fa fa-check"></i><b>10</b> ASURAT using Gene Ontology database (optional)</a><ul>
+<li class="chapter" data-level="10.1" data-path="asurat-using-gene-ontology-database-optional.html"><a href="asurat-using-gene-ontology-database-optional.html#creating-sign-by-sample-matrices-2"><i class="fa fa-check"></i><b>10.1</b> Creating sign-by-sample matrices</a></li>
+<li class="chapter" data-level="10.2" data-path="asurat-using-gene-ontology-database-optional.html"><a href="asurat-using-gene-ontology-database-optional.html#dimensionality-reduction-2"><i class="fa fa-check"></i><b>10.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="10.3" data-path="asurat-using-gene-ontology-database-optional.html"><a href="asurat-using-gene-ontology-database-optional.html#cell-clustering-2"><i class="fa fa-check"></i><b>10.3</b> Cell clustering</a></li>
+<li class="chapter" data-level="10.4" data-path="asurat-using-gene-ontology-database-optional.html"><a href="asurat-using-gene-ontology-database-optional.html#visualization-2"><i class="fa fa-check"></i><b>10.4</b> Visualization</a></li>
+<li class="chapter" data-level="10.5" data-path="asurat-using-gene-ontology-database-optional.html"><a href="asurat-using-gene-ontology-database-optional.html#significant-signs-2"><i class="fa fa-check"></i><b>10.5</b> Significant signs</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="asurat-using-kegg-optional.html"><a href="asurat-using-kegg-optional.html"><i class="fa fa-check"></i><b>11</b> ASURAT using KEGG (optional)</a><ul>
+<li class="chapter" data-level="11.1" data-path="asurat-using-kegg-optional.html"><a href="asurat-using-kegg-optional.html#creating-sign-by-sample-matrices-3"><i class="fa fa-check"></i><b>11.1</b> Creating sign-by-sample matrices</a></li>
+<li class="chapter" data-level="11.2" data-path="asurat-using-kegg-optional.html"><a href="asurat-using-kegg-optional.html#dimensionality-reduction-3"><i class="fa fa-check"></i><b>11.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="11.3" data-path="asurat-using-kegg-optional.html"><a href="asurat-using-kegg-optional.html#cell-clustering-3"><i class="fa fa-check"></i><b>11.3</b> Cell clustering</a></li>
+<li class="chapter" data-level="11.4" data-path="asurat-using-kegg-optional.html"><a href="asurat-using-kegg-optional.html#visualizing"><i class="fa fa-check"></i><b>11.4</b> Visualizing</a></li>
+<li class="chapter" data-level="11.5" data-path="asurat-using-kegg-optional.html"><a href="asurat-using-kegg-optional.html#significant-signs-3"><i class="fa fa-check"></i><b>11.5</b> Significant signs</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="asurat-using-reactome-optional.html"><a href="asurat-using-reactome-optional.html"><i class="fa fa-check"></i><b>12</b> ASURAT using Reactome (optional)</a><ul>
+<li class="chapter" data-level="12.1" data-path="asurat-using-reactome-optional.html"><a href="asurat-using-reactome-optional.html#creating-sign-by-sample-matrices-4"><i class="fa fa-check"></i><b>12.1</b> Creating sign-by-sample matrices</a></li>
+<li class="chapter" data-level="12.2" data-path="asurat-using-reactome-optional.html"><a href="asurat-using-reactome-optional.html#dimensionality-reduction-4"><i class="fa fa-check"></i><b>12.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="12.3" data-path="asurat-using-reactome-optional.html"><a href="asurat-using-reactome-optional.html#sample-clustering"><i class="fa fa-check"></i><b>12.3</b> Sample clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="multiple-sign-analysis-by-concatenating-do-co-go-kegg-and-reactome.html"><a href="multiple-sign-analysis-by-concatenating-do-co-go-kegg-and-reactome.html"><i class="fa fa-check"></i><b>13</b> Multiple sign analysis by concatenating DO, CO, GO, KEGG, and Reactome</a></li>
+<li class="chapter" data-level="14" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><i class="fa fa-check"></i><b>14</b> Appendix A: comparing performances of ASURAT and existing methods</a><ul>
+<li class="chapter" data-level="14.1" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#installation-1"><i class="fa fa-check"></i><b>14.1</b> Installation</a></li>
+<li class="chapter" data-level="14.2" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#removing-the-outlier-cells-detected-by-asurat"><i class="fa fa-check"></i><b>14.2</b> Removing the outlier cells detected by ASURAT</a></li>
+<li class="chapter" data-level="14.3" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#assessing-clustering-performances"><i class="fa fa-check"></i><b>14.3</b> Assessing clustering performances</a><ul>
+<li class="chapter" data-level="14.3.1" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#seurat"><i class="fa fa-check"></i><b>14.3.1</b> Seurat</a></li>
+<li class="chapter" data-level="14.3.2" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#monocle-3"><i class="fa fa-check"></i><b>14.3.2</b> Monocle 3</a></li>
+<li class="chapter" data-level="14.3.3" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#sc3"><i class="fa fa-check"></i><b>14.3.3</b> SC3</a></li>
+<li class="chapter" data-level="14.3.4" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>14.3.4</b> Principal component analysis (PCA)</a></li>
+<li class="chapter" data-level="14.3.5" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#asurat"><i class="fa fa-check"></i><b>14.3.5</b> ASURAT</a></li>
+<li class="chapter" data-level="14.3.6" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#comparing-clustering-validity-indices"><i class="fa fa-check"></i><b>14.3.6</b> Comparing clustering validity indices</a></li>
+</ul></li>
+<li class="chapter" data-level="14.4" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#cell-type-inference-in-pbmc_4000-and-pbmc_6000"><i class="fa fa-check"></i><b>14.4</b> Cell-type inference in <code>pbmc_4000</code> and <code>pbmc_6000</code></a><ul>
+<li class="chapter" data-level="14.4.1" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#seurat-1"><i class="fa fa-check"></i><b>14.4.1</b> Seurat</a></li>
+<li class="chapter" data-level="14.4.2" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#monocle-3-1"><i class="fa fa-check"></i><b>14.4.2</b> Monocle 3</a></li>
+<li class="chapter" data-level="14.4.3" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#sc3-1"><i class="fa fa-check"></i><b>14.4.3</b> SC3</a></li>
+<li class="chapter" data-level="14.4.4" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#asurat-1"><i class="fa fa-check"></i><b>14.4.4</b> ASURAT</a></li>
+</ul></li>
+<li class="chapter" data-level="14.5" data-path="appendix-a-comparing-performances-of-asurat-and-existing-methods.html"><a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html#identifying-cell-types-in-pbmc_4000-and-pbmc_6000"><i class="fa fa-check"></i><b>14.5</b> Identifying cell types in <code>pbmc_4000</code> and <code>pbmc_6000</code></a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="appendix-b-automatically-tuning-asurats-parameters.html"><a href="appendix-b-automatically-tuning-asurats-parameters.html"><i class="fa fa-check"></i><b>15</b> Appendix B: automatically tuning ASURAT’s parameters</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to ASURAT (version 0.0.0.9000)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="appendix-b-automatically-tuning-asurats-parameters" class="section level1">
+<h1><span class="header-section-number">Chapter 15</span> Appendix B: automatically tuning ASURAT’s parameters</h1>
+<p>In this section, we demonstrate tuning the parameters of ASURAT for creating
+an interpretable system of signs as well as a sign-by-sample matrix (SSM) for
+Disease Ontology (DO) by using a single-cell RNA sequencing data <code>day7_hypo</code>
+(cervical cancer data under normoxic condition).</p>
+<p>Below are the R scripts to produce a series of plots of UMAP of the SSMs for DO.
+Please note that the R codes in <code>function_movie.R</code> is almost the same with
+those in <code>function_sign.R</code> except that <code>function_movie.R</code> always requires
+an argument <code>category</code> as input and it does not record the parameters in
+<code>obj[["history"]]</code> for faster computing.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-2"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-2"></a><span class="co"># Installation</span></span>
+<span id="cb1-3"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-3"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-4"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-4"></a><span class="co"># General</span></span>
+<span id="cb1-5"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-5"></a><span class="kw">library</span>(tidyverse)       <span class="co"># For efficient handling of data.frame</span></span>
+<span id="cb1-6"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-6"></a><span class="co"># Below is a memo for attaching org.Hs.eg.db</span></span>
+<span id="cb1-7"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-7"></a><span class="co"># options(connectionObserver = NULL)</span></span>
+<span id="cb1-8"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-8"></a><span class="kw">library</span>(org.Hs.eg.db)    <span class="co"># For using human genome annotation package</span></span>
+<span id="cb1-9"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-9"></a></span>
+<span id="cb1-10"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-10"></a><span class="co"># Plot</span></span>
+<span id="cb1-11"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-11"></a><span class="kw">library</span>(ggrepel)         <span class="co"># For graphics with labeling</span></span>
+<span id="cb1-12"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-12"></a></span>
+<span id="cb1-13"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-13"></a><span class="co"># Utilities</span></span>
+<span id="cb1-14"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-14"></a><span class="kw">library</span>(Rtsne)           <span class="co"># For using Rtsne</span></span>
+<span id="cb1-15"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-15"></a><span class="kw">library</span>(umap)            <span class="co"># For using umap</span></span>
+<span id="cb1-16"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-16"></a><span class="kw">library</span>(destiny)         <span class="co"># For using diffusion map</span></span>
+<span id="cb1-17"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-17"></a><span class="kw">library</span>(cluster)         <span class="co"># For using `pam`</span></span>
+<span id="cb1-18"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-18"></a></span>
+<span id="cb1-19"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-19"></a><span class="co"># Databases</span></span>
+<span id="cb1-20"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-20"></a><span class="kw">library</span>(DOSE)            <span class="co"># For using DB for Disease Ontology</span></span>
+<span id="cb1-21"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-21"></a><span class="kw">library</span>(clusterProfiler) <span class="co"># For using DB for Gene Ontology</span></span>
+<span id="cb1-22"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-22"></a><span class="kw">library</span>(GOSemSim)        <span class="co"># For using godata in GOSemSim package</span></span>
+<span id="cb1-23"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-23"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-24"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-24"></a><span class="co"># Reading files</span></span>
+<span id="cb1-25"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-25"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-26"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-26"></a><span class="kw">source</span>(<span class="st">&quot;R/function_movie.R&quot;</span>)</span>
+<span id="cb1-27"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-27"></a>tidy_KEGG &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;data/2020_001_databases/20201213_tidy_KEGG_human.rds&quot;</span>)</span>
+<span id="cb1-28"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-28"></a><span class="co">#IC_DO &lt;- readRDS(file = &quot;data/2020_001_databases/20201213_IC_DO_human.rds&quot;)</span></span>
+<span id="cb1-29"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-29"></a>day7_hypo &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/02_005_day7_hypo_normalized.rds&quot;</span>)</span>
+<span id="cb1-30"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-30"></a>day7_hypo_cor &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;backup/02_006_day7_hypo_correlation.rds&quot;</span>)</span>
+<span id="cb1-31"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-31"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-32"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-32"></a><span class="co"># Definition</span></span>
+<span id="cb1-33"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-33"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-34"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-34"></a>tidy_DB &lt;-<span class="st"> </span>tidy_DO</span>
+<span id="cb1-35"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-35"></a>obj &lt;-<span class="st"> </span>day7_hypo</span>
+<span id="cb1-36"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-36"></a>obj_cor &lt;-<span class="st"> </span>day7_hypo_cor</span>
+<span id="cb1-37"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-37"></a>data_type &lt;-<span class="st"> &quot;KEGG&quot;</span></span>
+<span id="cb1-38"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-38"></a>category &lt;-<span class="st"> &quot;pathway&quot;</span></span>
+<span id="cb1-39"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-39"></a>title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;day7_hypo (&quot;</span>, data_type, <span class="st">&quot;: &quot;</span>, category, <span class="st">&quot;)&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb1-40"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-40"></a>dirname &lt;-<span class="st"> &quot;movie&quot;</span></span>
+<span id="cb1-41"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-41"></a>do_tsne &lt;-<span class="st"> </span><span class="cf">function</span>(obj_red){</span>
+<span id="cb1-42"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-42"></a>  <span class="kw">do_tsne_sign_movie</span>(<span class="dt">obj =</span> obj_red, <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-43"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-43"></a>                     <span class="dt">pca_dim =</span> <span class="ot">NULL</span>, <span class="dt">tsne_dim =</span> <span class="dv">2</span>)</span>
+<span id="cb1-44"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-44"></a>}</span>
+<span id="cb1-45"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-45"></a>do_umap &lt;-<span class="st"> </span><span class="cf">function</span>(obj_red){</span>
+<span id="cb1-46"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-46"></a>  <span class="kw">do_umap_sign_movie</span>(<span class="dt">obj =</span> obj_red, <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-47"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-47"></a>                     <span class="dt">pca_dim =</span> <span class="ot">NULL</span>, <span class="dt">umap_dim =</span> <span class="dv">2</span>)</span>
+<span id="cb1-48"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-48"></a>}</span>
+<span id="cb1-49"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-49"></a>do_dmap &lt;-<span class="st"> </span><span class="cf">function</span>(obj_red){</span>
+<span id="cb1-50"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-50"></a>  <span class="kw">do_DiffusionMap_movie</span>(<span class="dt">obj =</span> obj_red,</span>
+<span id="cb1-51"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-51"></a>                        <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-52"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-52"></a>                        <span class="dt">sigma =</span> <span class="st">&quot;local&quot;</span>, <span class="dt">distance =</span> <span class="st">&quot;euclidean&quot;</span>)</span>
+<span id="cb1-53"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-53"></a>}</span>
+<span id="cb1-54"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-54"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-55"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-55"></a><span class="co"># Setting the global parameters</span></span>
+<span id="cb1-56"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-56"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-57"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-57"></a>min_ngenes &lt;-<span class="st"> </span><span class="dv">2</span></span>
+<span id="cb1-58"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-58"></a>max_ngenes &lt;-<span class="st"> </span><span class="dv">1000</span></span>
+<span id="cb1-59"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-59"></a>threshold &lt;-<span class="st"> </span><span class="fl">0.8</span></span>
+<span id="cb1-60"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-60"></a>keep_rareID &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb1-61"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-61"></a>plot_type &lt;-<span class="st"> &quot;umap&quot;</span></span>
+<span id="cb1-62"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-62"></a>xlabel &lt;-<span class="st"> &quot;UMAP_1&quot;</span></span>
+<span id="cb1-63"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-63"></a>ylabel &lt;-<span class="st"> &quot;UMAP_2&quot;</span></span>
+<span id="cb1-64"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-64"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-65"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-65"></a><span class="co"># Preparing</span></span>
+<span id="cb1-66"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-66"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-67"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-67"></a>obj[[<span class="st">&quot;sign&quot;</span>]][[data_type]] &lt;-<span class="st"> </span>tidy_DB</span>
+<span id="cb1-68"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-68"></a>obj &lt;-<span class="st"> </span><span class="kw">do_quickQC_sign_movie</span>(<span class="dt">obj =</span> obj,</span>
+<span id="cb1-69"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-69"></a>                             <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-70"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-70"></a>                             <span class="dt">min_ngenes =</span> min_ngenes, <span class="dt">max_ngenes =</span> max_ngenes)</span>
+<span id="cb1-71"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-71"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-72"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-72"></a><span class="co"># Loop</span></span>
+<span id="cb1-73"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-73"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-74"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-74"></a>cnt &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb1-75"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-75"></a><span class="cf">for</span>(min_cnt <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>){</span>
+<span id="cb1-76"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-76"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span><span class="dv">35</span>){</span>
+<span id="cb1-77"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-77"></a>    th_posi =<span class="st"> </span><span class="fl">0.15</span> <span class="op">+</span><span class="st"> </span>i <span class="op">*</span><span class="st"> </span><span class="fl">0.01</span></span>
+<span id="cb1-78"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-78"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span><span class="dv">20</span>){</span>
+<span id="cb1-79"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-79"></a>      th_nega =<span class="st"> </span><span class="op">-</span>(<span class="fl">0.15</span> <span class="op">+</span><span class="st"> </span>j <span class="op">*</span><span class="st"> </span><span class="fl">0.02</span>)</span>
+<span id="cb1-80"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-80"></a>      </span>
+<span id="cb1-81"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-81"></a>      obj_red &lt;-<span class="st"> </span><span class="kw">separate_variables_sign_movie</span>(</span>
+<span id="cb1-82"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-82"></a>        <span class="dt">obj =</span> obj, <span class="dt">obj_cor =</span> obj_cor,</span>
+<span id="cb1-83"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-83"></a>        <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-84"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-84"></a>        <span class="dt">method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="dt">th_posi =</span> th_posi, <span class="dt">th_nega =</span> th_nega)</span>
+<span id="cb1-85"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-85"></a>      </span>
+<span id="cb1-86"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-86"></a>      obj_red &lt;-<span class="st"> </span><span class="kw">select_sign_movie</span>(</span>
+<span id="cb1-87"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-87"></a>        <span class="dt">obj =</span> obj_red, <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-88"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-88"></a>        <span class="dt">min_cnt =</span> min_cnt, <span class="dt">min_cnt_weak =</span> <span class="dv">2</span>)</span>
+<span id="cb1-89"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-89"></a>      </span>
+<span id="cb1-90"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-90"></a>      <span class="cf">if</span>(data_type <span class="op">==</span><span class="st"> &quot;DO&quot;</span>){</span>
+<span id="cb1-91"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-91"></a>        obj_red &lt;-<span class="st"> </span><span class="kw">compute_SemSim_sign_movie</span>(</span>
+<span id="cb1-92"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-92"></a>          <span class="dt">obj =</span> obj_red, <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-93"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-93"></a>          <span class="dt">measure =</span> <span class="st">&quot;Jiang&quot;</span>, <span class="dt">orgdb =</span> <span class="ot">NULL</span>, <span class="dt">treeTable =</span> <span class="ot">NULL</span>, <span class="dt">IC =</span> IC_DO)</span>
+<span id="cb1-94"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-94"></a>        obj_red &lt;-<span class="st"> </span><span class="kw">reduce_sign_movie</span>(</span>
+<span id="cb1-95"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-95"></a>          <span class="dt">obj =</span> obj_red, <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-96"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-96"></a>          <span class="dt">threshold =</span> threshold, <span class="dt">keep_rareID =</span> keep_rareID)</span>
+<span id="cb1-97"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-97"></a>      }<span class="cf">else</span> <span class="cf">if</span>(data_type <span class="op">==</span><span class="st"> &quot;GO&quot;</span>){</span>
+<span id="cb1-98"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-98"></a>        obj_red &lt;-<span class="st"> </span><span class="kw">compute_SemSim_sign_movie</span>(</span>
+<span id="cb1-99"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-99"></a>          <span class="dt">obj =</span> obj_red, <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-100"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-100"></a>          <span class="dt">measure =</span> <span class="st">&quot;Jiang&quot;</span>, <span class="dt">orgdb =</span> org.Hs.eg.db, <span class="dt">treeTable =</span> <span class="ot">NULL</span>, <span class="dt">IC =</span> IC_GO)</span>
+<span id="cb1-101"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-101"></a>        obj_red &lt;-<span class="st"> </span><span class="kw">reduce_sign_movie</span>(</span>
+<span id="cb1-102"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-102"></a>          <span class="dt">obj =</span> obj_red, <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-103"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-103"></a>          <span class="dt">threshold =</span> threshold, <span class="dt">keep_rareID =</span> keep_rareID)</span>
+<span id="cb1-104"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-104"></a>      }</span>
+<span id="cb1-105"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-105"></a>      </span>
+<span id="cb1-106"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-106"></a>      obj_red &lt;-<span class="st"> </span><span class="kw">make_signxsample_matrix_movie</span>(</span>
+<span id="cb1-107"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-107"></a>        <span class="dt">obj =</span> obj_red, <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-108"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-108"></a>        <span class="dt">weight_strg =</span> <span class="fl">0.5</span>, <span class="dt">weight_vari =</span> <span class="fl">0.5</span>)</span>
+<span id="cb1-109"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-109"></a>      </span>
+<span id="cb1-110"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-110"></a>      <span class="cf">if</span>(plot_type <span class="op">==</span><span class="st"> &quot;tsne&quot;</span>){</span>
+<span id="cb1-111"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-111"></a>        obj_red &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">do_tsne</span>(<span class="dt">obj =</span> obj_red), <span class="dt">silent =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb1-112"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-112"></a>      }<span class="cf">else</span> <span class="cf">if</span>(plot_type <span class="op">==</span><span class="st"> &quot;umap&quot;</span>){</span>
+<span id="cb1-113"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-113"></a>        obj_red &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">do_umap</span>(<span class="dt">obj =</span> obj_red), <span class="dt">silent =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb1-114"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-114"></a>      }<span class="cf">else</span> <span class="cf">if</span>(plot_type <span class="op">==</span><span class="st"> &quot;dmap&quot;</span>){</span>
+<span id="cb1-115"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-115"></a>        obj_red &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">do_dmap</span>(<span class="dt">obj =</span> obj_red), <span class="dt">silent =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb1-116"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-116"></a>      }</span>
+<span id="cb1-117"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-117"></a></span>
+<span id="cb1-118"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-118"></a>      <span class="cf">if</span>(<span class="kw">class</span>(obj_red) <span class="op">==</span><span class="st"> &quot;try-error&quot;</span>){</span>
+<span id="cb1-119"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-119"></a>        <span class="kw">print</span>(<span class="st">&quot;Skip this parameter set.&quot;</span>)</span>
+<span id="cb1-120"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-120"></a>        <span class="cf">next</span></span>
+<span id="cb1-121"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-121"></a>      }</span>
+<span id="cb1-122"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-122"></a></span>
+<span id="cb1-123"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-123"></a>      <span class="cf">if</span>(plot_type <span class="op">==</span><span class="st"> &quot;tsne&quot;</span>){</span>
+<span id="cb1-124"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-124"></a>        <span class="kw">plot_tsne_sign_movie</span>(</span>
+<span id="cb1-125"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-125"></a>          <span class="dt">obj =</span> obj_red, <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-126"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-126"></a>          <span class="dt">p1 =</span> th_posi, <span class="dt">p2 =</span> th_nega, <span class="dt">p3 =</span> min_cnt, <span class="dt">title =</span> title,</span>
+<span id="cb1-127"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-127"></a>          <span class="dt">xlabel =</span> xlabel, <span class="dt">ylabel =</span> ylabel, <span class="dt">dirname =</span> dirname, <span class="dt">cnt =</span> cnt)</span>
+<span id="cb1-128"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-128"></a>      }<span class="cf">else</span> <span class="cf">if</span>(plot_type <span class="op">==</span><span class="st"> &quot;umap&quot;</span>){</span>
+<span id="cb1-129"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-129"></a>        <span class="kw">plot_umap_sign_movie</span>(</span>
+<span id="cb1-130"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-130"></a>          <span class="dt">obj =</span> obj_red, <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-131"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-131"></a>          <span class="dt">p1 =</span> th_posi, <span class="dt">p2 =</span> th_nega, <span class="dt">p3 =</span> min_cnt, <span class="dt">title =</span> title,</span>
+<span id="cb1-132"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-132"></a>          <span class="dt">xlabel =</span> xlabel, <span class="dt">ylabel =</span> ylabel, <span class="dt">dirname =</span> dirname, <span class="dt">cnt =</span> cnt)</span>
+<span id="cb1-133"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-133"></a>      }<span class="cf">else</span> <span class="cf">if</span>(plot_type <span class="op">==</span><span class="st"> &quot;dmap&quot;</span>){</span>
+<span id="cb1-134"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-134"></a>        <span class="kw">plot_DiffusionMap_movie</span>(</span>
+<span id="cb1-135"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-135"></a>          <span class="dt">obj =</span> obj_red, <span class="dt">data_type =</span> data_type, <span class="dt">category =</span> category,</span>
+<span id="cb1-136"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-136"></a>          <span class="dt">p1 =</span> th_posi, <span class="dt">p2 =</span> th_nega, <span class="dt">p3 =</span> min_cnt, <span class="dt">title =</span> title,</span>
+<span id="cb1-137"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-137"></a>          <span class="dt">xlabel =</span> xlabel, <span class="dt">ylabel =</span> ylabel, <span class="dt">dirname =</span> dirname, <span class="dt">cnt =</span> cnt)</span>
+<span id="cb1-138"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-138"></a>      }</span>
+<span id="cb1-139"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-139"></a>      </span>
+<span id="cb1-140"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-140"></a>      cnt &lt;-<span class="st"> </span>cnt <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb1-141"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-141"></a>    }</span>
+<span id="cb1-142"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-142"></a>  }</span>
+<span id="cb1-143"><a href="appendix-b-automatically-tuning-asurats-parameters.html#cb1-143"></a>}</span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="appendix-a-comparing-performances-of-asurat-and-existing-methods.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Introduction to ASURAT (ver. 0.0.0.9000).pdf", "Introduction to ASURAT (ver. 0.0.0.9000).epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
