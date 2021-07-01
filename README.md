@@ -4,7 +4,7 @@ ASURAT is a single-cell RNA sequencing (scRNA-seq) data analysis pipeline, devel
 
 Introduction, documentation, and tutorial can be found at
 
-https://keita-iida.github.io/ASURAT/index.html
+https://keita-iida.github.io/ASURAT/
 
 Our preprint was released on bioRxiv (12th June, 2021).
 
@@ -34,7 +34,7 @@ Load a Seurat object for human scRNA-seq data (below is an example).
 cerv_seurat <- readRDS(file = "backup/cerv_small_seurat.rds")  # Seurat object
 ```
 
-Below are stopgap installations. See [Chapter 1](https://keita-iida.github.io/ASURAT/index.html) for all the requirements.
+Below are stopgap installations. See [Chapter 1](https://keita-iida.github.io/ASURAT/) for all the requirements.
 Note that users need to replace `org.Hs.eg.db` with other packages when analyzing other animal's scRNA-seq data.
 
 ```R
