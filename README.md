@@ -22,7 +22,7 @@ https://keita-iida.github.io/ASURAT_0.0.0.9001/
 
 ## The latest version of ASURAT (version 0.0.0.9001)
 
-The latest version is witten here:
+ASURAT (version 0.0.0.9001) is currently in the alpha phase of its development. This means that the functions are not always optimal, which will be updated in the future. I believe that there are no crucial bugs because I checked the whole process many times, but please be patient if there are any inconveniences. This version is maintained in the following URL:
 
 https://github.com/keita-iida/ASURAT_0.0.0.9001
 
