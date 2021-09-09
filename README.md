@@ -38,7 +38,7 @@ Using ASURAT, users can transform single-cell RNA-seq data into novel sign-by-sa
 
 <br>
 
-https://user-images.githubusercontent.com/50622599/132665687-c2ecc41e-c4bf-40c5-851f-e644762fd203.mov
+https://user-images.githubusercontent.com/50622599/132666882-ba8af64a-4b17-4fa7-a543-0772dc6048b6.mov
 
 <br>
 
