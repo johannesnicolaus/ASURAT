@@ -109,7 +109,7 @@ cerv_cor <- do_cor_variables(obj = cerv, method = c("spearman"))
 Save the objects. Please note that the suffixes of the following filenames, such as `09`, `005`, and `006`, are only for identifying the computational steps (there is no special significance).
 
 ```R
-saveRDS(cerv, file = "backup/09_005_cerv_correlation.rds")
+saveRDS(cerv, file = "backup/09_005_cerv_normalized.rds")
 saveRDS(cerv_cor, file = "backup/09_006_cerv_correlation.rds")
 ```
 
