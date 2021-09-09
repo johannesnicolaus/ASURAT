@@ -44,7 +44,7 @@ Using ASURAT, users can transform single-cell RNA-seq data into novel sign-by-sa
 
 <br>
 
-Concatenating multiple SSMs, gene expression matrices, and other information such as cell cycle, users can characterize individual cells from multiple biological aspects, facilitating the interpretation (see the figure below).
+Concatenating multiple SSMs, gene expression matrices, and other information such as cell cycle, users can characterize individual cells in columns from multiple biological terms in rows, facilitating the interpretation (see the figure below).
 
 
 
