@@ -1,0 +1,268 @@
+# Collecting databases (optional) {#collectdb}
+In this section, the following databases (DBs) are downloaded and properly
+formatted.
+Since all of the results in this section have already been prepared for human
+and mouse datasets in December 2020 (see `data/2020_001_databases/`),
+users may be able to skip this section.
+
+1. DB for Disease Ontology (DO) for human disease
+2. DB for Cell Ontology (CO)
+3. DB for Gene Ontology (GO)
+4. DB for Kyoto Encyclopedia of Genes and Genomes (KEGG)
+5. DB for Reactome
+
+
+
+## Disease Ontology DB
+```{r, eval = FALSE}
+source("R/function_DiseaseOntology.R")
+```
+
+The following functions `collect_DO()`, `format_DO()`, and `compute_IC_DO()`
+(i) downloads a database for Disease Ontology,
+(ii) formats the results, and
+(iii) prepares a list of information content (IC) (Mistry and Pavlidis,
+BMC Bioinformatics, 2008), respectively.
+IC value represents the depth of the biological term in the ontology,
+which will be later used for computing similarities between terms.
+```{r, eval = FALSE}
+#
+# Note again that the following result has already been prepared for human and
+# mouse datasets in December 2020 (see `data/2020_001_databases/`).
+#
+library(DO.db)
+dict_DO <- collect_DO()
+tidy_DO <- format_DO(dict = dict_DO)
+IC_DO <- compute_IC_DO(tidy = tidy_DO)
+#
+# Save the result.
+#
+saveRDS(dict_DO, file = "data/2020_001_databases/YYYYMMDD_dict_DO_human.rds")
+saveRDS(tidy_DO, file = "data/2020_001_databases/YYYYMMDD_tidy_DO_human.rds")
+saveRDS(IC_DO, file = "data/2020_001_databases/YYYYMMDD_IC_DO_human.rds")
+```
+
+
+
+## Cell Ontology DB
+```{r, eval = FALSE}
+source("R/function_CellOntology.R")
+```
+
+The following functions `collect_CO()`, `format_CO()`, `make_treeTable_CO()`,
+and `compute_IC_CO()`
+(i) downloads a database for Disease Ontology,
+(ii) formats the results, and
+(iii) prepares a list of information content (IC) (Mistry and Pavlidis,
+BMC Bioinformatics, 2008), respectively.
+
+**Tips:**
+As of December 2020, Cell Ontology database might not be complete enough
+for some biological contexts.
+For example, the well-known marker genes for pancreatic beta cell,
+Ins1 and Ins2, are not registered in the gene slot of `type B pancreatic cell`
+with CO ID `CL:0000169`.
+Be careful of using IC values of CO, which may not be always useful for
+computing similarities between biological terms.
+Nevertheless, we computed the IC values as in the future CO database might be
+better annotated.
+```{r, eval = FALSE}
+#
+# Note again that the following result has already been prepared for human and
+# mouse datasets in December 2020 (see `data/2020_001_databases/`).
+#
+dict_CO <- collect_CO(orgdb = org.Hs.eg.db)
+tidy_CO <- format_CO(dict = dict_CO)
+treeTable_CO <- make_treeTable_CO(tidy = tidy_CO)
+IC_CO <- compute_IC_CO(tidy = tidy_CO, treeTable = treeTable_CO)
+#
+# Save the result.
+#
+saveRDS(dict_CO, file = "data/2020_001_databases/YYYYMMDD_dict_CO_human.rds")
+saveRDS(tidy_CO, file = "data/2020_001_databases/YYYYMMDD_tidy_CO_human.rds")
+saveRDS(treeTable_CO,
+        file = "data/2020_001_databases/YYYYMMDD_treeTable_CO_human.rds")
+saveRDS(IC_CO, file = "data/2020_001_databases/YYYYMMDD_IC_CO_human.rds")
+```
+
+
+
+## Gene Ontology DB
+```{r, eval = FALSE}
+source("R/function_GeneOntology.R")
+```
+
+The following functions `collect_GO()`, `format_GO()`, and `compute_IC_GO()`
+(i) downloads a database for Gene Ontology,
+(ii) formats the results, and
+(iii) prepares a list of information content (IC), respectively.
+The arguments of `collect_GO()` are `orgdb`
+(annotation data package such as `org.Hs.eg.db` and `org.Mm.eg.db`) and
+`all_geneIDs` (all Entrez gene IDs of a specific organism).
+```{r, eval = FALSE}
+#
+# Note again that the following result has already been prepared for human and
+# mouse datasets in December 2020 (see `data/2020_001_databases/`).
+#
+library(GO.db)
+all_geneIDs <- as.list(org.Hs.egGO)
+all_geneIDs <- names(all_geneIDs[!is.na(all_geneIDs)])
+dict_GO <- collect_GO(orgdb = org.Hs.eg.db, all_geneIDs = all_geneIDs)
+tidy_GO <- format_GO(dict = dict_GO)
+IC_GO <- compute_IC_GO(tidy = tidy_GO)
+#
+# Save the result.
+#
+saveRDS(dict_DO, file = "data/2020_001_databases/YYYYMMDD_dict_GO_human.rds")
+saveRDS(tidy_DO, file = "data/2020_001_databases/YYYYMMDD_tidy_GO_human.rds")
+saveRDS(IC_DO, file = "data/2020_001_databases/YYYYMMDD_IC_GO_human.rds")
+```
+
+
+
+## KEGG
+```{r, eval = FALSE}
+source("R/function_KEGG.R")
+```
+
+The following functions `collect_KEGG()` and `format_KEGG()`
+(i) downloads a database for KEGG and (ii) formats the results, respectively.
+In the current version, KEGG PATHWAY (`"pathway"`) and MODULE (`"module"`)
+can be input into `collect_KEGG()` (cf. `KEGGREST` function `listDatabases()`).
+The arguments of `collect_KEGG()` are `organism` (such as Homo sapiens `"hsa"`,
+obeying the naming rule of [KEGG](http://rest.kegg.jp/list/organism)) and
+`category_names` (such as `"pathway"` and `"module"`).
+This function requires an internet connection.
+```{r, eval = FALSE}
+#
+# Note again that the following result has already been prepared for human and
+# mouse datasets in December 2020 (see `data/2020_001_databases/`).
+#
+# Note that `collect_KEGG` uses `KEGGREST` function `keggGet` with internet
+# connection, which may produce both successful and unsuccessful results.
+#
+dict_KEGG_raw <- collect_KEGG(organism = "hsa", category_names = c("pathway"))
+dict_KEGG <- list(pathway = dict_KEGG_raw[["pathway"]][["success"]])
+tidy_KEGG <- format_KEGG(dict = dict_KEGG)
+#
+# Save the result.
+#
+saveRDS(dict_KEGG_raw,
+        file = "data/2020_001_databases/YYYYMMDD_dict_KEGG_raw_human.rds")
+saveRDS(dict_KEGG,
+        file = "data/2020_001_databases/YYYYMMDD_dict_KEGG_human.rds")
+saveRDS(tidy_KEGG,
+        file = "data/2020_001_databases/YYYYMMDD_tidy_KEGG_human.rds")
+```
+
+
+
+## Custom-built DB for our analysis of PDAC data
+To facilitate our analysis of PDAC data (Moncada et al., Nat Biotechnol, 2020),
+we downloaded some of the databases and combined them with DO and CO,
+which we refer as `CB` with category name `cell`
+(see `data/2020_001_databases/20210722_tidy_CB_human.rds`).
+
+Load Disease Ontology (DO) and Cell Ontology (CO) databases and
+convert gene symbols into entrez IDs using `org.Hs.eg.db`.
+```{r, eval = FALSE}
+tidy_DO <- readRDS(file = "data/2020_001_databases/20201213_tidy_DO_human.rds")
+dict_CO <- readRDS(file = "data/2020_001_databases/20201213_dict_CO_human.rds")
+
+dictionary <- AnnotationDbi::select(org.Hs.eg.db,
+                                    key = dict_CO$Symbol,
+                                    columns = c("SYMBOL", "ENTREZID"),
+                                    keytype = "SYMBOL")
+dictionary <- dictionary[!duplicated(dictionary$SYMBOL), ]
+for(i in 1:nrow(dict_CO)){
+  gene <- dict_CO$Symbol[i]
+  dict_CO$Symbol[i] <- dictionary[which(dictionary$SYMBOL == gene),]$ENTREZID
+}
+```
+
+The following libraries were installed on 11th July, 2021.
+```{r, eval = FALSE}
+library(GSEABase)        # For using clustermole
+library(GSVA)            # For using clustermole
+library(singscore)       # For using clustermole
+library(clustermole)     # For using clustermole
+```
+
+Load the database and check the cell type source databases.
+```{r, eval = FALSE}
+markers <- clustermole_markers()
+sort(unique(markers$db))
+```
+
+```
+[1] "ARCHS4"     "CellMarker" "MSigDB"     "PanglaoDB"  "SaVanT"     "TISSUES"   
+[7] "xCell" 
+```
+
+Select `species`.
+```{r, eval = FALSE}
+markers_red <- markers[which(markers$species == "Human"),]
+```
+
+Select `db` (database).
+
+**Tips:**
+Since we are interested in prostate ductal adenocarcinoma (PDAC) and
+other pancreas related cells such as ductal cell, acinar cell, etc,
+we carefully select the following DBs.
+```{r, eval = FALSE}
+markers_red <- markers_red[which(markers_red$db == "CellMarker" |
+                                   markers_red$db == "MSigDB" |
+                                   markers_red$db == "PanglaoDB"),]
+```
+
+Change gene symbols into entrez IDs using `org.Hs.eg.db`.
+```{r, eval = FALSE}
+dictionary <- AnnotationDbi::select(org.Hs.eg.db,
+                                    key = markers_red$gene,
+                                    columns = c("SYMBOL", "ENTREZID"),
+                                    keytype = "SYMBOL")
+dictionary <- dictionary[!duplicated(dictionary$SYMBOL), ]
+for(i in 1:nrow(markers_red)){
+  gene <- markers_red$gene[i]
+  markers_red$gene[i] <- dictionary[which(dictionary$SYMBOL == gene),]$ENTREZID
+}
+```
+
+Format the database.
+```{r, eval = FALSE}
+markers_list <- split(x = markers_red$gene, f = markers_red$celltype)
+nlist <- length(markers_list)
+res <- data.frame(matrix(ncol = 5, nrow = nlist, dimnames = list(NULL, c(
+  "ID", "Description", "Count", "Gene", "GeneID"))))
+for(i in 1:nlist){
+  tmp <- markers_list[[i]]
+  res$ID[i] <- paste("CBID:", i, sep = "")
+  res$Description[i] <- names(markers_list)[i]
+  res$Count[i] <- length(markers_list[[i]])
+  res$GeneID[i] <- paste(markers_list[[i]], collapse = "/")
+}
+```
+
+Create a structured data frame by combining `res` with `tidy_DO` and `dict_CO`.
+```{r, eval = FALSE}
+map <- unique(data.frame(
+  ID = dict_CO[["ID"]], Description = dict_CO[["Description"]],
+  Count = NA, Gene = NA, GeneID = NA
+))
+for(i in 1:nrow(map)){
+  genes <- unique(dict_CO[which(dict_CO[["ID"]] == map[["ID"]][i]),]$Symbol)
+  map$GeneID[i] <- paste(genes, collapse = "/")
+  map$Count[i] <- length(genes)
+}
+tmp <- rbind(tidy_DO[["disease"]], map)
+
+tidy_CB <- list()
+tidy_CB[["cell"]] <- rbind(tmp, res)
+rownames(tidy_CB[["cell"]]) <- 1:nrow(tidy_CB[["cell"]])
+```
+
+Save the result.
+```{r, eval = FALSE}
+saveRDS(tidy_CB, file = "data/2020_001_databases/20210817_tidy_CB_human.rds")
+```

@@ -20,22 +20,22 @@ https://www.biorxiv.org/content/10.1101/2021.06.09.447731v1
 4. Creating sign-by-sample matrices (SSMs)
 5. Unsupervised clustering of cells
 6. Finding significant signs
-7. Multiple sing analysis (analyzing SSMs from the viewpoints of cell type, biological process, signaling pathway, etc.)
+7. Multiple sing analysis
 
 <br>
 
-## Quick start inputting a Seurat object
+## Quick start from a Seurat object
 
 Although the above [URL](https://keita-iida.github.io/ASURAT/) does not assume Seurat-based analyses, it might be beneficial to begin with a Seurat object `obj` including `obj@assays[["RNA"]]@counts`.
 
 Load a Seurat object for human scRNA-seq data (below is an example).
 
 ```R
-cerv_seurat <- readRDS(file = "backup/cerv_small_seurat.rds")  # Seurat object
+test <- readRDS(file = "backup/test.rds")  # Seurat object
 ```
 
-Below are stopgap installations. See [Chapter 1](https://keita-iida.github.io/ASURAT/) for all the requirements.
-Note that users need to replace `org.Hs.eg.db` with other packages when analyzing other animal's scRNA-seq data.
+Below are stopgap installations (see [Chapter 1](https://keita-iida.github.io/ASURAT/) for all the requirements).
+Note that users need to replace `org.Hs.eg.db` when analyzing other animal's data.
 
 ```R
 library(tidyverse)                # For efficient handling of data.frame
@@ -47,19 +47,18 @@ source("R/function_general.R")		# ASURAT's function
 Create an ASURAT object.
 
 ```R
-cerv <- make_asurat_obj(mat = cerv_seurat@assays[["RNA"]]@counts,
-                        obj_name = "cerv_small")
+test <- make_asurat_obj(mat = test@assays[["RNA"]]@counts, obj_name = "test")
 ```
 
 Convert gene symbols into Entrez IDs by using `org.Hs.eg.db` package.
 
 ```R
 dictionary <- AnnotationDbi::select(org.Hs.eg.db,
-                                    key = cerv[["variable"]][["symbol"]],
+                                    key = test[["variable"]][["symbol"]],
                                     columns = c("ENTREZID"), keytype = "SYMBOL")
 dictionary <- dictionary[!duplicated(dictionary$SYMBOL), ]
 names(dictionary) <- c("symbol", "entrez")
-cerv[["variable"]] <- dictionary
+test[["variable"]] <- dictionary
 ```
 
 The following function `log1p_data()` performs log transform of the input data with a pseudo count `eps`.
@@ -69,24 +68,24 @@ log1p_data <- function(obj, eps){
   obj[["history"]][["log1p_data"]][["eps"]] <- eps
   mat <- as.matrix(obj[["data"]][["raw"]])
   lmat <- log(mat + eps)
-  obj[["data"]][["log1p"]] <- as.data.frame(lmat)
+  obj[["data"]][["normalized"]] <- as.data.frame(lmat)
   return(obj)
 }
 
-cerv <- log1p_data(obj = cerv, eps = 1)
+test <- log1p_data(obj = test, eps = 1)
 ```
 
-The following function `centralize_data()` centralizes the input data on a gene-by-gene basis.
+The following function `center_data()` centralizes the input data on a gene-by-gene basis.
 
 ```R
-centralize_data <- function(obj){
+center_data <- function(obj){
   mat <- as.matrix(obj[["data"]][["log1p"]])
   cmat <- sweep(mat, 1, apply(mat, 1, mean), FUN = "-")
   obj[["data"]][["centered"]] <- as.data.frame(cmat)
   return(obj)
 }
 
-cerv <- centralize_data(obj = cerv)
+test <- center_data(obj = test)
 ```
 
 The following function `do_cor_variables()` computes a correlation matrix from the input data.
@@ -95,7 +94,7 @@ Users can choose a measure of correlation coefficient by setting `method` (vecto
 ```R
 do_cor_variables <- function(obj, method){
   res <- list()
-  tmat <- t(obj[["data"]][["log1p"]])
+  tmat <- t(obj[["data"]][["normalized"]])
   for(m in method){
     res <- c(res, list(cor(tmat, method = m)))
   }
@@ -103,24 +102,22 @@ do_cor_variables <- function(obj, method){
   return(res)
 }
 
-cerv_cor <- do_cor_variables(obj = cerv, method = c("spearman"))
+test_cor <- do_cor_variables(obj = test, method = c("spearman"))
 ```
 
 Save the objects. Please note that the suffixes of the following filenames, such as `09`, `005`, and `006`, are only for identifying the computational steps (there is no special significance).
 
 ```R
-saveRDS(cerv, file = "backup/09_005_cerv_normalized.rds")
-saveRDS(cerv_cor, file = "backup/09_006_cerv_correlation.rds")
+saveRDS(test, file = "backup/00_005_test_normalized.rds")
+saveRDS(test_cor, file = "backup/00_006_test_correlation.rds")
 ```
 
 ### ASURAT using several databases
 
-Go to [Chapter 8](https://keita-iida.github.io/ASURAT/asurat-using-disease-ontology-database.html) for analyses using Disease Ontology database.
+Go to [Chapter 9](https://keita-iida.github.io/ASURAT/asurat-using-disease-ontology-database.html) for inferring cell types or diseases based on Disease Ontology (DO) or Cell Ontology (CO).
 
-Go to [Chapter 9](https://keita-iida.github.io/ASURAT/asurat-using-cell-ontology-database-optional.html) for analyses using Cell Ontology database.
+Go to [Chapter 10](https://keita-iida.github.io/ASURAT/asurat-using-cell-ontology-database-optional.html) for inferring biological functions based on Gene Ontology (GO).
 
-Go to [Chapter 10](https://keita-iida.github.io/ASURAT/asurat-using-gene-ontology-database-optional.html) for analyses using Gene Ontology database.
+Go to [Chapter 11](https://keita-iida.github.io/ASURAT/asurat-using-gene-ontology-database-optional.html) for inferring pathway activities based on Encyclopedia of Genes and Genomes (KEGG).
 
-Go to [Chapter 11](https://keita-iida.github.io/ASURAT/asurat-using-kegg-optional.html) for analyses using Kyoto Encyclopedia of Genes and Genomes (KEGG) database.
-
-Go to [Chapter 12](https://keita-iida.github.io/ASURAT/asurat-using-reactome-optional.html) for analyses using Reactome database.
+Go to [Chapter 12](https://keita-iida.github.io/ASURAT/asurat-using-kegg-optional.html) for multi-layered analyses across all the signs.

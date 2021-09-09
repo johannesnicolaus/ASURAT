@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Data integration | Introduction to ASURAT (version 0.0.0.9001)</title>
+  <meta name="description" content="This is a developmental version of ASURAT." />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Data integration | Introduction to ASURAT (version 0.0.0.9001)" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a developmental version of ASURAT." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Data integration | Introduction to ASURAT (version 0.0.0.9001)" />
+  
+  <meta name="twitter:description" content="This is a developmental version of ASURAT." />
+  
+
+<meta name="author" content="Keita Iida" />
+
+
+<meta name="date" content="2021-09-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="normalization.html"/>
+<link rel="next" href="computcorr.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Overview</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#license-and-description"><i class="fa fa-check"></i><b>1.1</b> License and description</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#computational-environment"><i class="fa fa-check"></i><b>1.2</b> Computational environment</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.3</b> Installation</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="dataset.html"><a href="dataset.html"><i class="fa fa-check"></i><b>2</b> Preparing data sets</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="dataset.html"><a href="dataset.html#case-i-10x-data-stewart-et-al.-nat-cancer-2020"><i class="fa fa-check"></i><b>2.1</b> Case I: 10x data (Stewart et al., Nat Cancer, 2020)</a></li>
+<li class="chapter" data-level="2.2" data-path="dataset.html"><a href="dataset.html#case-ii-pdac-a-st-and-indrop-moncada-et-al.-nat-biotechnol-2020"><i class="fa fa-check"></i><b>2.2</b> Case II: PDAC-A ST and inDrop (Moncada et al., Nat Biotechnol, 2020)</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="dataset.html"><a href="dataset.html#pdac-a-st"><i class="fa fa-check"></i><b>2.2.1</b> PDAC-A ST</a></li>
+<li class="chapter" data-level="2.2.2" data-path="dataset.html"><a href="dataset.html#pdac-a-indrop"><i class="fa fa-check"></i><b>2.2.2</b> PDAC-A inDrop</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="dataset.html"><a href="dataset.html#case-iii-input-10x-pbmc-data"><i class="fa fa-check"></i><b>2.3</b> Case III: input 10x PBMC data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="dataqc.html"><a href="dataqc.html"><i class="fa fa-check"></i><b>3</b> Data quality control (QC)</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="dataqc.html"><a href="dataqc.html#quick-qc"><i class="fa fa-check"></i><b>3.1</b> Quick QC</a></li>
+<li class="chapter" data-level="3.2" data-path="dataqc.html"><a href="dataqc.html#sample-qc"><i class="fa fa-check"></i><b>3.2</b> Sample QC</a></li>
+<li class="chapter" data-level="3.3" data-path="dataqc.html"><a href="dataqc.html#variable-qc"><i class="fa fa-check"></i><b>3.3</b> Variable QC</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="normalization.html"><a href="normalization.html"><i class="fa fa-check"></i><b>4</b> Normalizing and centering data</a></li>
+<li class="chapter" data-level="5" data-path="integration.html"><a href="integration.html"><i class="fa fa-check"></i><b>5</b> Data integration</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="integration.html"><a href="integration.html#integrate-pdac-indrop-and-st-data-by-seurat"><i class="fa fa-check"></i><b>5.1</b> Integrate PDAC inDrop and ST data by Seurat</a></li>
+<li class="chapter" data-level="5.2" data-path="integration.html"><a href="integration.html#identifying-differentially-expressed-genes"><i class="fa fa-check"></i><b>5.2</b> Identifying differentially expressed genes</a></li>
+<li class="chapter" data-level="5.3" data-path="integration.html"><a href="integration.html#inferring-cell-cycle-phases"><i class="fa fa-check"></i><b>5.3</b> Inferring cell cycle phases</a></li>
+<li class="chapter" data-level="5.4" data-path="integration.html"><a href="integration.html#save-results"><i class="fa fa-check"></i><b>5.4</b> Save results</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="computcorr.html"><a href="computcorr.html"><i class="fa fa-check"></i><b>6</b> Computing correlations among genes</a></li>
+<li class="chapter" data-level="7" data-path="markergenes.html"><a href="markergenes.html"><i class="fa fa-check"></i><b>7</b> Checking expression profiles of marker genes</a></li>
+<li class="chapter" data-level="8" data-path="collectdb.html"><a href="collectdb.html"><i class="fa fa-check"></i><b>8</b> Collecting databases (optional)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="collectdb.html"><a href="collectdb.html#disease-ontology-db"><i class="fa fa-check"></i><b>8.1</b> Disease Ontology DB</a></li>
+<li class="chapter" data-level="8.2" data-path="collectdb.html"><a href="collectdb.html#cell-ontology-db"><i class="fa fa-check"></i><b>8.2</b> Cell Ontology DB</a></li>
+<li class="chapter" data-level="8.3" data-path="collectdb.html"><a href="collectdb.html#gene-ontology-db"><i class="fa fa-check"></i><b>8.3</b> Gene Ontology DB</a></li>
+<li class="chapter" data-level="8.4" data-path="collectdb.html"><a href="collectdb.html#kegg"><i class="fa fa-check"></i><b>8.4</b> KEGG</a></li>
+<li class="chapter" data-level="8.5" data-path="collectdb.html"><a href="collectdb.html#custom-built-db-for-our-analysis-of-pdac-data"><i class="fa fa-check"></i><b>8.5</b> Custom-built DB for our analysis of PDAC data</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="cell_type.html"><a href="cell_type.html"><i class="fa fa-check"></i><b>9</b> Inferring cell types or diseases (optional)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="cell_type.html"><a href="cell_type.html#add-database-to-asurat-objects"><i class="fa fa-check"></i><b>9.1</b> Add database to ASURAT objects</a></li>
+<li class="chapter" data-level="9.2" data-path="cell_type.html"><a href="cell_type.html#quick-qc-1"><i class="fa fa-check"></i><b>9.2</b> Quick QC</a></li>
+<li class="chapter" data-level="9.3" data-path="cell_type.html"><a href="cell_type.html#correlation-graph-based-decomposition"><i class="fa fa-check"></i><b>9.3</b> Correlation graph-based decomposition</a></li>
+<li class="chapter" data-level="9.4" data-path="cell_type.html"><a href="cell_type.html#creating-systems-of-signs"><i class="fa fa-check"></i><b>9.4</b> Creating systems of signs</a></li>
+<li class="chapter" data-level="9.5" data-path="cell_type.html"><a href="cell_type.html#removing-redundant-signs"><i class="fa fa-check"></i><b>9.5</b> Removing redundant signs</a></li>
+<li class="chapter" data-level="9.6" data-path="cell_type.html"><a href="cell_type.html#creating-sign-by-sample-matrices"><i class="fa fa-check"></i><b>9.6</b> Creating sign-by-sample matrices</a></li>
+<li class="chapter" data-level="9.7" data-path="cell_type.html"><a href="cell_type.html#dimensionality-reduction"><i class="fa fa-check"></i><b>9.7</b> Dimensionality reduction</a>
+<ul>
+<li class="chapter" data-level="9.7.1" data-path="cell_type.html"><a href="cell_type.html#principal-component-analysis-optional"><i class="fa fa-check"></i><b>9.7.1</b> Principal component analysis (optional)</a></li>
+<li class="chapter" data-level="9.7.2" data-path="cell_type.html"><a href="cell_type.html#t-distributed-stochastic-neighbor-embedding-optional"><i class="fa fa-check"></i><b>9.7.2</b> t-distributed stochastic neighbor embedding (optional)</a></li>
+<li class="chapter" data-level="9.7.3" data-path="cell_type.html"><a href="cell_type.html#uniform-manifold-approximation-and-projection-optional"><i class="fa fa-check"></i><b>9.7.3</b> Uniform manifold approximation and projection (optional)</a></li>
+<li class="chapter" data-level="9.7.4" data-path="cell_type.html"><a href="cell_type.html#diffusion-map-optional"><i class="fa fa-check"></i><b>9.7.4</b> Diffusion map (optional)</a></li>
+<li class="chapter" data-level="9.7.5" data-path="cell_type.html"><a href="cell_type.html#visualization"><i class="fa fa-check"></i><b>9.7.5</b> Visualization</a></li>
+<li class="chapter" data-level="9.7.6" data-path="cell_type.html"><a href="cell_type.html#save-results."><i class="fa fa-check"></i><b>9.7.6</b> Save results.</a></li>
+</ul></li>
+<li class="chapter" data-level="9.8" data-path="cell_type.html"><a href="cell_type.html#cell-clustering"><i class="fa fa-check"></i><b>9.8</b> Cell clustering</a>
+<ul>
+<li class="chapter" data-level="9.8.1" data-path="cell_type.html"><a href="cell_type.html#partitioning-around-medoids-pam-optional"><i class="fa fa-check"></i><b>9.8.1</b> Partitioning around medoids (PAM) (optional)</a></li>
+<li class="chapter" data-level="9.8.2" data-path="cell_type.html"><a href="cell_type.html#hierarchical-clustering-and-cutting-tree-optional"><i class="fa fa-check"></i><b>9.8.2</b> Hierarchical clustering and cutting tree (optional)</a></li>
+<li class="chapter" data-level="9.8.3" data-path="cell_type.html"><a href="cell_type.html#community-detection-algorithm-with-k-nearest-neighbor-knn-graph-optional"><i class="fa fa-check"></i><b>9.8.3</b> Community detection algorithm with k-nearest neighbor (KNN) graph (optional)</a></li>
+<li class="chapter" data-level="9.8.4" data-path="cell_type.html"><a href="cell_type.html#clustering-by-branch-detection-along-pseudotime-optional"><i class="fa fa-check"></i><b>9.8.4</b> Clustering by branch detection along pseudotime (optional)</a></li>
+<li class="chapter" data-level="9.8.5" data-path="cell_type.html"><a href="cell_type.html#save-data"><i class="fa fa-check"></i><b>9.8.5</b> Save data</a></li>
+</ul></li>
+<li class="chapter" data-level="9.9" data-path="cell_type.html"><a href="cell_type.html#visualize-clustering-results"><i class="fa fa-check"></i><b>9.9</b> Visualize clustering results</a></li>
+<li class="chapter" data-level="9.10" data-path="cell_type.html"><a href="cell_type.html#find-significant-signs"><i class="fa fa-check"></i><b>9.10</b> Find significant signs</a>
+<ul>
+<li class="chapter" data-level="9.10.1" data-path="cell_type.html"><a href="cell_type.html#compute-separation-indices"><i class="fa fa-check"></i><b>9.10.1</b> Compute separation indices</a></li>
+<li class="chapter" data-level="9.10.2" data-path="cell_type.html"><a href="cell_type.html#investigate-sign-scores"><i class="fa fa-check"></i><b>9.10.2</b> Investigate sign scores</a></li>
+</ul></li>
+<li class="chapter" data-level="9.11" data-path="cell_type.html"><a href="cell_type.html#investigate-batch-effects"><i class="fa fa-check"></i><b>9.11</b> Investigate batch effects</a></li>
+<li class="chapter" data-level="9.12" data-path="cell_type.html"><a href="cell_type.html#spatial-mapping-by-spaniel"><i class="fa fa-check"></i><b>9.12</b> Spatial mapping by Spaniel</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="biological_function.html"><a href="biological_function.html"><i class="fa fa-check"></i><b>10</b> Inferring biological functions (optional)</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="biological_function.html"><a href="biological_function.html#add-database-to-asurat-objects-1"><i class="fa fa-check"></i><b>10.1</b> Add database to ASURAT objects</a></li>
+<li class="chapter" data-level="10.2" data-path="biological_function.html"><a href="biological_function.html#quick-qc-2"><i class="fa fa-check"></i><b>10.2</b> Quick QC</a></li>
+<li class="chapter" data-level="10.3" data-path="biological_function.html"><a href="biological_function.html#correlation-graph-based-decomposition-1"><i class="fa fa-check"></i><b>10.3</b> Correlation graph-based decomposition</a></li>
+<li class="chapter" data-level="10.4" data-path="biological_function.html"><a href="biological_function.html#creating-systems-of-signs-1"><i class="fa fa-check"></i><b>10.4</b> Creating systems of signs</a></li>
+<li class="chapter" data-level="10.5" data-path="biological_function.html"><a href="biological_function.html#removing-redundant-signs-1"><i class="fa fa-check"></i><b>10.5</b> Removing redundant signs</a></li>
+<li class="chapter" data-level="10.6" data-path="biological_function.html"><a href="biological_function.html#creating-sign-by-sample-matrices-1"><i class="fa fa-check"></i><b>10.6</b> Creating sign-by-sample matrices</a></li>
+<li class="chapter" data-level="10.7" data-path="biological_function.html"><a href="biological_function.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>10.7</b> Dimensionality reduction</a>
+<ul>
+<li class="chapter" data-level="10.7.1" data-path="biological_function.html"><a href="biological_function.html#principal-component-analysis-optional-1"><i class="fa fa-check"></i><b>10.7.1</b> Principal component analysis (optional)</a></li>
+<li class="chapter" data-level="10.7.2" data-path="biological_function.html"><a href="biological_function.html#t-distributed-stochastic-neighbor-embedding-optional-1"><i class="fa fa-check"></i><b>10.7.2</b> t-distributed stochastic neighbor embedding (optional)</a></li>
+<li class="chapter" data-level="10.7.3" data-path="biological_function.html"><a href="biological_function.html#uniform-manifold-approximation-and-projection-optional-1"><i class="fa fa-check"></i><b>10.7.3</b> Uniform manifold approximation and projection (optional)</a></li>
+<li class="chapter" data-level="10.7.4" data-path="biological_function.html"><a href="biological_function.html#diffusion-map-optional-1"><i class="fa fa-check"></i><b>10.7.4</b> Diffusion map (optional)</a></li>
+<li class="chapter" data-level="10.7.5" data-path="biological_function.html"><a href="biological_function.html#visualization-1"><i class="fa fa-check"></i><b>10.7.5</b> Visualization</a></li>
+<li class="chapter" data-level="10.7.6" data-path="biological_function.html"><a href="biological_function.html#save-results.-1"><i class="fa fa-check"></i><b>10.7.6</b> Save results.</a></li>
+</ul></li>
+<li class="chapter" data-level="10.8" data-path="biological_function.html"><a href="biological_function.html#cell-clustering-1"><i class="fa fa-check"></i><b>10.8</b> Cell clustering</a>
+<ul>
+<li class="chapter" data-level="10.8.1" data-path="biological_function.html"><a href="biological_function.html#partitioning-around-medoids-pam-optional-1"><i class="fa fa-check"></i><b>10.8.1</b> Partitioning around medoids (PAM) (optional)</a></li>
+<li class="chapter" data-level="10.8.2" data-path="biological_function.html"><a href="biological_function.html#hierarchical-clustering-and-cutting-tree-optional-1"><i class="fa fa-check"></i><b>10.8.2</b> Hierarchical clustering and cutting tree (optional)</a></li>
+<li class="chapter" data-level="10.8.3" data-path="biological_function.html"><a href="biological_function.html#community-detection-algorithm-with-k-nearest-neighbor-knn-graph-optional-1"><i class="fa fa-check"></i><b>10.8.3</b> Community detection algorithm with k-nearest neighbor (KNN) graph (optional)</a></li>
+<li class="chapter" data-level="10.8.4" data-path="biological_function.html"><a href="biological_function.html#clustering-by-branch-detection-along-pseudotime-optional-1"><i class="fa fa-check"></i><b>10.8.4</b> Clustering by branch detection along pseudotime (optional)</a></li>
+<li class="chapter" data-level="10.8.5" data-path="biological_function.html"><a href="biological_function.html#save-data-1"><i class="fa fa-check"></i><b>10.8.5</b> Save data</a></li>
+</ul></li>
+<li class="chapter" data-level="10.9" data-path="biological_function.html"><a href="biological_function.html#visualize-clustering-results-1"><i class="fa fa-check"></i><b>10.9</b> Visualize clustering results</a></li>
+<li class="chapter" data-level="10.10" data-path="biological_function.html"><a href="biological_function.html#find-significant-signs-1"><i class="fa fa-check"></i><b>10.10</b> Find significant signs</a>
+<ul>
+<li class="chapter" data-level="10.10.1" data-path="biological_function.html"><a href="biological_function.html#compute-separation-indices-1"><i class="fa fa-check"></i><b>10.10.1</b> Compute separation indices</a></li>
+<li class="chapter" data-level="10.10.2" data-path="biological_function.html"><a href="biological_function.html#investigate-sign-scores-1"><i class="fa fa-check"></i><b>10.10.2</b> Investigate sign scores</a></li>
+</ul></li>
+<li class="chapter" data-level="10.11" data-path="biological_function.html"><a href="biological_function.html#investigate-batch-effects-1"><i class="fa fa-check"></i><b>10.11</b> Investigate batch effects</a></li>
+<li class="chapter" data-level="10.12" data-path="biological_function.html"><a href="biological_function.html#spatial-mapping-by-spaniel-1"><i class="fa fa-check"></i><b>10.12</b> Spatial mapping by Spaniel</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="pathway.html"><a href="pathway.html"><i class="fa fa-check"></i><b>11</b> Inferring pathway activities (optional)</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="pathway.html"><a href="pathway.html#add-database-to-asurat-objects-2"><i class="fa fa-check"></i><b>11.1</b> Add database to ASURAT objects</a></li>
+<li class="chapter" data-level="11.2" data-path="pathway.html"><a href="pathway.html#quick-qc-3"><i class="fa fa-check"></i><b>11.2</b> Quick QC</a></li>
+<li class="chapter" data-level="11.3" data-path="pathway.html"><a href="pathway.html#correlation-graph-based-decomposition-2"><i class="fa fa-check"></i><b>11.3</b> Correlation graph-based decomposition</a></li>
+<li class="chapter" data-level="11.4" data-path="pathway.html"><a href="pathway.html#creating-systems-of-signs-2"><i class="fa fa-check"></i><b>11.4</b> Creating systems of signs</a></li>
+<li class="chapter" data-level="11.5" data-path="pathway.html"><a href="pathway.html#removing-redundant-signs-2"><i class="fa fa-check"></i><b>11.5</b> Removing redundant signs</a></li>
+<li class="chapter" data-level="11.6" data-path="pathway.html"><a href="pathway.html#creating-sign-by-sample-matrices-2"><i class="fa fa-check"></i><b>11.6</b> Creating sign-by-sample matrices</a></li>
+<li class="chapter" data-level="11.7" data-path="pathway.html"><a href="pathway.html#dimensionality-reduction-2"><i class="fa fa-check"></i><b>11.7</b> Dimensionality reduction</a>
+<ul>
+<li class="chapter" data-level="11.7.1" data-path="pathway.html"><a href="pathway.html#principal-component-analysis-optional-2"><i class="fa fa-check"></i><b>11.7.1</b> Principal component analysis (optional)</a></li>
+<li class="chapter" data-level="11.7.2" data-path="pathway.html"><a href="pathway.html#t-distributed-stochastic-neighbor-embedding-optional-2"><i class="fa fa-check"></i><b>11.7.2</b> t-distributed stochastic neighbor embedding (optional)</a></li>
+<li class="chapter" data-level="11.7.3" data-path="pathway.html"><a href="pathway.html#uniform-manifold-approximation-and-projection-optional-2"><i class="fa fa-check"></i><b>11.7.3</b> Uniform manifold approximation and projection (optional)</a></li>
+<li class="chapter" data-level="11.7.4" data-path="pathway.html"><a href="pathway.html#diffusion-map-optional-2"><i class="fa fa-check"></i><b>11.7.4</b> Diffusion map (optional)</a></li>
+<li class="chapter" data-level="11.7.5" data-path="pathway.html"><a href="pathway.html#visualization-2"><i class="fa fa-check"></i><b>11.7.5</b> Visualization</a></li>
+<li class="chapter" data-level="11.7.6" data-path="pathway.html"><a href="pathway.html#save-results.-2"><i class="fa fa-check"></i><b>11.7.6</b> Save results.</a></li>
+</ul></li>
+<li class="chapter" data-level="11.8" data-path="pathway.html"><a href="pathway.html#cell-clustering-2"><i class="fa fa-check"></i><b>11.8</b> Cell clustering</a>
+<ul>
+<li class="chapter" data-level="11.8.1" data-path="pathway.html"><a href="pathway.html#partitioning-around-medoids-pam-optional-2"><i class="fa fa-check"></i><b>11.8.1</b> Partitioning around medoids (PAM) (optional)</a></li>
+<li class="chapter" data-level="11.8.2" data-path="pathway.html"><a href="pathway.html#hierarchical-clustering-and-cutting-tree-optional-2"><i class="fa fa-check"></i><b>11.8.2</b> Hierarchical clustering and cutting tree (optional)</a></li>
+<li class="chapter" data-level="11.8.3" data-path="pathway.html"><a href="pathway.html#community-detection-algorithm-with-k-nearest-neighbor-knn-graph-optional-2"><i class="fa fa-check"></i><b>11.8.3</b> Community detection algorithm with k-nearest neighbor (KNN) graph (optional)</a></li>
+<li class="chapter" data-level="11.8.4" data-path="pathway.html"><a href="pathway.html#clustering-by-branch-detection-along-pseudotime-optional-2"><i class="fa fa-check"></i><b>11.8.4</b> Clustering by branch detection along pseudotime (optional)</a></li>
+<li class="chapter" data-level="11.8.5" data-path="pathway.html"><a href="pathway.html#save-data-2"><i class="fa fa-check"></i><b>11.8.5</b> Save data</a></li>
+</ul></li>
+<li class="chapter" data-level="11.9" data-path="pathway.html"><a href="pathway.html#visualize-clustering-results-2"><i class="fa fa-check"></i><b>11.9</b> Visualize clustering results</a></li>
+<li class="chapter" data-level="11.10" data-path="pathway.html"><a href="pathway.html#find-significant-signs-2"><i class="fa fa-check"></i><b>11.10</b> Find significant signs</a>
+<ul>
+<li class="chapter" data-level="11.10.1" data-path="pathway.html"><a href="pathway.html#compute-separation-indices-2"><i class="fa fa-check"></i><b>11.10.1</b> Compute separation indices</a></li>
+<li class="chapter" data-level="11.10.2" data-path="pathway.html"><a href="pathway.html#investigate-sign-scores-2"><i class="fa fa-check"></i><b>11.10.2</b> Investigate sign scores</a></li>
+</ul></li>
+<li class="chapter" data-level="11.11" data-path="pathway.html"><a href="pathway.html#investigate-batch-effects-2"><i class="fa fa-check"></i><b>11.11</b> Investigate batch effects</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="multi_layered.html"><a href="multi_layered.html"><i class="fa fa-check"></i><b>12</b> Multi-layered analysis across all the signs</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="multi_layered.html"><a href="multi_layered.html#concatenate-asurat-objects"><i class="fa fa-check"></i><b>12.1</b> Concatenate ASURAT objects</a></li>
+<li class="chapter" data-level="12.2" data-path="multi_layered.html"><a href="multi_layered.html#find-significant-signs-and-genes-across-different-data-types"><i class="fa fa-check"></i><b>12.2</b> Find significant signs and genes across different data types</a></li>
+<li class="chapter" data-level="12.3" data-path="multi_layered.html"><a href="multi_layered.html#spatial-mapping-by-spaniel-2"><i class="fa fa-check"></i><b>12.3</b> Spatial mapping by Spaniel</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><i class="fa fa-check"></i><b>13</b> Appendix A: analyzing scRNA-seq data by existing method I</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html#preprocessing"><i class="fa fa-check"></i><b>13.1</b> Preprocessing</a></li>
+<li class="chapter" data-level="13.2" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html#cluster-cells"><i class="fa fa-check"></i><b>13.2</b> Cluster cells</a></li>
+<li class="chapter" data-level="13.3" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html#visualize-data-in-low-dimensional-space"><i class="fa fa-check"></i><b>13.3</b> Visualize data in low dimensional space</a></li>
+<li class="chapter" data-level="13.4" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html#find-differentially-expressed-genes"><i class="fa fa-check"></i><b>13.4</b> Find differentially expressed genes</a></li>
+<li class="chapter" data-level="13.5" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html#save-results-1"><i class="fa fa-check"></i><b>13.5</b> Save results</a></li>
+<li class="chapter" data-level="13.6" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html#infer-cell-types-for-pbmc-datasets"><i class="fa fa-check"></i><b>13.6</b> Infer cell types for PBMC datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><i class="fa fa-check"></i><b>14</b> Appendix B: analyzing scRNA-seq data by existing method II</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#preprocessing-1"><i class="fa fa-check"></i><b>14.1</b> Preprocessing</a></li>
+<li class="chapter" data-level="14.2" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#cluster-cells-1"><i class="fa fa-check"></i><b>14.2</b> Cluster cells</a></li>
+<li class="chapter" data-level="14.3" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#visualize-data-in-low-dimensional-space-1"><i class="fa fa-check"></i><b>14.3</b> Visualize data in low dimensional space</a></li>
+<li class="chapter" data-level="14.4" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#cell-cycle-scoring"><i class="fa fa-check"></i><b>14.4</b> Cell cycle scoring</a></li>
+<li class="chapter" data-level="14.5" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#find-differentially-expressed-genes-1"><i class="fa fa-check"></i><b>14.5</b> Find differentially expressed genes</a></li>
+<li class="chapter" data-level="14.6" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#enrichment-analysis"><i class="fa fa-check"></i><b>14.6</b> Enrichment analysis</a></li>
+<li class="chapter" data-level="14.7" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#save-results-2"><i class="fa fa-check"></i><b>14.7</b> Save results</a></li>
+<li class="chapter" data-level="14.8" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#infer-cell-types-for-pbmc-datasets-1"><i class="fa fa-check"></i><b>14.8</b> Infer cell types for PBMC datasets</a></li>
+<li class="chapter" data-level="14.9" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#infer-cell-types-for-pbmc-datasets-by-seurat-and-sccatch"><i class="fa fa-check"></i><b>14.9</b> Infer cell types for PBMC datasets by Seurat and scCATCH</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><i class="fa fa-check"></i><b>15</b> Appendix C: analyzing scRNA-seq data by existing method III</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html#preprocessing-2"><i class="fa fa-check"></i><b>15.1</b> Preprocessing</a></li>
+<li class="chapter" data-level="15.2" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html#cluster-cells-2"><i class="fa fa-check"></i><b>15.2</b> Cluster cells</a></li>
+<li class="chapter" data-level="15.3" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html#visualize-data-in-low-dimensional-space-2"><i class="fa fa-check"></i><b>15.3</b> Visualize data in low dimensional space</a></li>
+<li class="chapter" data-level="15.4" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html#find-differentially-expressed-genes-2"><i class="fa fa-check"></i><b>15.4</b> Find differentially expressed genes</a></li>
+<li class="chapter" data-level="15.5" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html#save-results-3"><i class="fa fa-check"></i><b>15.5</b> Save results</a></li>
+<li class="chapter" data-level="15.6" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html#infer-cell-types-for-pbmc-datasets-2"><i class="fa fa-check"></i><b>15.6</b> Infer cell types for PBMC datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><a href="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><i class="fa fa-check"></i><b>16</b> Appendix D: analyzing scRNA-seq data by existing method IV</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><a href="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html#preprocessing-3"><i class="fa fa-check"></i><b>16.1</b> Preprocessing</a></li>
+<li class="chapter" data-level="16.2" data-path="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><a href="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html#cluster-cells-3"><i class="fa fa-check"></i><b>16.2</b> Cluster cells</a></li>
+<li class="chapter" data-level="16.3" data-path="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><a href="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html#find-differentially-expressed-genes-3"><i class="fa fa-check"></i><b>16.3</b> Find differentially expressed genes</a></li>
+<li class="chapter" data-level="16.4" data-path="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><a href="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html#save-results-4"><i class="fa fa-check"></i><b>16.4</b> Save results</a></li>
+<li class="chapter" data-level="16.5" data-path="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><a href="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html#infer-cell-types-for-pbmc-datasets-3"><i class="fa fa-check"></i><b>16.5</b> Infer cell types for PBMC datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="appendix-e-analyzing-scrna-seq-data-using-asurat.html"><a href="appendix-e-analyzing-scrna-seq-data-using-asurat.html"><i class="fa fa-check"></i><b>17</b> Appendix E: analyzing scRNA-seq data using ASURAT</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="appendix-e-analyzing-scrna-seq-data-using-asurat.html"><a href="appendix-e-analyzing-scrna-seq-data-using-asurat.html#infer-cell-types-for-pbmc-datasets-4"><i class="fa fa-check"></i><b>17.1</b> Infer cell types for PBMC datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html"><i class="fa fa-check"></i><b>18</b> Appendix F: creating figures</a>
+<ul>
+<li class="chapter" data-level="18.1" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#pbmcs-datasets"><i class="fa fa-check"></i><b>18.1</b> PBMCs datasets</a>
+<ul>
+<li class="chapter" data-level="18.1.1" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#multi-layered-analysis"><i class="fa fa-check"></i><b>18.1.1</b> Multi-layered analysis</a></li>
+<li class="chapter" data-level="18.1.2" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#infer-population-ratios"><i class="fa fa-check"></i><b>18.1.2</b> Infer population ratios</a></li>
+</ul></li>
+<li class="chapter" data-level="18.2" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#lung-cancer-dataset"><i class="fa fa-check"></i><b>18.2</b> Lung cancer dataset</a>
+<ul>
+<li class="chapter" data-level="18.2.1" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#heatmaps-of-marker-gene-expressions"><i class="fa fa-check"></i><b>18.2.1</b> Heatmaps of marker gene expressions</a></li>
+<li class="chapter" data-level="18.2.2" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#multi-layered-analysis-1"><i class="fa fa-check"></i><b>18.2.2</b> Multi-layered analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="18.3" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#pancreatic-ductal-adenocarcinoma-pdac-datasets"><i class="fa fa-check"></i><b>18.3</b> Pancreatic ductal adenocarcinoma (PDAC) datasets</a>
+<ul>
+<li class="chapter" data-level="18.3.1" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#clustering-pdac-spatial-transcriptomes"><i class="fa fa-check"></i><b>18.3.1</b> Clustering PDAC spatial transcriptomes</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to ASURAT (version 0.0.0.9001)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="integration" class="section level1" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Data integration</h1>
+<div id="integrate-pdac-indrop-and-st-data-by-seurat" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Integrate PDAC inDrop and ST data by Seurat</h2>
+<p>Load the data.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="integration.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/function_general.R&quot;</span>)</span>
+<span id="cb1-2"><a href="integration.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/function_seurat.R&quot;</span>)</span>
+<span id="cb1-3"><a href="integration.html#cb1-3" aria-hidden="true" tabindex="-1"></a>pdac_ast1 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/05_005_pdac_ast1_normalized.rds&quot;</span>)</span>
+<span id="cb1-4"><a href="integration.html#cb1-4" aria-hidden="true" tabindex="-1"></a>pdac_arna <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/06_005_pdac_arna_normalized.rds&quot;</span>)</span></code></pre></div>
+<p>The following function <code>do_IntegrateData_seurat()</code> combines two scRNA-seq type
+data (here we regard spatial transcriptome data as scRNA-seq type data) into
+one Seurat object by using data integration method in Seurat package.
+The arguments are <code>obj_1</code> and <code>obj_2</code> (ASURAT objects),
+<code>nfeatures_1</code> and <code>nfeature_2</code> (number of features as top variable features:
+we use <code>FindVariableFeatures()</code> setting <code>selection.method = "vst"</code>),
+<code>anchor.features</code> (an argument of Seurat function <code>SelectIntegrationFeatures()</code>:
+number of features used for data integration), and
+<code>normalization.method = "LogNormalize"</code> (an argument of Seurat function
+<code>IntegrateData()</code>: name of normalization method used).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="integration.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb2-2"><a href="integration.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pdac_aint</span></span>
+<span id="cb2-3"><a href="integration.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb2-4"><a href="integration.html#cb2-4" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat <span class="ot">&lt;-</span> <span class="fu">do_IntegrateData_seurat</span>(</span>
+<span id="cb2-5"><a href="integration.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">obj_1 =</span> pdac_ast1, <span class="at">obj_2 =</span> pdac_arna, <span class="at">nfeatures_1 =</span> <span class="dv">3000</span>, <span class="at">nfeatures_2 =</span> <span class="dv">3000</span>,</span>
+<span id="cb2-6"><a href="integration.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">nfeatures =</span> <span class="dv">2000</span>, <span class="at">normalization.method =</span> <span class="st">&quot;LogNormalize&quot;</span>)</span></code></pre></div>
+<p>Rename <code>obj@meta.data[["orig.ident"]]</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="integration.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb3-2"><a href="integration.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pdac_aint_seurat</span></span>
+<span id="cb3-3"><a href="integration.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb3-4"><a href="integration.html#cb3-4" aria-hidden="true" tabindex="-1"></a>name1 <span class="ot">&lt;-</span> pdac_ast1[[<span class="st">&quot;history&quot;</span>]][[<span class="st">&quot;make_asurat_obj&quot;</span>]][[<span class="st">&quot;obj_name&quot;</span>]]</span>
+<span id="cb3-5"><a href="integration.html#cb3-5" aria-hidden="true" tabindex="-1"></a>name2 <span class="ot">&lt;-</span> pdac_arna[[<span class="st">&quot;history&quot;</span>]][[<span class="st">&quot;make_asurat_obj&quot;</span>]][[<span class="st">&quot;obj_name&quot;</span>]]</span>
+<span id="cb3-6"><a href="integration.html#cb3-6" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> pdac_aint_seurat<span class="sc">@</span>meta.data</span>
+<span id="cb3-7"><a href="integration.html#cb3-7" aria-hidden="true" tabindex="-1"></a>tmp[<span class="fu">which</span>(tmp<span class="sc">$</span>orig.ident <span class="sc">==</span> name1),]<span class="sc">$</span>orig.ident <span class="ot">&lt;-</span> name1</span>
+<span id="cb3-8"><a href="integration.html#cb3-8" aria-hidden="true" tabindex="-1"></a>tmp[<span class="fu">which</span>(tmp<span class="sc">$</span>orig.ident <span class="sc">==</span> <span class="st">&quot;cell&quot;</span>),]<span class="sc">$</span>orig.ident <span class="ot">&lt;-</span> name2</span>
+<span id="cb3-9"><a href="integration.html#cb3-9" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat<span class="sc">@</span>meta.data <span class="ot">&lt;-</span> tmp</span></code></pre></div>
+<p>Perform scaling, dimensionality reduction, and clustering using Seurat’s
+standard processes.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="integration.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb4-2"><a href="integration.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pdac_aint_seurat</span></span>
+<span id="cb4-3"><a href="integration.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb4-4"><a href="integration.html#cb4-4" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(pdac_aint_seurat, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-5"><a href="integration.html#cb4-5" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(pdac_aint_seurat, <span class="at">npcs =</span> <span class="dv">100</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-6"><a href="integration.html#cb4-6" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat <span class="ot">&lt;-</span> <span class="fu">RunTSNE</span>(pdac_aint_seurat, <span class="at">reduction.use =</span> <span class="st">&quot;cca.aligned&quot;</span>,</span>
+<span id="cb4-7"><a href="integration.html#cb4-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dims.use =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">do.fast =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-8"><a href="integration.html#cb4-8" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(pdac_aint_seurat, <span class="at">reduction =</span> <span class="st">&quot;pca&quot;</span>, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>)</span>
+<span id="cb4-9"><a href="integration.html#cb4-9" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(pdac_aint_seurat, <span class="at">reduction =</span> <span class="st">&quot;pca&quot;</span>,</span>
+<span id="cb4-10"><a href="integration.html#cb4-10" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>)</span>
+<span id="cb4-11"><a href="integration.html#cb4-11" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(pdac_aint_seurat, <span class="at">resolution =</span> <span class="fl">0.15</span>)</span>
+<span id="cb4-12"><a href="integration.html#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="integration.html#cb4-13" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> pdac_aint_seurat<span class="sc">@</span>meta.data[[<span class="st">&quot;seurat_clusters&quot;</span>]]</span>
+<span id="cb4-14"><a href="integration.html#cb4-14" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.character</span>(tmp)) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb4-15"><a href="integration.html#cb4-15" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">factor</span>(tmp, <span class="at">levels =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">max</span>(tmp))</span>
+<span id="cb4-16"><a href="integration.html#cb4-16" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat<span class="sc">@</span>meta.data[[<span class="st">&quot;seurat_clusters&quot;</span>]] <span class="ot">&lt;-</span> tmp</span>
+<span id="cb4-17"><a href="integration.html#cb4-17" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat <span class="ot">&lt;-</span> <span class="fu">SetIdent</span>(pdac_aint_seurat, <span class="at">value =</span> <span class="st">&quot;seurat_clusters&quot;</span>)</span></code></pre></div>
+</div>
+<div id="identifying-differentially-expressed-genes" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Identifying differentially expressed genes</h2>
+<p>Find differentially expressed genes using Seurat’s function and stores the
+results into <code>obj@misc[["markers"]]</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="integration.html#cb5-1" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat<span class="sc">@</span>misc[[<span class="st">&quot;markers&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(</span>
+<span id="cb5-2"><a href="integration.html#cb5-2" aria-hidden="true" tabindex="-1"></a>  pdac_aint_seurat, <span class="at">only.pos =</span> T, <span class="at">min.pct =</span> <span class="fl">0.25</span>, <span class="at">logfc.threshold =</span> <span class="fl">0.25</span>)</span></code></pre></div>
+<p>Users can check the marker genes of each cluster by the following command:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="integration.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(pdac_aint_seurat<span class="sc">@</span>misc[[<span class="st">&quot;markers&quot;</span>]], <span class="at">rownames =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<ul>
+<li><code>pdac_aint_seurat</code></li>
+</ul>
+<iframe src="figures/pdac_aint_marker_seurat.html" style="width:100%; height:400px;">
+</iframe>
+<p><br><br><br></p>
+</div>
+<div id="inferring-cell-cycle-phases" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Inferring cell cycle phases</h2>
+<p>Assign each cell a cell cycle score using <code>CellCycleScoring()</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="integration.html#cb7-1" aria-hidden="true" tabindex="-1"></a>s.genes <span class="ot">&lt;-</span> cc.genes<span class="sc">$</span>s.genes</span>
+<span id="cb7-2"><a href="integration.html#cb7-2" aria-hidden="true" tabindex="-1"></a>g2m.genes <span class="ot">&lt;-</span> cc.genes<span class="sc">$</span>g2m.genes</span>
+<span id="cb7-3"><a href="integration.html#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="integration.html#cb7-4" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat <span class="ot">&lt;-</span> <span class="fu">CellCycleScoring</span>(pdac_aint_seurat, <span class="at">s.features =</span> s.genes,</span>
+<span id="cb7-5"><a href="integration.html#cb7-5" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">g2m.features =</span> g2m.genes,</span>
+<span id="cb7-6"><a href="integration.html#cb7-6" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">set.ident =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-7"><a href="integration.html#cb7-7" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">factor</span>(pdac_aint_seurat<span class="sc">@</span>meta.data[[<span class="st">&quot;Phase&quot;</span>]],</span>
+<span id="cb7-8"><a href="integration.html#cb7-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;G1&quot;</span>, <span class="st">&quot;S&quot;</span>, <span class="st">&quot;G2M&quot;</span>, <span class="st">&quot;Undecided&quot;</span>))</span>
+<span id="cb7-9"><a href="integration.html#cb7-9" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat<span class="sc">@</span>meta.data[[<span class="st">&quot;Phase&quot;</span>]] <span class="ot">&lt;-</span> tmp</span></code></pre></div>
+<p>Rename the batch names.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="integration.html#cb8-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> pdac_aint_seurat<span class="sc">@</span>meta.data</span>
+<span id="cb8-2"><a href="integration.html#cb8-2" aria-hidden="true" tabindex="-1"></a>tmp[<span class="fu">which</span>(tmp<span class="sc">$</span>orig.ident <span class="sc">==</span> <span class="st">&quot;pdac_ast1&quot;</span>),]<span class="sc">$</span>orig.ident <span class="ot">&lt;-</span> <span class="st">&quot;ST&quot;</span></span>
+<span id="cb8-3"><a href="integration.html#cb8-3" aria-hidden="true" tabindex="-1"></a>tmp[<span class="fu">which</span>(tmp<span class="sc">$</span>orig.ident <span class="sc">==</span> <span class="st">&quot;pdac_arna&quot;</span>),]<span class="sc">$</span>orig.ident <span class="ot">&lt;-</span> <span class="st">&quot;inDrop&quot;</span></span>
+<span id="cb8-4"><a href="integration.html#cb8-4" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat<span class="sc">@</span>meta.data <span class="ot">&lt;-</span> tmp</span></code></pre></div>
+<p>The following function <code>plot_manifold2d_seurat()</code> outputs a <code>ggplot</code> object,
+which shows the clustering results between batches or putative subpopulations
+in a two-dimensional reduced space.
+The arguments are <code>obj_seurat</code> (Seurat object), <code>batch</code> (<code>TRUE</code> or <code>FALSE</code>:
+if <code>TRUE</code>, <code>obj@meta.data[["orig.ident"]]</code> is labeled, otherwise
+<code>obj_seurat@meta.data[["seurat_clusters"]]</code> is labeled), and
+<code>plot_type</code> (one of <code>"pca"</code>, <code>"tsne"</code> or <code>"umap"</code>).</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="integration.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb9-2"><a href="integration.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pdac_aint_seurat</span></span>
+<span id="cb9-3"><a href="integration.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb9-4"><a href="integration.html#cb9-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot_manifold2d_seurat</span>(<span class="at">obj =</span> pdac_aint_seurat, <span class="at">batch =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-5"><a href="integration.html#cb9-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">plot_type =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">title =</span> <span class="st">&quot;pdac_aint&quot;</span>,</span>
+<span id="cb9-6"><a href="integration.html#cb9-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">title_size =</span> <span class="dv">18</span>, <span class="at">xlabel =</span> <span class="st">&quot;UMAP_1&quot;</span>,</span>
+<span id="cb9-7"><a href="integration.html#cb9-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">ylabel =</span> <span class="st">&quot;UMAP_2&quot;</span>, <span class="at">default_color =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-8"><a href="integration.html#cb9-8" aria-hidden="true" tabindex="-1"></a>filename <span class="ot">&lt;-</span> <span class="st">&quot;figures/figure_07_0010.png&quot;</span></span>
+<span id="cb9-9"><a href="integration.html#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">file =</span> filename, <span class="at">plot =</span> p, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">width =</span> <span class="fl">5.5</span>, <span class="at">height =</span> <span class="fl">4.2</span>)</span>
+<span id="cb9-10"><a href="integration.html#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="integration.html#cb9-11" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot_manifold2d_seurat</span>(<span class="at">obj =</span> pdac_aint_seurat, <span class="at">batch =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-12"><a href="integration.html#cb9-12" aria-hidden="true" tabindex="-1"></a>                            <span class="at">plot_type =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">title =</span> <span class="st">&quot;pdac_aint&quot;</span>,</span>
+<span id="cb9-13"><a href="integration.html#cb9-13" aria-hidden="true" tabindex="-1"></a>                            <span class="at">title_size =</span> <span class="dv">18</span>, <span class="at">xlabel =</span> <span class="st">&quot;UMAP_1&quot;</span>,</span>
+<span id="cb9-14"><a href="integration.html#cb9-14" aria-hidden="true" tabindex="-1"></a>                            <span class="at">ylabel =</span> <span class="st">&quot;UMAP_2&quot;</span>, <span class="at">default_color =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-15"><a href="integration.html#cb9-15" aria-hidden="true" tabindex="-1"></a>filename <span class="ot">&lt;-</span> <span class="st">&quot;figures/figure_07_0011.png&quot;</span></span>
+<span id="cb9-16"><a href="integration.html#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">file =</span> filename, <span class="at">plot =</span> p, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">width =</span> <span class="dv">5</span>, <span class="at">height =</span> <span class="fl">4.2</span>)</span></code></pre></div>
+<p><img src="figures/figure_07_0010.png" width="230px">
+<img src="figures/figure_07_0011.png" width="230px"></p>
+<p>The following function <code>plot_integrated_geneExpression_seurat()</code> outputs
+a <code>ggplot</code> object, which shows gene expression levels as z-score
+in a two-dimensional reduced space.
+The arguments are <code>obj</code> (Seurat object processed by <code>ScaleData()</code>),
+<code>gene_name</code> (gene name), and <code>plot_type</code> (one of <code>"pca"</code>, <code>"tsne"</code> or <code>"umap"</code>).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="integration.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb10-2"><a href="integration.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pdac_aint_seurat</span></span>
+<span id="cb10-3"><a href="integration.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb10-4"><a href="integration.html#cb10-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot_integrated_geneExpression_seurat</span>(<span class="at">obj =</span> pdac_aint_seurat,</span>
+<span id="cb10-5"><a href="integration.html#cb10-5" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">gene_name =</span> <span class="st">&quot;TM4SF1&quot;</span>,</span>
+<span id="cb10-6"><a href="integration.html#cb10-6" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">plot_type =</span> <span class="st">&quot;umap&quot;</span>,</span>
+<span id="cb10-7"><a href="integration.html#cb10-7" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">title =</span> <span class="st">&quot;pdac_aint (TM4SF1)&quot;</span>,</span>
+<span id="cb10-8"><a href="integration.html#cb10-8" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">title_size =</span> <span class="dv">18</span>,</span>
+<span id="cb10-9"><a href="integration.html#cb10-9" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">xlabel =</span> <span class="st">&quot;UMAP_1&quot;</span>, <span class="at">ylabel =</span> <span class="st">&quot;UMAP_2&quot;</span>,</span>
+<span id="cb10-10"><a href="integration.html#cb10-10" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">label_name =</span> <span class="st">&quot;Z-score&quot;</span>)</span>
+<span id="cb10-11"><a href="integration.html#cb10-11" aria-hidden="true" tabindex="-1"></a>filename <span class="ot">&lt;-</span> <span class="st">&quot;figures/figure_07_0015.png&quot;</span></span>
+<span id="cb10-12"><a href="integration.html#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">file =</span> filename, <span class="at">plot =</span> p, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">width =</span> <span class="fl">5.4</span>, <span class="at">height =</span> <span class="fl">4.2</span>)</span></code></pre></div>
+<p><img src="figures/figure_07_0015.png" width="230px">
+<img src="figures/figure_07_0016.png" width="230px"></p>
+<p>The following function <code>plot_cc_umap_seurat()</code> shows the result of
+<code>CellCycleScoring()</code> in a two-dimensional UMAP space.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="integration.html#cb11-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot_cc_umap_seurat</span>(<span class="at">obj =</span> pdac_aint_seurat, <span class="at">title =</span> <span class="st">&quot;pdac_aint (Seurat)&quot;</span>,</span>
+<span id="cb11-2"><a href="integration.html#cb11-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">title_size =</span> <span class="dv">18</span>, <span class="at">xlabel =</span> <span class="st">&quot;UMAP_1&quot;</span>, <span class="at">ylabel =</span> <span class="st">&quot;UMAP_2&quot;</span>,</span>
+<span id="cb11-3"><a href="integration.html#cb11-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">default_color =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-4"><a href="integration.html#cb11-4" aria-hidden="true" tabindex="-1"></a>filename <span class="ot">&lt;-</span> <span class="st">&quot;figures/figure_07_0017.png&quot;</span></span>
+<span id="cb11-5"><a href="integration.html#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">file =</span> filename, <span class="at">plot =</span> p, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">width =</span> <span class="fl">5.9</span>, <span class="at">height =</span> <span class="fl">4.2</span>)</span></code></pre></div>
+<p><img src="figures/figure_07_0017.png" width="230px"></p>
+<p>The following function <code>convert_seurat2asurat()</code> converts Seurat objects into
+ASURAT objects.
+The arguments are <code>obj_seurat</code> (Seurat object),
+<code>orgdb</code> (annotation data package　such as <code>org.Hs.eg.db</code> and <code>org.Mm.eg.db</code>),
+which is used to convert　gene symbols to Entrez IDs, and
+<code>obj_name</code> (name of ASURAT object).</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="integration.html#cb12-1" aria-hidden="true" tabindex="-1"></a>pdac_aint <span class="ot">&lt;-</span> <span class="fu">convert_seurat2asurat</span>(<span class="at">obj_seurat =</span> pdac_aint_seurat,</span>
+<span id="cb12-2"><a href="integration.html#cb12-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">orgdb =</span> org.Hs.eg.db, <span class="at">obj_name =</span> <span class="st">&quot;pdac_aint&quot;</span>)</span></code></pre></div>
+<p>Copy some information.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="integration.html#cb13-1" aria-hidden="true" tabindex="-1"></a>pdac_aint[[<span class="st">&quot;sample&quot;</span>]][[<span class="st">&quot;phase&quot;</span>]] <span class="ot">&lt;-</span> pdac_aint_seurat<span class="sc">@</span>meta.data[[<span class="st">&quot;Phase&quot;</span>]]</span>
+<span id="cb13-2"><a href="integration.html#cb13-2" aria-hidden="true" tabindex="-1"></a>pdac_aint[[<span class="st">&quot;misc&quot;</span>]][[<span class="st">&quot;images&quot;</span>]] <span class="ot">&lt;-</span> pdac_ast1[[<span class="st">&quot;misc&quot;</span>]][[<span class="st">&quot;images&quot;</span>]]</span></code></pre></div>
+</div>
+<div id="save-results" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Save results</h2>
+<p>Save the objects.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="integration.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(pdac_aint,        <span class="at">file =</span> <span class="st">&quot;backup/07_005_pdac_aint_normalized.rds&quot;</span>)</span>
+<span id="cb14-2"><a href="integration.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(pdac_aint_seurat, <span class="at">file =</span> <span class="st">&quot;backup/07_005_pdac_aint_seurat.rds&quot;</span>)</span></code></pre></div>
+<p>Users can load the data.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="integration.html#cb15-1" aria-hidden="true" tabindex="-1"></a>pdac_aint        <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/07_005_pdac_aint_normalized.rds&quot;</span>)</span>
+<span id="cb15-2"><a href="integration.html#cb15-2" aria-hidden="true" tabindex="-1"></a>pdac_aint_seurat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/07_005_pdac_aint_seurat.rds&quot;</span>)</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="normalization.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="computcorr.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Introduction to ASURAT (ver. 0.0.0.9000).pdf", "Introduction to ASURAT (ver. 0.0.0.9000).epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

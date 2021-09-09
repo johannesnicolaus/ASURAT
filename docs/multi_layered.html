@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 12 Multi-layered analysis across all the signs | Introduction to ASURAT (version 0.0.0.9001)</title>
+  <meta name="description" content="This is a developmental version of ASURAT." />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 12 Multi-layered analysis across all the signs | Introduction to ASURAT (version 0.0.0.9001)" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a developmental version of ASURAT." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 12 Multi-layered analysis across all the signs | Introduction to ASURAT (version 0.0.0.9001)" />
+  
+  <meta name="twitter:description" content="This is a developmental version of ASURAT." />
+  
+
+<meta name="author" content="Keita Iida" />
+
+
+<meta name="date" content="2021-09-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="pathway.html"/>
+<link rel="next" href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Overview</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#license-and-description"><i class="fa fa-check"></i><b>1.1</b> License and description</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#computational-environment"><i class="fa fa-check"></i><b>1.2</b> Computational environment</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.3</b> Installation</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="dataset.html"><a href="dataset.html"><i class="fa fa-check"></i><b>2</b> Preparing data sets</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="dataset.html"><a href="dataset.html#case-i-10x-data-stewart-et-al.-nat-cancer-2020"><i class="fa fa-check"></i><b>2.1</b> Case I: 10x data (Stewart et al., Nat Cancer, 2020)</a></li>
+<li class="chapter" data-level="2.2" data-path="dataset.html"><a href="dataset.html#case-ii-pdac-a-st-and-indrop-moncada-et-al.-nat-biotechnol-2020"><i class="fa fa-check"></i><b>2.2</b> Case II: PDAC-A ST and inDrop (Moncada et al., Nat Biotechnol, 2020)</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="dataset.html"><a href="dataset.html#pdac-a-st"><i class="fa fa-check"></i><b>2.2.1</b> PDAC-A ST</a></li>
+<li class="chapter" data-level="2.2.2" data-path="dataset.html"><a href="dataset.html#pdac-a-indrop"><i class="fa fa-check"></i><b>2.2.2</b> PDAC-A inDrop</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="dataset.html"><a href="dataset.html#case-iii-input-10x-pbmc-data"><i class="fa fa-check"></i><b>2.3</b> Case III: input 10x PBMC data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="dataqc.html"><a href="dataqc.html"><i class="fa fa-check"></i><b>3</b> Data quality control (QC)</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="dataqc.html"><a href="dataqc.html#quick-qc"><i class="fa fa-check"></i><b>3.1</b> Quick QC</a></li>
+<li class="chapter" data-level="3.2" data-path="dataqc.html"><a href="dataqc.html#sample-qc"><i class="fa fa-check"></i><b>3.2</b> Sample QC</a></li>
+<li class="chapter" data-level="3.3" data-path="dataqc.html"><a href="dataqc.html#variable-qc"><i class="fa fa-check"></i><b>3.3</b> Variable QC</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="normalization.html"><a href="normalization.html"><i class="fa fa-check"></i><b>4</b> Normalizing and centering data</a></li>
+<li class="chapter" data-level="5" data-path="integration.html"><a href="integration.html"><i class="fa fa-check"></i><b>5</b> Data integration</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="integration.html"><a href="integration.html#integrate-pdac-indrop-and-st-data-by-seurat"><i class="fa fa-check"></i><b>5.1</b> Integrate PDAC inDrop and ST data by Seurat</a></li>
+<li class="chapter" data-level="5.2" data-path="integration.html"><a href="integration.html#identifying-differentially-expressed-genes"><i class="fa fa-check"></i><b>5.2</b> Identifying differentially expressed genes</a></li>
+<li class="chapter" data-level="5.3" data-path="integration.html"><a href="integration.html#inferring-cell-cycle-phases"><i class="fa fa-check"></i><b>5.3</b> Inferring cell cycle phases</a></li>
+<li class="chapter" data-level="5.4" data-path="integration.html"><a href="integration.html#save-results"><i class="fa fa-check"></i><b>5.4</b> Save results</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="computcorr.html"><a href="computcorr.html"><i class="fa fa-check"></i><b>6</b> Computing correlations among genes</a></li>
+<li class="chapter" data-level="7" data-path="markergenes.html"><a href="markergenes.html"><i class="fa fa-check"></i><b>7</b> Checking expression profiles of marker genes</a></li>
+<li class="chapter" data-level="8" data-path="collectdb.html"><a href="collectdb.html"><i class="fa fa-check"></i><b>8</b> Collecting databases (optional)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="collectdb.html"><a href="collectdb.html#disease-ontology-db"><i class="fa fa-check"></i><b>8.1</b> Disease Ontology DB</a></li>
+<li class="chapter" data-level="8.2" data-path="collectdb.html"><a href="collectdb.html#cell-ontology-db"><i class="fa fa-check"></i><b>8.2</b> Cell Ontology DB</a></li>
+<li class="chapter" data-level="8.3" data-path="collectdb.html"><a href="collectdb.html#gene-ontology-db"><i class="fa fa-check"></i><b>8.3</b> Gene Ontology DB</a></li>
+<li class="chapter" data-level="8.4" data-path="collectdb.html"><a href="collectdb.html#kegg"><i class="fa fa-check"></i><b>8.4</b> KEGG</a></li>
+<li class="chapter" data-level="8.5" data-path="collectdb.html"><a href="collectdb.html#custom-built-db-for-our-analysis-of-pdac-data"><i class="fa fa-check"></i><b>8.5</b> Custom-built DB for our analysis of PDAC data</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="cell_type.html"><a href="cell_type.html"><i class="fa fa-check"></i><b>9</b> Inferring cell types or diseases (optional)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="cell_type.html"><a href="cell_type.html#add-database-to-asurat-objects"><i class="fa fa-check"></i><b>9.1</b> Add database to ASURAT objects</a></li>
+<li class="chapter" data-level="9.2" data-path="cell_type.html"><a href="cell_type.html#quick-qc-1"><i class="fa fa-check"></i><b>9.2</b> Quick QC</a></li>
+<li class="chapter" data-level="9.3" data-path="cell_type.html"><a href="cell_type.html#correlation-graph-based-decomposition"><i class="fa fa-check"></i><b>9.3</b> Correlation graph-based decomposition</a></li>
+<li class="chapter" data-level="9.4" data-path="cell_type.html"><a href="cell_type.html#creating-systems-of-signs"><i class="fa fa-check"></i><b>9.4</b> Creating systems of signs</a></li>
+<li class="chapter" data-level="9.5" data-path="cell_type.html"><a href="cell_type.html#removing-redundant-signs"><i class="fa fa-check"></i><b>9.5</b> Removing redundant signs</a></li>
+<li class="chapter" data-level="9.6" data-path="cell_type.html"><a href="cell_type.html#creating-sign-by-sample-matrices"><i class="fa fa-check"></i><b>9.6</b> Creating sign-by-sample matrices</a></li>
+<li class="chapter" data-level="9.7" data-path="cell_type.html"><a href="cell_type.html#dimensionality-reduction"><i class="fa fa-check"></i><b>9.7</b> Dimensionality reduction</a>
+<ul>
+<li class="chapter" data-level="9.7.1" data-path="cell_type.html"><a href="cell_type.html#principal-component-analysis-optional"><i class="fa fa-check"></i><b>9.7.1</b> Principal component analysis (optional)</a></li>
+<li class="chapter" data-level="9.7.2" data-path="cell_type.html"><a href="cell_type.html#t-distributed-stochastic-neighbor-embedding-optional"><i class="fa fa-check"></i><b>9.7.2</b> t-distributed stochastic neighbor embedding (optional)</a></li>
+<li class="chapter" data-level="9.7.3" data-path="cell_type.html"><a href="cell_type.html#uniform-manifold-approximation-and-projection-optional"><i class="fa fa-check"></i><b>9.7.3</b> Uniform manifold approximation and projection (optional)</a></li>
+<li class="chapter" data-level="9.7.4" data-path="cell_type.html"><a href="cell_type.html#diffusion-map-optional"><i class="fa fa-check"></i><b>9.7.4</b> Diffusion map (optional)</a></li>
+<li class="chapter" data-level="9.7.5" data-path="cell_type.html"><a href="cell_type.html#visualization"><i class="fa fa-check"></i><b>9.7.5</b> Visualization</a></li>
+<li class="chapter" data-level="9.7.6" data-path="cell_type.html"><a href="cell_type.html#save-results."><i class="fa fa-check"></i><b>9.7.6</b> Save results.</a></li>
+</ul></li>
+<li class="chapter" data-level="9.8" data-path="cell_type.html"><a href="cell_type.html#cell-clustering"><i class="fa fa-check"></i><b>9.8</b> Cell clustering</a>
+<ul>
+<li class="chapter" data-level="9.8.1" data-path="cell_type.html"><a href="cell_type.html#partitioning-around-medoids-pam-optional"><i class="fa fa-check"></i><b>9.8.1</b> Partitioning around medoids (PAM) (optional)</a></li>
+<li class="chapter" data-level="9.8.2" data-path="cell_type.html"><a href="cell_type.html#hierarchical-clustering-and-cutting-tree-optional"><i class="fa fa-check"></i><b>9.8.2</b> Hierarchical clustering and cutting tree (optional)</a></li>
+<li class="chapter" data-level="9.8.3" data-path="cell_type.html"><a href="cell_type.html#community-detection-algorithm-with-k-nearest-neighbor-knn-graph-optional"><i class="fa fa-check"></i><b>9.8.3</b> Community detection algorithm with k-nearest neighbor (KNN) graph (optional)</a></li>
+<li class="chapter" data-level="9.8.4" data-path="cell_type.html"><a href="cell_type.html#clustering-by-branch-detection-along-pseudotime-optional"><i class="fa fa-check"></i><b>9.8.4</b> Clustering by branch detection along pseudotime (optional)</a></li>
+<li class="chapter" data-level="9.8.5" data-path="cell_type.html"><a href="cell_type.html#save-data"><i class="fa fa-check"></i><b>9.8.5</b> Save data</a></li>
+</ul></li>
+<li class="chapter" data-level="9.9" data-path="cell_type.html"><a href="cell_type.html#visualize-clustering-results"><i class="fa fa-check"></i><b>9.9</b> Visualize clustering results</a></li>
+<li class="chapter" data-level="9.10" data-path="cell_type.html"><a href="cell_type.html#find-significant-signs"><i class="fa fa-check"></i><b>9.10</b> Find significant signs</a>
+<ul>
+<li class="chapter" data-level="9.10.1" data-path="cell_type.html"><a href="cell_type.html#compute-separation-indices"><i class="fa fa-check"></i><b>9.10.1</b> Compute separation indices</a></li>
+<li class="chapter" data-level="9.10.2" data-path="cell_type.html"><a href="cell_type.html#investigate-sign-scores"><i class="fa fa-check"></i><b>9.10.2</b> Investigate sign scores</a></li>
+</ul></li>
+<li class="chapter" data-level="9.11" data-path="cell_type.html"><a href="cell_type.html#investigate-batch-effects"><i class="fa fa-check"></i><b>9.11</b> Investigate batch effects</a></li>
+<li class="chapter" data-level="9.12" data-path="cell_type.html"><a href="cell_type.html#spatial-mapping-by-spaniel"><i class="fa fa-check"></i><b>9.12</b> Spatial mapping by Spaniel</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="biological_function.html"><a href="biological_function.html"><i class="fa fa-check"></i><b>10</b> Inferring biological functions (optional)</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="biological_function.html"><a href="biological_function.html#add-database-to-asurat-objects-1"><i class="fa fa-check"></i><b>10.1</b> Add database to ASURAT objects</a></li>
+<li class="chapter" data-level="10.2" data-path="biological_function.html"><a href="biological_function.html#quick-qc-2"><i class="fa fa-check"></i><b>10.2</b> Quick QC</a></li>
+<li class="chapter" data-level="10.3" data-path="biological_function.html"><a href="biological_function.html#correlation-graph-based-decomposition-1"><i class="fa fa-check"></i><b>10.3</b> Correlation graph-based decomposition</a></li>
+<li class="chapter" data-level="10.4" data-path="biological_function.html"><a href="biological_function.html#creating-systems-of-signs-1"><i class="fa fa-check"></i><b>10.4</b> Creating systems of signs</a></li>
+<li class="chapter" data-level="10.5" data-path="biological_function.html"><a href="biological_function.html#removing-redundant-signs-1"><i class="fa fa-check"></i><b>10.5</b> Removing redundant signs</a></li>
+<li class="chapter" data-level="10.6" data-path="biological_function.html"><a href="biological_function.html#creating-sign-by-sample-matrices-1"><i class="fa fa-check"></i><b>10.6</b> Creating sign-by-sample matrices</a></li>
+<li class="chapter" data-level="10.7" data-path="biological_function.html"><a href="biological_function.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>10.7</b> Dimensionality reduction</a>
+<ul>
+<li class="chapter" data-level="10.7.1" data-path="biological_function.html"><a href="biological_function.html#principal-component-analysis-optional-1"><i class="fa fa-check"></i><b>10.7.1</b> Principal component analysis (optional)</a></li>
+<li class="chapter" data-level="10.7.2" data-path="biological_function.html"><a href="biological_function.html#t-distributed-stochastic-neighbor-embedding-optional-1"><i class="fa fa-check"></i><b>10.7.2</b> t-distributed stochastic neighbor embedding (optional)</a></li>
+<li class="chapter" data-level="10.7.3" data-path="biological_function.html"><a href="biological_function.html#uniform-manifold-approximation-and-projection-optional-1"><i class="fa fa-check"></i><b>10.7.3</b> Uniform manifold approximation and projection (optional)</a></li>
+<li class="chapter" data-level="10.7.4" data-path="biological_function.html"><a href="biological_function.html#diffusion-map-optional-1"><i class="fa fa-check"></i><b>10.7.4</b> Diffusion map (optional)</a></li>
+<li class="chapter" data-level="10.7.5" data-path="biological_function.html"><a href="biological_function.html#visualization-1"><i class="fa fa-check"></i><b>10.7.5</b> Visualization</a></li>
+<li class="chapter" data-level="10.7.6" data-path="biological_function.html"><a href="biological_function.html#save-results.-1"><i class="fa fa-check"></i><b>10.7.6</b> Save results.</a></li>
+</ul></li>
+<li class="chapter" data-level="10.8" data-path="biological_function.html"><a href="biological_function.html#cell-clustering-1"><i class="fa fa-check"></i><b>10.8</b> Cell clustering</a>
+<ul>
+<li class="chapter" data-level="10.8.1" data-path="biological_function.html"><a href="biological_function.html#partitioning-around-medoids-pam-optional-1"><i class="fa fa-check"></i><b>10.8.1</b> Partitioning around medoids (PAM) (optional)</a></li>
+<li class="chapter" data-level="10.8.2" data-path="biological_function.html"><a href="biological_function.html#hierarchical-clustering-and-cutting-tree-optional-1"><i class="fa fa-check"></i><b>10.8.2</b> Hierarchical clustering and cutting tree (optional)</a></li>
+<li class="chapter" data-level="10.8.3" data-path="biological_function.html"><a href="biological_function.html#community-detection-algorithm-with-k-nearest-neighbor-knn-graph-optional-1"><i class="fa fa-check"></i><b>10.8.3</b> Community detection algorithm with k-nearest neighbor (KNN) graph (optional)</a></li>
+<li class="chapter" data-level="10.8.4" data-path="biological_function.html"><a href="biological_function.html#clustering-by-branch-detection-along-pseudotime-optional-1"><i class="fa fa-check"></i><b>10.8.4</b> Clustering by branch detection along pseudotime (optional)</a></li>
+<li class="chapter" data-level="10.8.5" data-path="biological_function.html"><a href="biological_function.html#save-data-1"><i class="fa fa-check"></i><b>10.8.5</b> Save data</a></li>
+</ul></li>
+<li class="chapter" data-level="10.9" data-path="biological_function.html"><a href="biological_function.html#visualize-clustering-results-1"><i class="fa fa-check"></i><b>10.9</b> Visualize clustering results</a></li>
+<li class="chapter" data-level="10.10" data-path="biological_function.html"><a href="biological_function.html#find-significant-signs-1"><i class="fa fa-check"></i><b>10.10</b> Find significant signs</a>
+<ul>
+<li class="chapter" data-level="10.10.1" data-path="biological_function.html"><a href="biological_function.html#compute-separation-indices-1"><i class="fa fa-check"></i><b>10.10.1</b> Compute separation indices</a></li>
+<li class="chapter" data-level="10.10.2" data-path="biological_function.html"><a href="biological_function.html#investigate-sign-scores-1"><i class="fa fa-check"></i><b>10.10.2</b> Investigate sign scores</a></li>
+</ul></li>
+<li class="chapter" data-level="10.11" data-path="biological_function.html"><a href="biological_function.html#investigate-batch-effects-1"><i class="fa fa-check"></i><b>10.11</b> Investigate batch effects</a></li>
+<li class="chapter" data-level="10.12" data-path="biological_function.html"><a href="biological_function.html#spatial-mapping-by-spaniel-1"><i class="fa fa-check"></i><b>10.12</b> Spatial mapping by Spaniel</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="pathway.html"><a href="pathway.html"><i class="fa fa-check"></i><b>11</b> Inferring pathway activities (optional)</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="pathway.html"><a href="pathway.html#add-database-to-asurat-objects-2"><i class="fa fa-check"></i><b>11.1</b> Add database to ASURAT objects</a></li>
+<li class="chapter" data-level="11.2" data-path="pathway.html"><a href="pathway.html#quick-qc-3"><i class="fa fa-check"></i><b>11.2</b> Quick QC</a></li>
+<li class="chapter" data-level="11.3" data-path="pathway.html"><a href="pathway.html#correlation-graph-based-decomposition-2"><i class="fa fa-check"></i><b>11.3</b> Correlation graph-based decomposition</a></li>
+<li class="chapter" data-level="11.4" data-path="pathway.html"><a href="pathway.html#creating-systems-of-signs-2"><i class="fa fa-check"></i><b>11.4</b> Creating systems of signs</a></li>
+<li class="chapter" data-level="11.5" data-path="pathway.html"><a href="pathway.html#removing-redundant-signs-2"><i class="fa fa-check"></i><b>11.5</b> Removing redundant signs</a></li>
+<li class="chapter" data-level="11.6" data-path="pathway.html"><a href="pathway.html#creating-sign-by-sample-matrices-2"><i class="fa fa-check"></i><b>11.6</b> Creating sign-by-sample matrices</a></li>
+<li class="chapter" data-level="11.7" data-path="pathway.html"><a href="pathway.html#dimensionality-reduction-2"><i class="fa fa-check"></i><b>11.7</b> Dimensionality reduction</a>
+<ul>
+<li class="chapter" data-level="11.7.1" data-path="pathway.html"><a href="pathway.html#principal-component-analysis-optional-2"><i class="fa fa-check"></i><b>11.7.1</b> Principal component analysis (optional)</a></li>
+<li class="chapter" data-level="11.7.2" data-path="pathway.html"><a href="pathway.html#t-distributed-stochastic-neighbor-embedding-optional-2"><i class="fa fa-check"></i><b>11.7.2</b> t-distributed stochastic neighbor embedding (optional)</a></li>
+<li class="chapter" data-level="11.7.3" data-path="pathway.html"><a href="pathway.html#uniform-manifold-approximation-and-projection-optional-2"><i class="fa fa-check"></i><b>11.7.3</b> Uniform manifold approximation and projection (optional)</a></li>
+<li class="chapter" data-level="11.7.4" data-path="pathway.html"><a href="pathway.html#diffusion-map-optional-2"><i class="fa fa-check"></i><b>11.7.4</b> Diffusion map (optional)</a></li>
+<li class="chapter" data-level="11.7.5" data-path="pathway.html"><a href="pathway.html#visualization-2"><i class="fa fa-check"></i><b>11.7.5</b> Visualization</a></li>
+<li class="chapter" data-level="11.7.6" data-path="pathway.html"><a href="pathway.html#save-results.-2"><i class="fa fa-check"></i><b>11.7.6</b> Save results.</a></li>
+</ul></li>
+<li class="chapter" data-level="11.8" data-path="pathway.html"><a href="pathway.html#cell-clustering-2"><i class="fa fa-check"></i><b>11.8</b> Cell clustering</a>
+<ul>
+<li class="chapter" data-level="11.8.1" data-path="pathway.html"><a href="pathway.html#partitioning-around-medoids-pam-optional-2"><i class="fa fa-check"></i><b>11.8.1</b> Partitioning around medoids (PAM) (optional)</a></li>
+<li class="chapter" data-level="11.8.2" data-path="pathway.html"><a href="pathway.html#hierarchical-clustering-and-cutting-tree-optional-2"><i class="fa fa-check"></i><b>11.8.2</b> Hierarchical clustering and cutting tree (optional)</a></li>
+<li class="chapter" data-level="11.8.3" data-path="pathway.html"><a href="pathway.html#community-detection-algorithm-with-k-nearest-neighbor-knn-graph-optional-2"><i class="fa fa-check"></i><b>11.8.3</b> Community detection algorithm with k-nearest neighbor (KNN) graph (optional)</a></li>
+<li class="chapter" data-level="11.8.4" data-path="pathway.html"><a href="pathway.html#clustering-by-branch-detection-along-pseudotime-optional-2"><i class="fa fa-check"></i><b>11.8.4</b> Clustering by branch detection along pseudotime (optional)</a></li>
+<li class="chapter" data-level="11.8.5" data-path="pathway.html"><a href="pathway.html#save-data-2"><i class="fa fa-check"></i><b>11.8.5</b> Save data</a></li>
+</ul></li>
+<li class="chapter" data-level="11.9" data-path="pathway.html"><a href="pathway.html#visualize-clustering-results-2"><i class="fa fa-check"></i><b>11.9</b> Visualize clustering results</a></li>
+<li class="chapter" data-level="11.10" data-path="pathway.html"><a href="pathway.html#find-significant-signs-2"><i class="fa fa-check"></i><b>11.10</b> Find significant signs</a>
+<ul>
+<li class="chapter" data-level="11.10.1" data-path="pathway.html"><a href="pathway.html#compute-separation-indices-2"><i class="fa fa-check"></i><b>11.10.1</b> Compute separation indices</a></li>
+<li class="chapter" data-level="11.10.2" data-path="pathway.html"><a href="pathway.html#investigate-sign-scores-2"><i class="fa fa-check"></i><b>11.10.2</b> Investigate sign scores</a></li>
+</ul></li>
+<li class="chapter" data-level="11.11" data-path="pathway.html"><a href="pathway.html#investigate-batch-effects-2"><i class="fa fa-check"></i><b>11.11</b> Investigate batch effects</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="multi_layered.html"><a href="multi_layered.html"><i class="fa fa-check"></i><b>12</b> Multi-layered analysis across all the signs</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="multi_layered.html"><a href="multi_layered.html#concatenate-asurat-objects"><i class="fa fa-check"></i><b>12.1</b> Concatenate ASURAT objects</a></li>
+<li class="chapter" data-level="12.2" data-path="multi_layered.html"><a href="multi_layered.html#find-significant-signs-and-genes-across-different-data-types"><i class="fa fa-check"></i><b>12.2</b> Find significant signs and genes across different data types</a></li>
+<li class="chapter" data-level="12.3" data-path="multi_layered.html"><a href="multi_layered.html#spatial-mapping-by-spaniel-2"><i class="fa fa-check"></i><b>12.3</b> Spatial mapping by Spaniel</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><i class="fa fa-check"></i><b>13</b> Appendix A: analyzing scRNA-seq data by existing method I</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html#preprocessing"><i class="fa fa-check"></i><b>13.1</b> Preprocessing</a></li>
+<li class="chapter" data-level="13.2" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html#cluster-cells"><i class="fa fa-check"></i><b>13.2</b> Cluster cells</a></li>
+<li class="chapter" data-level="13.3" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html#visualize-data-in-low-dimensional-space"><i class="fa fa-check"></i><b>13.3</b> Visualize data in low dimensional space</a></li>
+<li class="chapter" data-level="13.4" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html#find-differentially-expressed-genes"><i class="fa fa-check"></i><b>13.4</b> Find differentially expressed genes</a></li>
+<li class="chapter" data-level="13.5" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html#save-results-1"><i class="fa fa-check"></i><b>13.5</b> Save results</a></li>
+<li class="chapter" data-level="13.6" data-path="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html"><a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html#infer-cell-types-for-pbmc-datasets"><i class="fa fa-check"></i><b>13.6</b> Infer cell types for PBMC datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><i class="fa fa-check"></i><b>14</b> Appendix B: analyzing scRNA-seq data by existing method II</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#preprocessing-1"><i class="fa fa-check"></i><b>14.1</b> Preprocessing</a></li>
+<li class="chapter" data-level="14.2" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#cluster-cells-1"><i class="fa fa-check"></i><b>14.2</b> Cluster cells</a></li>
+<li class="chapter" data-level="14.3" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#visualize-data-in-low-dimensional-space-1"><i class="fa fa-check"></i><b>14.3</b> Visualize data in low dimensional space</a></li>
+<li class="chapter" data-level="14.4" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#cell-cycle-scoring"><i class="fa fa-check"></i><b>14.4</b> Cell cycle scoring</a></li>
+<li class="chapter" data-level="14.5" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#find-differentially-expressed-genes-1"><i class="fa fa-check"></i><b>14.5</b> Find differentially expressed genes</a></li>
+<li class="chapter" data-level="14.6" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#enrichment-analysis"><i class="fa fa-check"></i><b>14.6</b> Enrichment analysis</a></li>
+<li class="chapter" data-level="14.7" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#save-results-2"><i class="fa fa-check"></i><b>14.7</b> Save results</a></li>
+<li class="chapter" data-level="14.8" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#infer-cell-types-for-pbmc-datasets-1"><i class="fa fa-check"></i><b>14.8</b> Infer cell types for PBMC datasets</a></li>
+<li class="chapter" data-level="14.9" data-path="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html"><a href="appendix-b-analyzing-scrna-seq-data-by-existing-method-ii.html#infer-cell-types-for-pbmc-datasets-by-seurat-and-sccatch"><i class="fa fa-check"></i><b>14.9</b> Infer cell types for PBMC datasets by Seurat and scCATCH</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><i class="fa fa-check"></i><b>15</b> Appendix C: analyzing scRNA-seq data by existing method III</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html#preprocessing-2"><i class="fa fa-check"></i><b>15.1</b> Preprocessing</a></li>
+<li class="chapter" data-level="15.2" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html#cluster-cells-2"><i class="fa fa-check"></i><b>15.2</b> Cluster cells</a></li>
+<li class="chapter" data-level="15.3" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html#visualize-data-in-low-dimensional-space-2"><i class="fa fa-check"></i><b>15.3</b> Visualize data in low dimensional space</a></li>
+<li class="chapter" data-level="15.4" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html#find-differentially-expressed-genes-2"><i class="fa fa-check"></i><b>15.4</b> Find differentially expressed genes</a></li>
+<li class="chapter" data-level="15.5" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html#save-results-3"><i class="fa fa-check"></i><b>15.5</b> Save results</a></li>
+<li class="chapter" data-level="15.6" data-path="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html"><a href="appendix-c-analyzing-scrna-seq-data-by-existing-method-iii.html#infer-cell-types-for-pbmc-datasets-2"><i class="fa fa-check"></i><b>15.6</b> Infer cell types for PBMC datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><a href="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><i class="fa fa-check"></i><b>16</b> Appendix D: analyzing scRNA-seq data by existing method IV</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><a href="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html#preprocessing-3"><i class="fa fa-check"></i><b>16.1</b> Preprocessing</a></li>
+<li class="chapter" data-level="16.2" data-path="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><a href="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html#cluster-cells-3"><i class="fa fa-check"></i><b>16.2</b> Cluster cells</a></li>
+<li class="chapter" data-level="16.3" data-path="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><a href="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html#find-differentially-expressed-genes-3"><i class="fa fa-check"></i><b>16.3</b> Find differentially expressed genes</a></li>
+<li class="chapter" data-level="16.4" data-path="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><a href="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html#save-results-4"><i class="fa fa-check"></i><b>16.4</b> Save results</a></li>
+<li class="chapter" data-level="16.5" data-path="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html"><a href="appendix-d-analyzing-scrna-seq-data-by-existing-method-iv.html#infer-cell-types-for-pbmc-datasets-3"><i class="fa fa-check"></i><b>16.5</b> Infer cell types for PBMC datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="appendix-e-analyzing-scrna-seq-data-using-asurat.html"><a href="appendix-e-analyzing-scrna-seq-data-using-asurat.html"><i class="fa fa-check"></i><b>17</b> Appendix E: analyzing scRNA-seq data using ASURAT</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="appendix-e-analyzing-scrna-seq-data-using-asurat.html"><a href="appendix-e-analyzing-scrna-seq-data-using-asurat.html#infer-cell-types-for-pbmc-datasets-4"><i class="fa fa-check"></i><b>17.1</b> Infer cell types for PBMC datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html"><i class="fa fa-check"></i><b>18</b> Appendix F: creating figures</a>
+<ul>
+<li class="chapter" data-level="18.1" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#pbmcs-datasets"><i class="fa fa-check"></i><b>18.1</b> PBMCs datasets</a>
+<ul>
+<li class="chapter" data-level="18.1.1" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#multi-layered-analysis"><i class="fa fa-check"></i><b>18.1.1</b> Multi-layered analysis</a></li>
+<li class="chapter" data-level="18.1.2" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#infer-population-ratios"><i class="fa fa-check"></i><b>18.1.2</b> Infer population ratios</a></li>
+</ul></li>
+<li class="chapter" data-level="18.2" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#lung-cancer-dataset"><i class="fa fa-check"></i><b>18.2</b> Lung cancer dataset</a>
+<ul>
+<li class="chapter" data-level="18.2.1" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#heatmaps-of-marker-gene-expressions"><i class="fa fa-check"></i><b>18.2.1</b> Heatmaps of marker gene expressions</a></li>
+<li class="chapter" data-level="18.2.2" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#multi-layered-analysis-1"><i class="fa fa-check"></i><b>18.2.2</b> Multi-layered analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="18.3" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#pancreatic-ductal-adenocarcinoma-pdac-datasets"><i class="fa fa-check"></i><b>18.3</b> Pancreatic ductal adenocarcinoma (PDAC) datasets</a>
+<ul>
+<li class="chapter" data-level="18.3.1" data-path="appendix-f-creating-figures.html"><a href="appendix-f-creating-figures.html#clustering-pdac-spatial-transcriptomes"><i class="fa fa-check"></i><b>18.3.1</b> Clustering PDAC spatial transcriptomes</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to ASURAT (version 0.0.0.9001)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="multi_layered" class="section level1" number="12">
+<h1><span class="header-section-number">Chapter 12</span> Multi-layered analysis across all the signs</h1>
+<p>In this section, we concatenate all the sign-by-sample matrices (SSMs).
+Users can simultaneously visualize cell states from various viewpoints
+such as cell type, biological process, and signaling pathway.</p>
+<div id="concatenate-asurat-objects" class="section level2" number="12.1">
+<h2><span class="header-section-number">12.1</span> Concatenate ASURAT objects</h2>
+<p>Load the data.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="multi_layered.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
+<span id="cb1-2"><a href="multi_layered.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/plot.R&quot;</span>)</span>
+<span id="cb1-3"><a href="multi_layered.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/function_asurat.R&quot;</span>)</span>
+<span id="cb1-4"><a href="multi_layered.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-5"><a href="multi_layered.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Cell type</span></span>
+<span id="cb1-6"><a href="multi_layered.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-7"><a href="multi_layered.html#cb1-7" aria-hidden="true" tabindex="-1"></a>sc68_vehi_DO <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/01_104_sc68_vehi_DES_DO.rds&quot;</span>)</span>
+<span id="cb1-8"><a href="multi_layered.html#cb1-8" aria-hidden="true" tabindex="-1"></a>sc68_cisp_DO <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/02_104_sc68_cisp_DES_DO.rds&quot;</span>)</span>
+<span id="cb1-9"><a href="multi_layered.html#cb1-9" aria-hidden="true" tabindex="-1"></a>pdac_aint_CB <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/07_104_pdac_aint_DES_CB.rds&quot;</span>)</span>
+<span id="cb1-10"><a href="multi_layered.html#cb1-10" aria-hidden="true" tabindex="-1"></a>pbmc_4000_CO <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/10_104_pbmc_4000_DES_CO.rds&quot;</span>)</span>
+<span id="cb1-11"><a href="multi_layered.html#cb1-11" aria-hidden="true" tabindex="-1"></a>pbmc_6000_CO <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/11_104_pbmc_6000_DES_CO.rds&quot;</span>)</span>
+<span id="cb1-12"><a href="multi_layered.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-13"><a href="multi_layered.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Biological process</span></span>
+<span id="cb1-14"><a href="multi_layered.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb1-15"><a href="multi_layered.html#cb1-15" aria-hidden="true" tabindex="-1"></a>sc68_vehi_GO <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/01_204_sc68_vehi_DES_GO.rds&quot;</span>)</span>
+<span id="cb1-16"><a href="multi_layered.html#cb1-16" aria-hidden="true" tabindex="-1"></a>sc68_cisp_GO <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/02_202_sc68_cisp_reduction_GO.rds&quot;</span>)</span>
+<span id="cb1-17"><a href="multi_layered.html#cb1-17" aria-hidden="true" tabindex="-1"></a>pdac_aint_GO <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/07_204_pdac_aint_DES_GO.rds&quot;</span>)</span>
+<span id="cb1-18"><a href="multi_layered.html#cb1-18" aria-hidden="true" tabindex="-1"></a>pbmc_4000_GO <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/10_204_pbmc_4000_DES_GO.rds&quot;</span>)</span>
+<span id="cb1-19"><a href="multi_layered.html#cb1-19" aria-hidden="true" tabindex="-1"></a>pbmc_6000_GO <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/11_204_pbmc_6000_DES_GO.rds&quot;</span>)</span></code></pre></div>
+<p>The following function <code>concatenate_obj_sign()</code> concatenates two ASURAT objects,
+<code>obj2</code> at the end of <code>obj1</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="multi_layered.html#cb2-1" aria-hidden="true" tabindex="-1"></a>sc68_vehi <span class="ot">&lt;-</span> <span class="fu">concatenate_obj_sign</span>(<span class="at">obj1 =</span> sc68_vehi_DO, <span class="at">obj2 =</span> sc68_vehi_GO)</span>
+<span id="cb2-2"><a href="multi_layered.html#cb2-2" aria-hidden="true" tabindex="-1"></a>sc68_cisp <span class="ot">&lt;-</span> <span class="fu">concatenate_obj_sign</span>(<span class="at">obj1 =</span> sc68_cisp_DO, <span class="at">obj2 =</span> sc68_cisp_GO)</span>
+<span id="cb2-3"><a href="multi_layered.html#cb2-3" aria-hidden="true" tabindex="-1"></a>pdac_aint <span class="ot">&lt;-</span> <span class="fu">concatenate_obj_sign</span>(<span class="at">obj1 =</span> pdac_aint_CB, <span class="at">obj2 =</span> pdac_aint_GO)</span>
+<span id="cb2-4"><a href="multi_layered.html#cb2-4" aria-hidden="true" tabindex="-1"></a>pbmc_4000 <span class="ot">&lt;-</span> <span class="fu">concatenate_obj_sign</span>(<span class="at">obj1 =</span> pbmc_4000_CO, <span class="at">obj2 =</span> pbmc_4000_GO)</span>
+<span id="cb2-5"><a href="multi_layered.html#cb2-5" aria-hidden="true" tabindex="-1"></a>pbmc_6000 <span class="ot">&lt;-</span> <span class="fu">concatenate_obj_sign</span>(<span class="at">obj1 =</span> pbmc_6000_CO, <span class="at">obj2 =</span> pbmc_6000_GO)</span>
+<span id="cb2-6"><a href="multi_layered.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(sc68_vehi_DO, sc68_vehi_GO,</span>
+<span id="cb2-7"><a href="multi_layered.html#cb2-7" aria-hidden="true" tabindex="-1"></a>   sc68_cisp_DO, sc68_cisp_GO,</span>
+<span id="cb2-8"><a href="multi_layered.html#cb2-8" aria-hidden="true" tabindex="-1"></a>   pdac_aint_CB, pdac_aint_GO,</span>
+<span id="cb2-9"><a href="multi_layered.html#cb2-9" aria-hidden="true" tabindex="-1"></a>   pbmc_4000_CO, pbmc_4000_GO,</span>
+<span id="cb2-10"><a href="multi_layered.html#cb2-10" aria-hidden="true" tabindex="-1"></a>   pbmc_6000_CO, pbmc_6000_GO)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="multi_layered.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb3-2"><a href="multi_layered.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Pathway activity</span></span>
+<span id="cb3-3"><a href="multi_layered.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb3-4"><a href="multi_layered.html#cb3-4" aria-hidden="true" tabindex="-1"></a>sc68_vehi_KEGG <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/01_302_sc68_vehi_reduction_KEGG.rds&quot;</span>)</span>
+<span id="cb3-5"><a href="multi_layered.html#cb3-5" aria-hidden="true" tabindex="-1"></a>sc68_cisp_KEGG <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/02_302_sc68_cisp_reduction_KEGG.rds&quot;</span>)</span>
+<span id="cb3-6"><a href="multi_layered.html#cb3-6" aria-hidden="true" tabindex="-1"></a>pdac_aint_KEGG <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/07_302_pdac_aint_reduction_KEGG.rds&quot;</span>)</span>
+<span id="cb3-7"><a href="multi_layered.html#cb3-7" aria-hidden="true" tabindex="-1"></a>pbmc_4000_KEGG <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/10_304_pbmc_4000_DES_KEGG.rds&quot;</span>)</span>
+<span id="cb3-8"><a href="multi_layered.html#cb3-8" aria-hidden="true" tabindex="-1"></a>pbmc_6000_KEGG <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/11_304_pbmc_6000_DES_KEGG.rds&quot;</span>)</span>
+<span id="cb3-9"><a href="multi_layered.html#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="multi_layered.html#cb3-10" aria-hidden="true" tabindex="-1"></a>sc68_vehi <span class="ot">&lt;-</span> <span class="fu">concatenate_obj_sign</span>(<span class="at">obj1 =</span> sc68_vehi, <span class="at">obj2 =</span> sc68_vehi_KEGG)</span>
+<span id="cb3-11"><a href="multi_layered.html#cb3-11" aria-hidden="true" tabindex="-1"></a>sc68_cisp <span class="ot">&lt;-</span> <span class="fu">concatenate_obj_sign</span>(<span class="at">obj1 =</span> sc68_cisp, <span class="at">obj2 =</span> sc68_cisp_KEGG)</span>
+<span id="cb3-12"><a href="multi_layered.html#cb3-12" aria-hidden="true" tabindex="-1"></a>pdac_aint <span class="ot">&lt;-</span> <span class="fu">concatenate_obj_sign</span>(<span class="at">obj1 =</span> pdac_aint, <span class="at">obj2 =</span> pdac_aint_KEGG)</span>
+<span id="cb3-13"><a href="multi_layered.html#cb3-13" aria-hidden="true" tabindex="-1"></a>pbmc_4000 <span class="ot">&lt;-</span> <span class="fu">concatenate_obj_sign</span>(<span class="at">obj1 =</span> pbmc_4000, <span class="at">obj2 =</span> pbmc_4000_KEGG)</span>
+<span id="cb3-14"><a href="multi_layered.html#cb3-14" aria-hidden="true" tabindex="-1"></a>pbmc_6000 <span class="ot">&lt;-</span> <span class="fu">concatenate_obj_sign</span>(<span class="at">obj1 =</span> pbmc_6000, <span class="at">obj2 =</span> pbmc_6000_KEGG)</span>
+<span id="cb3-15"><a href="multi_layered.html#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(sc68_vehi_KEGG,</span>
+<span id="cb3-16"><a href="multi_layered.html#cb3-16" aria-hidden="true" tabindex="-1"></a>   sc68_cisp_KEGG,</span>
+<span id="cb3-17"><a href="multi_layered.html#cb3-17" aria-hidden="true" tabindex="-1"></a>   pdac_aint_KEGG,</span>
+<span id="cb3-18"><a href="multi_layered.html#cb3-18" aria-hidden="true" tabindex="-1"></a>   pbmc_4000_KEGG,</span>
+<span id="cb3-19"><a href="multi_layered.html#cb3-19" aria-hidden="true" tabindex="-1"></a>   pbmc_6000_KEGG)</span></code></pre></div>
+</div>
+<div id="find-significant-signs-and-genes-across-different-data-types" class="section level2" number="12.2">
+<h2><span class="header-section-number">12.2</span> Find significant signs and genes across different data types</h2>
+<p>Assume that <code>obj</code> has clustering results for DO but does not for GO and KEGG.
+Even if that is the case, one can investigate significant signs for GO and KEGG
+by computing their separation indices across groups for DO.</p>
+<p>As described in the <a href="cell_type.html#cell_type">previous section</a>,
+the following function <code>auto_find_marker_sign()</code> computes separation indices
+of signs of interest for each subpopulation.
+The arguments are <code>obj</code>,
+<code>data_type_for_label</code> (<code>data_type</code> used for sample clustering),
+<code>category_for_label</code> (<code>category</code> used for sample clustering),
+<code>algo_name_for_label</code> (<code>algo_name</code> used for sample clustering),
+<code>data_type_for_expr</code> (<code>data_type</code> that the signs of interest belong to),
+<code>category_for_expr</code> (<code>category</code> that the signs of interest belong to).
+This function helps users find positive and negative marker signs of <code>label_1</code>
+with the positive and negative values of the indices, respectively.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="multi_layered.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb4-2"><a href="multi_layered.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sc68_vehi</span></span>
+<span id="cb4-3"><a href="multi_layered.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb4-4"><a href="multi_layered.html#cb4-4" aria-hidden="true" tabindex="-1"></a>sc68_vehi <span class="ot">&lt;-</span> <span class="fu">auto_find_marker_sign</span>(<span class="at">obj =</span> sc68_vehi,</span>
+<span id="cb4-5"><a href="multi_layered.html#cb4-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data_type_for_label =</span> <span class="st">&quot;GO&quot;</span>,</span>
+<span id="cb4-6"><a href="multi_layered.html#cb4-6" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">category_for_label =</span> <span class="st">&quot;BP&quot;</span>,</span>
+<span id="cb4-7"><a href="multi_layered.html#cb4-7" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">algo_name_for_label =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
+<span id="cb4-8"><a href="multi_layered.html#cb4-8" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data_type_for_expr =</span> <span class="st">&quot;DO&quot;</span>,</span>
+<span id="cb4-9"><a href="multi_layered.html#cb4-9" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">category_for_expr =</span> <span class="st">&quot;disease&quot;</span>)</span>
+<span id="cb4-10"><a href="multi_layered.html#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="multi_layered.html#cb4-11" aria-hidden="true" tabindex="-1"></a>sc68_vehi <span class="ot">&lt;-</span> <span class="fu">auto_find_marker_sign</span>(<span class="at">obj =</span> sc68_vehi,</span>
+<span id="cb4-12"><a href="multi_layered.html#cb4-12" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data_type_for_label =</span> <span class="st">&quot;GO&quot;</span>,</span>
+<span id="cb4-13"><a href="multi_layered.html#cb4-13" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">category_for_label =</span> <span class="st">&quot;BP&quot;</span>,</span>
+<span id="cb4-14"><a href="multi_layered.html#cb4-14" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">algo_name_for_label =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
+<span id="cb4-15"><a href="multi_layered.html#cb4-15" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data_type_for_expr =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
+<span id="cb4-16"><a href="multi_layered.html#cb4-16" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">category_for_expr =</span> <span class="st">&quot;pathway&quot;</span>)</span>
+<span id="cb4-17"><a href="multi_layered.html#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb4-18"><a href="multi_layered.html#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># sc68_cisp</span></span>
+<span id="cb4-19"><a href="multi_layered.html#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb4-20"><a href="multi_layered.html#cb4-20" aria-hidden="true" tabindex="-1"></a>sc68_cisp <span class="ot">&lt;-</span> <span class="fu">auto_find_marker_sign</span>(<span class="at">obj =</span> sc68_cisp,</span>
+<span id="cb4-21"><a href="multi_layered.html#cb4-21" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data_type_for_label =</span> <span class="st">&quot;DO&quot;</span>,</span>
+<span id="cb4-22"><a href="multi_layered.html#cb4-22" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">category_for_label =</span> <span class="st">&quot;disease&quot;</span>,</span>
+<span id="cb4-23"><a href="multi_layered.html#cb4-23" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">algo_name_for_label =</span> <span class="st">&quot;merlot&quot;</span>,</span>
+<span id="cb4-24"><a href="multi_layered.html#cb4-24" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data_type_for_expr =</span> <span class="st">&quot;GO&quot;</span>,</span>
+<span id="cb4-25"><a href="multi_layered.html#cb4-25" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">category_for_expr =</span> <span class="st">&quot;BP&quot;</span>)</span>
+<span id="cb4-26"><a href="multi_layered.html#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="multi_layered.html#cb4-27" aria-hidden="true" tabindex="-1"></a>sc68_cisp <span class="ot">&lt;-</span> <span class="fu">auto_find_marker_sign</span>(<span class="at">obj =</span> sc68_cisp,</span>
+<span id="cb4-28"><a href="multi_layered.html#cb4-28" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data_type_for_label =</span> <span class="st">&quot;DO&quot;</span>,</span>
+<span id="cb4-29"><a href="multi_layered.html#cb4-29" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">category_for_label =</span> <span class="st">&quot;disease&quot;</span>,</span>
+<span id="cb4-30"><a href="multi_layered.html#cb4-30" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">algo_name_for_label =</span> <span class="st">&quot;merlot&quot;</span>,</span>
+<span id="cb4-31"><a href="multi_layered.html#cb4-31" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data_type_for_expr =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
+<span id="cb4-32"><a href="multi_layered.html#cb4-32" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">category_for_expr =</span> <span class="st">&quot;pathway&quot;</span>)</span>
+<span id="cb4-33"><a href="multi_layered.html#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb4-34"><a href="multi_layered.html#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co"># pdac_aint</span></span>
+<span id="cb4-35"><a href="multi_layered.html#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb4-36"><a href="multi_layered.html#cb4-36" aria-hidden="true" tabindex="-1"></a>pdac_aint <span class="ot">&lt;-</span> <span class="fu">auto_find_marker_sign</span>(<span class="at">obj =</span> pdac_aint,</span>
+<span id="cb4-37"><a href="multi_layered.html#cb4-37" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data_type_for_label =</span> <span class="st">&quot;CB&quot;</span>,</span>
+<span id="cb4-38"><a href="multi_layered.html#cb4-38" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">category_for_label =</span> <span class="st">&quot;cell&quot;</span>,</span>
+<span id="cb4-39"><a href="multi_layered.html#cb4-39" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">algo_name_for_label =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
+<span id="cb4-40"><a href="multi_layered.html#cb4-40" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data_type_for_expr =</span> <span class="st">&quot;KEGG&quot;</span>,</span>
+<span id="cb4-41"><a href="multi_layered.html#cb4-41" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">category_for_expr =</span> <span class="st">&quot;pathway&quot;</span>)</span></code></pre></div>
+<p>The results are stored in
+<code>obj[["marker"]][[data_type_for_expr]][[category_for_expr]]</code>.
+Here <code>sep_I</code> stands for separation indices of signs, which quantifies the
+extent of separation between two different sets of random variables.
+See <a href="cell_type.html#cell_type">previous section</a> for implementing <code>find_marker_sign()</code> and
+<code>auto_find_marker_gene()</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="multi_layered.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(sc68_vehi[[<span class="st">&quot;marker&quot;</span>]][[<span class="st">&quot;KEGG&quot;</span>]][[<span class="st">&quot;pathway&quot;</span>]][[<span class="st">&quot;all&quot;</span>]],</span>
+<span id="cb5-2"><a href="multi_layered.html#cb5-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-3"><a href="multi_layered.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(sc68_cisp[[<span class="st">&quot;marker&quot;</span>]][[<span class="st">&quot;KEGG&quot;</span>]][[<span class="st">&quot;pathway&quot;</span>]][[<span class="st">&quot;all&quot;</span>]],</span>
+<span id="cb5-4"><a href="multi_layered.html#cb5-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-5"><a href="multi_layered.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(pdac_aint[[<span class="st">&quot;marker&quot;</span>]][[<span class="st">&quot;KEGG&quot;</span>]][[<span class="st">&quot;pathway&quot;</span>]][[<span class="st">&quot;all&quot;</span>]],</span>
+<span id="cb5-6"><a href="multi_layered.html#cb5-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>As described in the <a href="cell_type.html#cell_type">previous section</a>,
+the following function <code>plot_violin_signScore()</code> shows distribution of
+sign scores across all the clusters by violin plots.
+The arguments are <code>obj</code>, <code>sign_name</code> (sign ID),
+<code>data_type_for_label</code> (<code>data_type</code> used for sample clustering),
+<code>category_for_label</code> (<code>category</code> used for sample clustering),
+<code>algo_name_for_label</code> (<code>algo_name</code> used for sample clustering),
+<code>data_type_for_expr</code> (<code>data_type</code> that the signs of interest belong to),
+<code>category_for_expr</code> (<code>category</code> that the signs of interest belong to).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="multi_layered.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb6-2"><a href="multi_layered.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sc68_vehi</span></span>
+<span id="cb6-3"><a href="multi_layered.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb6-4"><a href="multi_layered.html#cb6-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot_violin_signScore</span>(</span>
+<span id="cb6-5"><a href="multi_layered.html#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">obj =</span> sc68_vehi, <span class="at">sign_name =</span> <span class="st">&quot;DOID:5409_V&quot;</span>,</span>
+<span id="cb6-6"><a href="multi_layered.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_type_for_label =</span> <span class="st">&quot;GO&quot;</span>, <span class="at">category_for_label =</span> <span class="st">&quot;BP&quot;</span>,</span>
+<span id="cb6-7"><a href="multi_layered.html#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">algo_name_for_label =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
+<span id="cb6-8"><a href="multi_layered.html#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_type_for_expr =</span> <span class="st">&quot;DO&quot;</span>, <span class="at">category_for_expr =</span> <span class="st">&quot;disease&quot;</span>,</span>
+<span id="cb6-9"><a href="multi_layered.html#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">&quot;DOID:5409_V</span><span class="sc">\n</span><span class="st">Lung small cell carcinoma</span><span class="sc">\n</span><span class="st">(MKI67/BIRC5/..)&quot;</span>,</span>
+<span id="cb6-10"><a href="multi_layered.html#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">title_size =</span> <span class="dv">16</span>, <span class="at">default_color =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-11"><a href="multi_layered.html#cb6-11" aria-hidden="true" tabindex="-1"></a>filename <span class="ot">&lt;-</span> <span class="st">&quot;figures/figure_01_0400.png&quot;</span></span>
+<span id="cb6-12"><a href="multi_layered.html#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">file =</span> filename, <span class="at">plot =</span> p, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">4</span>)</span></code></pre></div>
+<p><img src="figures/figure_01_0400.png" width="230px">
+<img src="figures/figure_01_0401.png" width="230px"></p>
+<p><img src="figures/figure_07_0400.png" width="230px">
+<img src="figures/figure_07_0401.png" width="230px"></p>
+<p>As described in the <a href="cell_type.html#cell_type">previous section</a>,
+the following function <code>plot_pseudotime_vs_signscore()</code> plots sign scores
+versus pseudotime for a given sign, in which filled circles, bold lines,
+and the shade regions stand for the expression values of samples, mean
+expression levels, and standard deviations (this value is 0 if there are less
+than three samples), respectively.
+The arguments <code>data_type_for_tree</code> and <code>category_for_tree</code> are the data type
+and category used for the branch-based clustering of cells (i.e., the
+labels assigned to the branches), while <code>data_type_for_expr</code> and
+<code>category_for_expr</code> for sign scores of signs of interest.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="multi_layered.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb7-2"><a href="multi_layered.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sc68_cisp</span></span>
+<span id="cb7-3"><a href="multi_layered.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb7-4"><a href="multi_layered.html#cb7-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot_pseudotime_vs_signscore</span>(</span>
+<span id="cb7-5"><a href="multi_layered.html#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">obj =</span> sc68_cisp, <span class="at">sign_name =</span> <span class="st">&quot;path:hsa01524_S&quot;</span>,</span>
+<span id="cb7-6"><a href="multi_layered.html#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_type_for_tree =</span> <span class="st">&quot;DO&quot;</span>, <span class="at">category_for_tree =</span> <span class="st">&quot;disease&quot;</span>,</span>
+<span id="cb7-7"><a href="multi_layered.html#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_type_for_expr =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="at">category_for_expr =</span> <span class="st">&quot;pathway&quot;</span>,</span>
+<span id="cb7-8"><a href="multi_layered.html#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">&quot;KEGG:hsa01524_S</span><span class="sc">\n</span><span class="st">Platinum drug resistance</span><span class="sc">\n</span><span class="st">(TOP2A/BIRC5/..)&quot;</span>,</span>
+<span id="cb7-9"><a href="multi_layered.html#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">title_size =</span> <span class="dv">22</span>, <span class="at">label_name =</span> <span class="st">&quot;Label</span><span class="sc">\n</span><span class="st">(DO: disease)&quot;</span>,</span>
+<span id="cb7-10"><a href="multi_layered.html#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlabel =</span> <span class="st">&quot;Pseudotime (DO: disease)&quot;</span>, <span class="at">ylabel =</span> <span class="st">&quot;Sign score&quot;</span>)</span>
+<span id="cb7-11"><a href="multi_layered.html#cb7-11" aria-hidden="true" tabindex="-1"></a>filename <span class="ot">&lt;-</span> <span class="st">&quot;figures/figure_02_0400.png&quot;</span></span>
+<span id="cb7-12"><a href="multi_layered.html#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">file =</span> filename, <span class="at">plot =</span> p, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">width =</span> <span class="fl">7.5</span>, <span class="at">height =</span> <span class="dv">5</span>)</span></code></pre></div>
+<p><img src="figures/figure_02_0400.png" width="230px">
+<img src="figures/figure_02_0401.png" width="230px">
+<img src="figures/figure_02_0402.png" width="230px"></p>
+<p>The following function <code>plot_MultiHeatmaps_SignxSamp()</code> vertically concatenates
+two or more heat maps across different databases.
+The arguments are <code>obj</code> (ASURAT object), <code>data_types</code> (vector of data types,
+where the first element is used for the cell clustering),
+<code>categories</code> (vector of categories, where the first element is used for the
+cell clustering), <code>algo_names</code> (vector of the name of algorithm used for
+the cell clustering: in the current version, one of <code>NULL</code>,
+<code>"pam"</code>, <code>"hclustCutree"</code>, <code>"seuratFindClusters"</code>, and <code>"merlot"</code>),
+<code>show_labels</code> (vector of <code>TRUE</code> or <code>FALSE</code>: if <code>TRUE</code>, clustering labels
+are shown), <code>splitting</code> (if <code>TRUE</code>, heat map is split by the first element of
+<code>data_type</code>), <code>method</code> (agglomeration method to be used, e.g.,
+<code>complete</code>, <code>ward.D2</code>, <code>average</code>, etc.),
+<code>show_nReads</code> (if <code>TRUE</code>, number of reads is shown), <code>title</code>, <code>names</code>
+(vector of names of the color bar), <code>show_rownames_sign</code>
+(if <code>TRUE</code>, the name of sign is shown), <code>show_rownames_label</code>
+(if <code>TRUE</code>, the name of label is shown), <code>show_rownames_nReads</code>
+(if <code>TRUE</code>, the name of number of reads is shown), and
+<code>default_colors</code> (vector of <code>TRUE</code> or <code>FALSE</code> for each classification:
+if <code>TRUE</code>, the default color of ggplot is used, otherwise rainbow).</p>
+<p><strong>Tips:</strong>
+To check the methods used for clustering, see <code>obj[["sample"]]</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="multi_layered.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb8-2"><a href="multi_layered.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sc68_vehi</span></span>
+<span id="cb8-3"><a href="multi_layered.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb8-4"><a href="multi_layered.html#cb8-4" aria-hidden="true" tabindex="-1"></a>filename <span class="ot">&lt;-</span> <span class="st">&quot;figures/figure_01_0410.png&quot;</span></span>
+<span id="cb8-5"><a href="multi_layered.html#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">file =</span> filename, <span class="at">height =</span> <span class="dv">2500</span>, <span class="at">width =</span> <span class="dv">1500</span>, <span class="at">res =</span> <span class="dv">300</span>)</span>
+<span id="cb8-6"><a href="multi_layered.html#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_MultiHeatmaps_SignxSamp</span>(</span>
+<span id="cb8-7"><a href="multi_layered.html#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">obj =</span> sc68_vehi,</span>
+<span id="cb8-8"><a href="multi_layered.html#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_types =</span> <span class="fu">c</span>(<span class="st">&quot;DO&quot;</span>, <span class="st">&quot;GO&quot;</span>, <span class="st">&quot;KEGG&quot;</span>),</span>
+<span id="cb8-9"><a href="multi_layered.html#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">categories =</span> <span class="fu">c</span>(<span class="st">&quot;disease&quot;</span>, <span class="st">&quot;BP&quot;</span>, <span class="st">&quot;pathway&quot;</span>),</span>
+<span id="cb8-10"><a href="multi_layered.html#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">algo_names =</span> <span class="fu">c</span>(<span class="st">&quot;seuratFindClusters&quot;</span>, <span class="st">&quot;seuratFindClusters&quot;</span>, <span class="cn">NULL</span>),</span>
+<span id="cb8-11"><a href="multi_layered.html#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_labels =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb8-12"><a href="multi_layered.html#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">splitting =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;ward.D2&quot;</span>, <span class="at">show_nReads =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb8-13"><a href="multi_layered.html#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">&quot;sc68_vehi&quot;</span>,</span>
+<span id="cb8-14"><a href="multi_layered.html#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">names =</span> <span class="fu">c</span>(<span class="st">&quot;DO:</span><span class="sc">\n</span><span class="st">disease&quot;</span>, <span class="st">&quot;GO:</span><span class="sc">\n</span><span class="st">BP&quot;</span>, <span class="st">&quot;KEGG:</span><span class="sc">\n</span><span class="st">pathway&quot;</span>),</span>
+<span id="cb8-15"><a href="multi_layered.html#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_rownames_sign =</span> <span class="cn">FALSE</span>, <span class="at">show_rownames_label =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb8-16"><a href="multi_layered.html#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_rownames_nReads =</span> <span class="cn">FALSE</span>, <span class="at">default_colors =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>))</span>
+<span id="cb8-17"><a href="multi_layered.html#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
+<p><img src="figures/figure_01_0410.png" width="300px">
+<img src="figures/figure_02_0410.png" width="300px">
+<img src="figures/figure_07_0410.png" width="300px">
+<img src="figures/figure_10_0410.png" width="300px">
+<img src="figures/figure_11_0410.png" width="300px"></p>
+<p>The following function <code>plot_MultiBargraphs_sign()</code> shows the population sizes
+by two-variable bar graphs.
+The arguments are <code>obj</code>, <code>data_type_1</code> (for data type in x-axis),
+<code>category_1</code> (for x-axis), <code>algo_name_1</code> (for x-axix), <code>data_type_2</code>
+(for data type in y-axis), <code>category_2</code> (for y-axis),
+<code>algo_name_2</code> (for y-axis), <code>title</code>, <code>title_size</code>,
+<code>cbar_title</code> (label of the color bar), <code>xlabel</code>, <code>ylabel</code>, <code>ymax</code>, and
+<code>default_color</code> (if <code>TRUE</code>, the default color of ggplot is used,
+otherwise rainbow).</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="multi_layered.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb9-2"><a href="multi_layered.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sc68_vehi</span></span>
+<span id="cb9-3"><a href="multi_layered.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb9-4"><a href="multi_layered.html#cb9-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot_MultiBargraphs_sign</span>(</span>
+<span id="cb9-5"><a href="multi_layered.html#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">obj =</span> sc68_vehi, <span class="at">data_type_1 =</span> <span class="st">&quot;DO&quot;</span>, <span class="at">category_1 =</span> <span class="st">&quot;disease&quot;</span>,</span>
+<span id="cb9-6"><a href="multi_layered.html#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">algo_name_1 =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
+<span id="cb9-7"><a href="multi_layered.html#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_type_2 =</span> <span class="st">&quot;GO&quot;</span>, <span class="at">category_2 =</span> <span class="st">&quot;BP&quot;</span>,</span>
+<span id="cb9-8"><a href="multi_layered.html#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">algo_name_2 =</span> <span class="st">&quot;seuratFindClusters&quot;</span>,</span>
+<span id="cb9-9"><a href="multi_layered.html#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">&quot;sc68_vehi&quot;</span>, <span class="at">title_size =</span> <span class="dv">18</span>, <span class="at">cbar_title =</span> <span class="st">&quot;Label</span><span class="sc">\n</span><span class="st">(GO: BP)&quot;</span>,</span>
+<span id="cb9-10"><a href="multi_layered.html#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlabel =</span> <span class="st">&quot;Label (DO: disease)&quot;</span>, <span class="at">ylabel =</span> <span class="st">&quot;Number of samples&quot;</span>, <span class="at">ymax =</span> <span class="dv">3500</span>,</span>
+<span id="cb9-11"><a href="multi_layered.html#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">default_color =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-12"><a href="multi_layered.html#cb9-12" aria-hidden="true" tabindex="-1"></a>filename <span class="ot">&lt;-</span> <span class="st">&quot;figures/figure_01_0415.png&quot;</span></span>
+<span id="cb9-13"><a href="multi_layered.html#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">file =</span> filename, <span class="at">plot =</span> p, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">width =</span> <span class="fl">5.5</span>, <span class="at">height =</span> <span class="dv">4</span>)</span></code></pre></div>
+<p><img src="figures/figure_01_0415.png" width="230px">
+<img src="figures/figure_07_0415.png" width="230px"></p>
+<p><img src="figures/figure_10_0415.png" width="230px">
+<img src="figures/figure_10_0416.png" width="230px"></p>
+<p><img src="figures/figure_11_0415.png" width="230px">
+<img src="figures/figure_11_0416.png" width="230px"></p>
+<p>Save the objects.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="multi_layered.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(sc68_vehi, <span class="at">file =</span> <span class="st">&quot;backup/01_400_sc68_vehi_all.rds&quot;</span>)</span>
+<span id="cb10-2"><a href="multi_layered.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(sc68_cisp, <span class="at">file =</span> <span class="st">&quot;backup/02_400_sc68_cisp_all.rds&quot;</span>)</span>
+<span id="cb10-3"><a href="multi_layered.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(pdac_aint, <span class="at">file =</span> <span class="st">&quot;backup/07_400_pdac_aint_all.rds&quot;</span>)</span>
+<span id="cb10-4"><a href="multi_layered.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(pbmc_4000, <span class="at">file =</span> <span class="st">&quot;backup/10_400_pbmc_4000_all.rds&quot;</span>)</span>
+<span id="cb10-5"><a href="multi_layered.html#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(pbmc_6000, <span class="at">file =</span> <span class="st">&quot;backup/11_400_pbmc_6000_all.rds&quot;</span>)</span></code></pre></div>
+<p>Load the objects.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="multi_layered.html#cb11-1" aria-hidden="true" tabindex="-1"></a>sc68_vehi <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/01_400_sc68_vehi_all.rds&quot;</span>)</span>
+<span id="cb11-2"><a href="multi_layered.html#cb11-2" aria-hidden="true" tabindex="-1"></a>sc68_cisp <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/02_400_sc68_cisp_all.rds&quot;</span>)</span>
+<span id="cb11-3"><a href="multi_layered.html#cb11-3" aria-hidden="true" tabindex="-1"></a>pdac_aint <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/07_400_pdac_aint_all.rds&quot;</span>)</span>
+<span id="cb11-4"><a href="multi_layered.html#cb11-4" aria-hidden="true" tabindex="-1"></a>pbmc_4000 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/10_400_pbmc_4000_all.rds&quot;</span>)</span>
+<span id="cb11-5"><a href="multi_layered.html#cb11-5" aria-hidden="true" tabindex="-1"></a>pbmc_6000 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/11_400_pbmc_6000_all.rds&quot;</span>)</span></code></pre></div>
+</div>
+<div id="spatial-mapping-by-spaniel-2" class="section level2" number="12.3">
+<h2><span class="header-section-number">12.3</span> Spatial mapping by Spaniel</h2>
+<p>Load the data.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="multi_layered.html#cb12-1" aria-hidden="true" tabindex="-1"></a>pdac_aint <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/07_400_pdac_aint_all.rds&quot;</span>)</span>
+<span id="cb12-2"><a href="multi_layered.html#cb12-2" aria-hidden="true" tabindex="-1"></a>pdac_ast1 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;backup/05_005_pdac_ast1_normalized.rds&quot;</span>)</span>
+<span id="cb12-3"><a href="multi_layered.html#cb12-3" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="st">&quot;data/2020_001_Moncada/pdac_ast1/tissue_positions_list_spatial_object.tsv&quot;</span></span></code></pre></div>
+<p>Create a Seurat object keeping only ST spots in integrated data <code>pdac_aint</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="multi_layered.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb13-2"><a href="multi_layered.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pdac_aint</span></span>
+<span id="cb13-3"><a href="multi_layered.html#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb13-4"><a href="multi_layered.html#cb13-4" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> pdac_aint[[<span class="st">&quot;sample&quot;</span>]]</span>
+<span id="cb13-5"><a href="multi_layered.html#cb13-5" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> tmp[<span class="fu">which</span>(tmp<span class="sc">$</span>orig_ident <span class="sc">==</span> <span class="st">&quot;ST&quot;</span>),]</span>
+<span id="cb13-6"><a href="multi_layered.html#cb13-6" aria-hidden="true" tabindex="-1"></a>pdac_aint[[<span class="st">&quot;sample&quot;</span>]] <span class="ot">&lt;-</span> tmp</span>
+<span id="cb13-7"><a href="multi_layered.html#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="multi_layered.html#cb13-8" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> pdac_aint[[<span class="st">&quot;sign&quot;</span>]][[<span class="st">&quot;KEGGxSample&quot;</span>]][[<span class="st">&quot;pathway&quot;</span>]]</span>
+<span id="cb13-9"><a href="multi_layered.html#cb13-9" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> pdac_aint[[<span class="st">&quot;sample&quot;</span>]][[<span class="st">&quot;barcode&quot;</span>]]</span>
+<span id="cb13-10"><a href="multi_layered.html#cb13-10" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> mat[, <span class="fu">which</span>(<span class="fu">colnames</span>(mat) <span class="sc">%in%</span> tmp)]</span>
+<span id="cb13-11"><a href="multi_layered.html#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat) <span class="ot">&lt;-</span> pdac_ast1[[<span class="st">&quot;sample&quot;</span>]][[<span class="st">&quot;spot&quot;</span>]]  <span class="co"># This is required by Spaniel</span></span>
+<span id="cb13-12"><a href="multi_layered.html#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb13-13"><a href="multi_layered.html#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># se</span></span>
+<span id="cb13-14"><a href="multi_layered.html#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------</span></span>
+<span id="cb13-15"><a href="multi_layered.html#cb13-15" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> Spaniel<span class="sc">::</span><span class="fu">createSeurat</span>(<span class="at">counts =</span> mat, <span class="at">barcodeFile =</span> fn,</span>
+<span id="cb13-16"><a href="multi_layered.html#cb13-16" aria-hidden="true" tabindex="-1"></a>                            <span class="at">projectName =</span> <span class="st">&quot;PDAC-A&quot;</span>, <span class="at">sectionNumber =</span> <span class="st">&quot;1&quot;</span>)</span>
+<span id="cb13-17"><a href="multi_layered.html#cb13-17" aria-hidden="true" tabindex="-1"></a>se<span class="sc">@</span>images <span class="ot">&lt;-</span> pdac_aint[[<span class="st">&quot;misc&quot;</span>]][[<span class="st">&quot;images&quot;</span>]]</span></code></pre></div>
+<p>Pre-processing.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="multi_layered.html#cb14-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> pdac_aint[[<span class="st">&quot;sample&quot;</span>]][[<span class="st">&quot;seuratFindClusters_CB_cell&quot;</span>]]</span>
+<span id="cb14-2"><a href="multi_layered.html#cb14-2" aria-hidden="true" tabindex="-1"></a>se<span class="sc">@</span>meta.data[[<span class="st">&quot;cluster&quot;</span>]] <span class="ot">&lt;-</span> tmp</span>
+<span id="cb14-3"><a href="multi_layered.html#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">SetIdent</span>(se, <span class="at">value =</span> <span class="st">&quot;cluster&quot;</span>)</span>
+<span id="cb14-4"><a href="multi_layered.html#cb14-4" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(se)</span></code></pre></div>
+<p>Visualize sign scores on histological images.
+Note that in <code>se</code> underscores "_" were replaced with hyphens “-”.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="multi_layered.html#cb15-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">spanielPlot</span>(<span class="at">object =</span> se, <span class="at">grob =</span> se<span class="sc">@</span>images[[<span class="dv">1</span>]], <span class="at">plotType =</span> <span class="st">&quot;Gene&quot;</span>,</span>
+<span id="cb15-2"><a href="multi_layered.html#cb15-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">gene =</span> <span class="st">&quot;path:hsa04512-S&quot;</span>, <span class="at">ptSizeMax =</span> <span class="fl">2.5</span>,  <span class="at">ptSizeMin =</span> <span class="dv">0</span>,</span>
+<span id="cb15-3"><a href="multi_layered.html#cb15-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">customTitle =</span> <span class="st">&quot;KEGG:hsa04512_S&quot;</span>)</span>
+<span id="cb15-4"><a href="multi_layered.html#cb15-4" aria-hidden="true" tabindex="-1"></a>filename <span class="ot">&lt;-</span> <span class="st">&quot;figures/figure_07_0420.png&quot;</span></span>
+<span id="cb15-5"><a href="multi_layered.html#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">file =</span> filename, <span class="at">plot =</span> p, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">width =</span> <span class="fl">4.7</span>, <span class="at">height =</span> <span class="fl">4.1</span>)</span></code></pre></div>
+<ul>
+<li>KEGG:hsa04512_S ECM-receptor interaction (COL1A1/LAMB1/..)</li>
+</ul>
+<p><img src="figures/figure_07_0420.png" width="300px"></p>
+<ul>
+<li>KEGG:hsa04115_S p53 signaling pathway (THBS1/SERPINE1/..)</li>
+</ul>
+<p><img src="figures/figure_07_0421.png" width="300px"></p>
+<ul>
+<li>KEGG:hsa04972_S Pancreatic secretion (PNLIP/CTRB1/..)</li>
+</ul>
+<p><img src="figures/figure_07_0422.png" width="300px"></p>
+<ul>
+<li>KEGG:hsa04662_V B cell receptor signaling pathway (FOS/NFKBIA/..)</li>
+</ul>
+<p><img src="figures/figure_07_0423.png" width="300px"></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="pathway.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="appendix-a-analyzing-scrna-seq-data-by-existing-method-i.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Introduction to ASURAT (ver. 0.0.0.9000).pdf", "Introduction to ASURAT (ver. 0.0.0.9000).epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

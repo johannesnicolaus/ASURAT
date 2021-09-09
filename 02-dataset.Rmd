@@ -1,113 +1,58 @@
 # Preparing data sets {#dataset}
-## Case I: input gene expression matrix with row and column names
+## Case I: 10x data (Stewart et al., Nat Cancer, 2020)
 ```{r, eval = FALSE}
 source("R/function_general.R")
 ```
 
-The following single-cell RNA sequencing (scRNA-seq) data sets were generated
-from cancer tissue originated spheroids (CTOSs) obtained from cervix cancer
-patients, which were then processed by Nx1-seq protocol.
-The accession numbers are DRA007915: DRX155816 and DRX155817
-```{r, eval = FALSE}
-mat1 <- readRDS(file = "data/2020_001_iida/day1_norm/day1_norm.rds")
-mat7 <- readRDS(file = "data/2020_001_iida/day7_hypo/day7_hypo.rds")
-```
+The data were obtained from NCBI repository with accession number [GSE138474](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138474).
+From the above, we downloaded scRNA-seq data with sample accessions numbers
+GSM4104164 (for MDA-SC68 with vehicle treatment) and
+GSM4104163 (for MDA-SC68 with cisplatin treatment).
 
-The following function `make_asurat_obj()` creates a structured object.
+Due to limits of file size, we prepared only the following ASURAT objects:
 ```{r, eval = FALSE}
-day1_norm <- make_asurat_obj(mat = mat1, obj_name = "day1_norm")
-day7_hypo <- make_asurat_obj(mat = mat7, obj_name = "day7_hypo")
-```
-
-Convert gene symbols into Entrez IDs by using `org.Hs.eg.db` package.
-```{r, eval = FALSE}
-dictionary <- AnnotationDbi::select(org.Hs.eg.db,
-                                    key = day1_norm[["variable"]][["symbol"]],
-                                    columns = c("ENTREZID"), keytype = "SYMBOL")
-dictionary <- dictionary[!duplicated(dictionary$SYMBOL), ]
-names(dictionary) <- c("symbol", "entrez")
-day1_norm[["variable"]] <- dictionary
-
-dictionary <- AnnotationDbi::select(org.Hs.eg.db,
-                                    key = day7_hypo[["variable"]][["symbol"]],
-                                    columns = c("ENTREZID"), keytype = "SYMBOL")
-dictionary <- dictionary[!duplicated(dictionary$SYMBOL), ]
-names(dictionary) <- c("symbol", "entrez")
-day7_hypo[["variable"]] <- dictionary
-```
-
-Save the objects.
-```{r, eval = FALSE}
-saveRDS(day1_norm, file = "backup/01_001_day1_norm_raw.rds")
-saveRDS(day7_hypo, file = "backup/02_001_day7_hypo_raw.rds")
+# ----------------------------------------
+# GSM4104164
+# ----------------------------------------
+sc68_vehi <- readRDS(file = "backup/01_001_sc68_vehi_raw.rds")
+# ----------------------------------------
+# GSM4104163
+# ----------------------------------------
+sc68_cisp <- readRDS(file = "backup/02_001_sc68_cisp_raw.rds")
 ```
 
 
 
-## Case II: input 10x data
+## Case II: PDAC-A ST and inDrop (Moncada et al., Nat Biotechnol, 2020)
+The data were obtained from NCBI repository with accession number [GSE111672](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111672).
+
+
+
+### PDAC-A ST
+From [GSE111672](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111672),
+we downloaded spatial transcriptome data with sample accession number
+GSM3036911 (for PDAC-A ST).
+
+The spatial coordinate information was obtained from the authors of
+[DOI:10.1038/s41587-019-0392-8](https://doi.org/10.1038/s41587-019-0392-8) and
+[DOI:10.1093/nar/gkab043](https://academic.oup.com/nar/article/49/9/e50/6129341).
+
+Due to limits of file size, we prepared only the following ASURAT object:
 ```{r, eval = FALSE}
-source("R/function_general.R")
+pdac_ast1 <- readRDS(file = "backup/05_001_pdac_ast1_raw.rds")
 ```
 
-The data were obtained from NCBI repository with accession number [GSE138474](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138474),
-from which the following SRA files were downloaded:
 
-* SRR10211594 (for MDA-SC68 with vehicle treatment; sample accessions numbers
-  GSM4104165),
-* SRR10211593 (for MDA-SC68 with cisplatin treatment; sample accessions numbers
-  GSM4104164).
 
-The raw count matrices were dumped by 10x cellranger with a reference
-genome GRCh38-3.0.0.
-The following function `read_10xdata` processes the dumped files into a raw
-count matrix.
-In this function, `make.unique()` in `base` package is applied for naming gene
-symbols, which appends a sequential number with a period delimiter for every
-repeat name encountered.
+### PDAC-A inDrop
+From [GSE111672](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111672),
+we downloaded spatial transcriptome data with sample accession numbers
+GSM3036909, GSM3036910, GSM3405527, GSM3405528, GSM3405529, and GSM3405530
+(for PDAC-A inDrop1-inDrop6).
+
+Due to limits of file size, we prepared only the following ASURAT object:
 ```{r, eval = FALSE}
-read_10xdata <- function(path_dir){
-  barcode.path <- paste0(path_dir, "barcodes.tsv.gz")
-  feature.path <- paste0(path_dir, "features.tsv.gz")
-  matrix.path  <- paste0(path_dir, "matrix.mtx.gz")
-  mat <- as.matrix(readMM(file = matrix.path))
-  genes <- read.delim(feature.path, header = FALSE, stringsAsFactors = FALSE)
-  barcodes <- read.delim(barcode.path, header = FALSE, stringsAsFactors = FALSE)
-  rownames(mat) <- make.unique(as.character(genes$V2))
-  colnames(mat) <- barcodes$V1
-
-  return(mat)
-}
-path_dir1 <- "data/2020_001_stewart/sc68_vehi/SRR10211594_count/"
-path_dir1 <- paste(path_dir1, "filtered_feature_bc_matrix/", sep = "")
-path_dir2 <- "data/2020_001_stewart/sc68_cisp/SRR10211593_count/"
-path_dir2 <- paste(path_dir2, "filtered_feature_bc_matrix/", sep = "")
-sc68_vehi <- make_asurat_obj(mat = read_10xdata(path_dir = path_dir1),
-                             obj_name = "sc68_vehi")
-sc68_cisp <- make_asurat_obj(mat = read_10xdata(path_dir = path_dir2),
-                             obj_name = "sc68_cisp")
-```
-
-Convert gene symbols into Entrez IDs by using `org.Hs.eg.db` package.
-```{r, eval = FALSE}
-dictionary <- AnnotationDbi::select(org.Hs.eg.db,
-                                    key = sc68_vehi[["variable"]][["symbol"]],
-                                    columns = c("ENTREZID"), keytype = "SYMBOL")
-dictionary <- dictionary[!duplicated(dictionary$SYMBOL), ]
-names(dictionary) <- c("symbol", "entrez")
-sc68_vehi[["variable"]] <- dictionary
-
-dictionary <- AnnotationDbi::select(org.Hs.eg.db,
-                                    key = sc68_cisp[["variable"]][["symbol"]],
-                                    columns = c("ENTREZID"), keytype = "SYMBOL")
-dictionary <- dictionary[!duplicated(dictionary$SYMBOL), ]
-names(dictionary) <- c("symbol", "entrez")
-sc68_cisp[["variable"]] <- dictionary
-```
-
-Save the objects.
-```{r, eval = FALSE}
-saveRDS(sc68_vehi, file = "backup/03_001_sc68_vehi_raw.rds")
-saveRDS(sc68_cisp, file = "backup/04_001_sc68_cisp_raw.rds")
+pdac_arna <- readRDS(file = "backup/06_001_pdac_arna_raw.rds")
 ```
 
 
@@ -120,45 +65,14 @@ source("R/function_general.R")
 The data (peripheral blood mononuclear cells from a healthy donor) were
 obtained from 10x Genomics repository (PBMC 4k and 6k).
 
-Load the data.
+Due to limits of file size, we prepared only the following ASURAT objects:
 ```{r, eval = FALSE}
-read_10xdata_v2 <- function(path_dir){
-  library(Seurat)
-  obj <- Read10X(data.dir = path_dir, gene.column = 2, unique.features = TRUE,
-                 strip.suffix = FALSE)
-  obj <- CreateSeuratObject(counts = obj)
-  mat <- as.matrix(obj@assays[["RNA"]]@counts)
-  return(mat)
-}
-path_dir1 <- "data/2020_001_10xgenomics/pbmc_4000/"
-path_dir1 <- paste(path_dir1, "filtered_gene_bc_matrices/GRCh38/", sep = "")
-path_dir2 <- "data/2020_001_10xgenomics/pbmc_6000/"
-path_dir2 <- paste(path_dir2, "filtered_matrices_mex/hg19/", sep = "")
-pbmc_4000 <- make_asurat_obj(mat = read_10xdata_v2(path_dir = path_dir1),
-                             obj_name = "pbmc_4000")
-pbmc_6000 <- make_asurat_obj(mat = read_10xdata_v2(path_dir = path_dir2),
-                             obj_name = "pbmc_6000")
-```
-
-Convert gene symbols into Entrez IDs by using `org.Hs.eg.db` package.
-```{r, eval = FALSE}
-dictionary <- AnnotationDbi::select(org.Hs.eg.db,
-                                    key = pbmc_4000[["variable"]][["symbol"]],
-                                    columns = c("ENTREZID"), keytype = "SYMBOL")
-dictionary <- dictionary[!duplicated(dictionary$SYMBOL), ]
-names(dictionary) <- c("symbol", "entrez")
-pbmc_4000[["variable"]] <- dictionary
-
-dictionary <- AnnotationDbi::select(org.Hs.eg.db,
-                                    key = pbmc_6000[["variable"]][["symbol"]],
-                                    columns = c("ENTREZID"), keytype = "SYMBOL")
-dictionary <- dictionary[!duplicated(dictionary$SYMBOL), ]
-names(dictionary) <- c("symbol", "entrez")
-pbmc_6000[["variable"]] <- dictionary
-```
-
-Save the objects.
-```{r, eval = FALSE}
-saveRDS(pbmc_4000, file = "backup/05_001_pbmc_4000_raw.rds")
-saveRDS(pbmc_6000, file = "backup/06_001_pbmc_6000_raw.rds")
+# ----------------------------------------
+# PBMC 4k
+# ----------------------------------------
+pbmc_4000 <- readRDS(file = "backup/10_001_pbmc_4000_raw.rds")
+# ----------------------------------------
+# PBMC 6k
+# ----------------------------------------
+pbmc_6000 <- readRDS(file = "backup/11_001_pbmc_6000_raw.rds")
 ```

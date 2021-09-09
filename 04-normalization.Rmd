@@ -8,27 +8,28 @@ analyses.
 
 Load the data.
 ```{r, eval = FALSE}
+rm(list = ls())
 source("R/function_general.R")
-day1_norm <- readRDS(file = "backup/01_004_day1_norm_trim_variables.rds")
-day7_hypo <- readRDS(file = "backup/02_004_day7_hypo_trim_variables.rds")
-sc68_vehi <- readRDS(file = "backup/03_004_sc68_vehi_trim_variables.rds")
-sc68_cisp <- readRDS(file = "backup/04_004_sc68_cisp_trim_variables.rds")
-pbmc_4000 <- readRDS(file = "backup/05_004_pbmc_4000_trim_variables.rds")
-pbmc_6000 <- readRDS(file = "backup/06_004_pbmc_6000_trim_variables.rds")
+sc68_vehi <- readRDS(file = "backup/01_004_sc68_vehi_trim_variables.rds")
+sc68_cisp <- readRDS(file = "backup/02_004_sc68_cisp_trim_variables.rds")
+pdac_ast1 <- readRDS(file = "backup/05_004_pdac_ast1_trim_variables.rds")
+pdac_arna <- readRDS(file = "backup/06_004_pdac_arna_trim_variables.rds")
+pbmc_4000 <- readRDS(file = "backup/10_004_pbmc_4000_trim_variables.rds")
+pbmc_6000 <- readRDS(file = "backup/11_004_pbmc_6000_trim_variables.rds")
 ```
 
 Check the size of the gene-by-sample matrices.
 ```{r, eval = FALSE}
-rbind(dim(day1_norm[["data"]][["raw"]]), dim(day7_hypo[["data"]][["raw"]]),
-      dim(sc68_vehi[["data"]][["raw"]]), dim(sc68_cisp[["data"]][["raw"]]),
+rbind(dim(sc68_vehi[["data"]][["raw"]]), dim(sc68_cisp[["data"]][["raw"]]),
+      dim(pdac_ast1[["data"]][["raw"]]), dim(pdac_arna[["data"]][["raw"]]),
       dim(pbmc_4000[["data"]][["raw"]]), dim(pbmc_6000[["data"]][["raw"]]))
 ```
 
 ```
-[1,] 5272 3663
-[2,] 6213 1947
-[3,] 6581 3923
-[4,] 6347 2285
+[1,] 6581 3923
+[2,] 6347 2285
+[3,] 4497  428
+[4,] 5893 2051
 [5,] 6658 3815
 [6,] 5169 4878
 ```
@@ -37,19 +38,19 @@ Perform `bayNorm()` to infer the true copy numbers of transcripts.
 Below is the default setting of `bayNorm()`.
 ```{r, eval = FALSE}
 doBayNorm <- function(obj){
-  MeanBETA = 0.06
+  MeanBETA = 0.06  # 0.06 is the default value
   obj[["history"]][["doBayNorm"]][["MeanBETA"]] <- MeanBETA
   mat <- as.matrix(obj[["data"]][["raw"]])
-  BETA <- BetaFun(Data = mat, MeanBETA = MeanBETA)  # 0.06 is the default value
+  BETA <- BetaFun(Data = mat, MeanBETA = MeanBETA)
   bay_out <- bayNorm(mat, BETA_vec = BETA[["BETA"]], mode_version = TRUE)
   obj[["data"]][["bayNorm"]] <- bay_out
   return(obj)
 }
 
-day1_norm <- doBayNorm(obj = day1_norm)
-day7_hypo <- doBayNorm(obj = day7_hypo)
 sc68_vehi <- doBayNorm(obj = sc68_vehi)
 sc68_cisp <- doBayNorm(obj = sc68_cisp)
+pdac_ast1 <- doBayNorm(obj = pdac_ast1)
+pdac_arna <- doBayNorm(obj = pdac_arna)
 pbmc_4000 <- doBayNorm(obj = pbmc_4000)
 pbmc_6000 <- doBayNorm(obj = pbmc_6000)
 ```
@@ -61,42 +62,42 @@ log1p_data <- function(obj, eps){
   obj[["history"]][["log1p_data"]][["eps"]] <- eps
   mat <- as.matrix(obj[["data"]][["bayNorm"]][["Bay_out"]])
   lmat <- log(mat + eps)
-  obj[["data"]][["log1p"]] <- as.data.frame(lmat)
+  obj[["data"]][["normalized"]] <- as.data.frame(lmat)
   return(obj)
 }
 
-day1_norm <- log1p_data(obj = day1_norm, eps = 1)
-day7_hypo <- log1p_data(obj = day7_hypo, eps = 1)
 sc68_vehi <- log1p_data(obj = sc68_vehi, eps = 1)
 sc68_cisp <- log1p_data(obj = sc68_cisp, eps = 1)
+pdac_ast1 <- log1p_data(obj = pdac_ast1, eps = 1)
+pdac_arna <- log1p_data(obj = pdac_arna, eps = 1)
 pbmc_4000 <- log1p_data(obj = pbmc_4000, eps = 1)
 pbmc_6000 <- log1p_data(obj = pbmc_6000, eps = 1)
 ```
 
-The following function `centralize_data()` centralizes the input data on a
+The following function `center_data()` centralizes the input data on a
 gene-by-gene basis.
 ```{r, eval = FALSE}
-centralize_data <- function(obj){
-  mat <- as.matrix(obj[["data"]][["log1p"]])
+center_data <- function(obj){
+  mat <- as.matrix(obj[["data"]][["normalized"]])
   cmat <- sweep(mat, 1, apply(mat, 1, mean), FUN = "-")
   obj[["data"]][["centered"]] <- as.data.frame(cmat)
   return(obj)
 }
 
-day1_norm <- centralize_data(obj = day1_norm)
-day7_hypo <- centralize_data(obj = day7_hypo)
-sc68_vehi <- centralize_data(obj = sc68_vehi)
-sc68_cisp <- centralize_data(obj = sc68_cisp)
-pbmc_4000 <- centralize_data(obj = pbmc_4000)
-pbmc_6000 <- centralize_data(obj = pbmc_6000)
+sc68_vehi <- center_data(obj = sc68_vehi)
+sc68_cisp <- center_data(obj = sc68_cisp)
+pdac_ast1 <- center_data(obj = pdac_ast1)
+pdac_arna <- center_data(obj = pdac_arna)
+pbmc_4000 <- center_data(obj = pbmc_4000)
+pbmc_6000 <- center_data(obj = pbmc_6000)
 ```
 
 Save the objects.
 ```{r, eval = FALSE}
-saveRDS(day1_norm, file = "backup/01_005_day1_norm_normalized.rds")
-saveRDS(day7_hypo, file = "backup/02_005_day7_hypo_normalized.rds")
-saveRDS(sc68_vehi, file = "backup/03_005_sc68_vehi_normalized.rds")
-saveRDS(sc68_cisp, file = "backup/04_005_sc68_cisp_normalized.rds")
-saveRDS(pbmc_4000, file = "backup/05_005_pbmc_4000_normalized.rds")
-saveRDS(pbmc_6000, file = "backup/06_005_pbmc_6000_normalized.rds")
+saveRDS(sc68_vehi, file = "backup/01_005_sc68_vehi_normalized.rds")
+saveRDS(sc68_cisp, file = "backup/02_005_sc68_cisp_normalized.rds")
+saveRDS(pdac_ast1, file = "backup/05_005_pdac_ast1_normalized.rds")
+saveRDS(pdac_arna, file = "backup/06_005_pdac_arna_normalized.rds")
+saveRDS(pbmc_4000, file = "backup/10_005_pbmc_4000_normalized.rds")
+saveRDS(pbmc_6000, file = "backup/11_005_pbmc_6000_normalized.rds")
 ```

@@ -1,0 +1,8 @@
+load("/Users/kiida/ASURAT/backup/05_002_pdac_ast1_quickQC.rds")
+load("/Users/kiida/ASURAT/backup/05_003_pdac_ast1_trim_samples.rds")
+load("/Users/kiida/ASURAT/backup/05_004_pdac_ast1_trim_variables.rds")
+load("/Users/kiida/ASURAT/backup/05_005_pdac_ast1_normalized.rds")
+load("/Users/kiida/ASURAT/backup/06_001_pdac_arna_raw.rds")
+load("/Users/kiida/ASURAT/backup/06_002_pdac_arna_quickQC.rds")
+load("/Users/kiida/ASURAT/backup/06_003_pdac_arna_trim_samples.rds")
+load("/Users/kiida/ASURAT/backup/06_004_pdac_arna_trim_variables.rds")

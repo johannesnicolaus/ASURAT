@@ -1,6 +1,6 @@
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 make_asurat_obj <- function(mat, obj_name){
   #--------------------------------------------------
   # Definition
@@ -9,10 +9,11 @@ make_asurat_obj <- function(mat, obj_name){
     history = c(),
     variable = data.frame(
       symbol = rownames(mat),
-      entrez = rep(NA, dim(mat)[1])
+      entrez = NA
     ),
     sample = data.frame(
-      barcode = colnames(mat)
+      barcode = colnames(mat),
+      orig_ident = obj_name
     ),
     data = c(),
     misc = c()
@@ -26,9 +27,9 @@ make_asurat_obj <- function(mat, obj_name){
 
   return(obj)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 do_quickQC <- function(obj, min_nsamples, mitochondria_symbol){
   #--------------------------------------------------
   # History
@@ -45,24 +46,23 @@ do_quickQC <- function(obj, min_nsamples, mitochondria_symbol){
   #--------------------------------------------------
   # Other information
   #--------------------------------------------------
-  obj[["variable"]] <- data.frame(
-    symbol = obj[["variable"]][["symbol"]][inds],
-    entrez = obj[["variable"]][["entrez"]][inds]
-  )
-  obj[["sample"]] <- data.frame(
-    barcode = colnames(mat),
-    nReads = as.integer(apply(mat, 2, function(x) sum(x))),
-    nGenes = as.integer(apply(mat, 2, function(x) sum(x > 0))),
-    percent_MT = apply(
-      mat[grepl(mitochondria_symbol, rownames(mat)),], 2, function(x) 100 * sum(x)
-    ) / apply(mat, 2, function(x) sum(x))
-  )
+  obj[["variable"]] <- obj[["variable"]][inds,]
+  obj[["sample"]][["nReads"]] <- as.integer(apply(mat, 2, function(x) sum(x)))
+  obj[["sample"]][["nGenes"]] <- as.integer(apply(mat, 2, function(x) sum(x > 0)))
+  obj[["sample"]][["percent_MT"]] <- apply(
+    mat[grepl(mitochondria_symbol, rownames(mat)),], 2, function(x) 100 * sum(x)
+  ) / apply(mat, 2, function(x) sum(x))
+  tmp <- obj[["sample"]][which(is.nan(obj[["sample"]]$percent_MT)),]
+  if(nrow(tmp) > 0){
+    tmp$percent_MT <- 0.0
+  }
+  obj[["sample"]][which(is.nan(obj[["sample"]]$percent_MT)),] <- tmp
 
   return(obj)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 trim_samples <- function(obj,
   min_nReads = 0, max_nReads = 1e+10,
   min_nGenes = 0, max_nGenes = 1e+10,
@@ -96,20 +96,15 @@ trim_samples <- function(obj,
   inds <- intersect(intersect(inds_1, inds_2), inds_3)
   obj[["data"]][["raw"]] <- as.data.frame(obj[["data"]][["raw"]][,inds])
   #--------------------------------------------------
-  # The other information
+  # The others
   #--------------------------------------------------
-  obj[["sample"]] <- data.frame(
-    barcode = obj[["sample"]][["barcode"]][inds],
-    nReads = as.integer(obj[["sample"]][["nReads"]][inds]),
-    nGenes = as.integer(obj[["sample"]][["nGenes"]][inds]),
-    percent_MT = obj[["sample"]][["percent_MT"]][inds]
-  )
+  obj[["sample"]] <- obj[["sample"]][inds,]
 
   return(obj)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 trim_variables <- function(obj, min_meanReads){
   #--------------------------------------------------
   # History
@@ -126,12 +121,36 @@ trim_variables <- function(obj, min_meanReads){
   #--------------------------------------------------
   # The others
   #--------------------------------------------------
-  genes <- data.frame(
-    symbol  = obj[["variable"]][["symbol"]][inds],
-    entrez  = obj[["variable"]][["entrez"]][inds]
-  )
-  obj[["variable"]] <- genes
+  obj[["variable"]] <- obj[["variable"]][inds,]
 
   return(obj)
 }
+#-----------------------------------------------------------------------------80
+#
+#-----------------------------------------------------------------------------80
+convert_seurat2asurat <- function(obj_seurat, orgdb, obj_name){
+  # ----------------------------------------
+  # Set up ASURAT objects using normalized data
+  # ----------------------------------------
+  mat <- as.matrix(obj_seurat@assays[["integrated"]]@data)
+  obj <- make_asurat_obj(mat = mat, obj_name = obj_name)
+  obj[["sample"]][["orig_ident"]] <- obj_seurat@meta.data[["orig.ident"]]
+  # ----------------------------------------
+  # Prepare normalized and centered data slot
+  # ----------------------------------------
+  obj[["data"]][["raw"]] <- NULL # Remove this because the data is normalized
+  obj[["data"]][["normalized"]] <- as.data.frame(mat)
+  cmat <- sweep(mat, 1, apply(mat, 1, mean), FUN = "-")
+  obj[["data"]][["centered"]] <- as.data.frame(cmat)
+  # ----------------------------------------
+  # Convert gene symbols into entrez IDs
+  # ----------------------------------------
+  dictionary <- AnnotationDbi::select(orgdb,
+                                      key = obj[["variable"]][["symbol"]],
+                                      columns = "ENTREZID", keytype = "SYMBOL")
+  dictionary <- dictionary[!duplicated(dictionary$SYMBOL), ]
+  names(dictionary) <- c("symbol", "entrez")
+  obj[["variable"]] <- dictionary
 
+  return(obj)
+}

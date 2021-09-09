@@ -1,8 +1,3 @@
----
-output:
-  word_document: default
-  html_document: default
----
 # Data quality control (QC) {#dataqc}
 In this section, we remove the genes and cells with low quality,
 by processing the following three steps:
@@ -15,44 +10,45 @@ by processing the following three steps:
 ## Quick QC
 Load the data.
 ```{r, eval = FALSE}
+rm(list = ls())
 source("R/function_general.R")
-day1_norm <- readRDS(file = "backup/01_001_day1_norm_raw.rds")
-day7_hypo <- readRDS(file = "backup/02_001_day7_hypo_raw.rds")
-sc68_vehi <- readRDS(file = "backup/03_001_sc68_vehi_raw.rds")
-sc68_cisp <- readRDS(file = "backup/04_001_sc68_cisp_raw.rds")
-pbmc_4000 <- readRDS(file = "backup/05_001_pbmc_4000_raw.rds")
-pbmc_6000 <- readRDS(file = "backup/06_001_pbmc_6000_raw.rds")
+sc68_vehi <- readRDS(file = "backup/01_001_sc68_vehi_raw.rds")
+sc68_cisp <- readRDS(file = "backup/02_001_sc68_cisp_raw.rds")
+pdac_ast1 <- readRDS(file = "backup/05_001_pdac_ast1_raw.rds")
+pdac_arna <- readRDS(file = "backup/06_001_pdac_arna_raw.rds")
+pbmc_4000 <- readRDS(file = "backup/10_001_pbmc_4000_raw.rds")
+pbmc_6000 <- readRDS(file = "backup/11_001_pbmc_6000_raw.rds")
 ```
 
 Check the size of the gene-by-sample matrices.
 ```{r, eval = FALSE}
-rbind(dim(day1_norm[["data"]][["raw"]]), dim(day7_hypo[["data"]][["raw"]]),
-      dim(sc68_vehi[["data"]][["raw"]]), dim(sc68_cisp[["data"]][["raw"]]),
+rbind(dim(sc68_vehi[["data"]][["raw"]]), dim(sc68_cisp[["data"]][["raw"]]),
+      dim(pdac_ast1[["data"]][["raw"]]), dim(pdac_arna[["data"]][["raw"]]),
       dim(pbmc_4000[["data"]][["raw"]]), dim(pbmc_6000[["data"]][["raw"]]))
 ```
 
 ```
-[1,] 21383 11417
-[2,] 20073  6117
-[3,] 33538  5905
-[4,] 33538  3433
-[5,] 33694  4340
-[6,] 32738  5419
+[1,] 33538 5905
+[2,] 33538 3433
+[3,] 25807  428
+[4,] 19811 8701
+[5,] 33694 4340
+[6,] 32738 5419
 ```
 
-The following function `do_quickQC()` removes the genes for which the number
+The following function `do_quickQC()` removes genes for which the number
 of non-zero expressing cells is less than `min_nsamples`.
 In addition, this function counts the number of reads, the number of non-zero
 expressing genes, and the percent of reads that map to the mitochondrial genes,
 e.g., `MT-Co1`, `mt-Co1`, etc.
 ```{r, eval = FALSE}
-day1_norm <- do_quickQC(obj = day1_norm, min_nsamples = 10,
-                        mitochondria_symbol = "^MT-")
-day7_hypo <- do_quickQC(obj = day7_hypo, min_nsamples = 10,
-                        mitochondria_symbol = "^MT-")
 sc68_vehi <- do_quickQC(obj = sc68_vehi, min_nsamples = 10,
                         mitochondria_symbol = "^MT-")
 sc68_cisp <- do_quickQC(obj = sc68_cisp, min_nsamples = 10,
+                        mitochondria_symbol = "^MT-")
+pdac_ast1 <- do_quickQC(obj = pdac_ast1, min_nsamples = 10,
+                        mitochondria_symbol = "^MT-")
+pdac_arna <- do_quickQC(obj = pdac_arna, min_nsamples = 10,
                         mitochondria_symbol = "^MT-")
 pbmc_4000 <- do_quickQC(obj = pbmc_4000, min_nsamples = 10,
                         mitochondria_symbol = "^MT-")
@@ -64,32 +60,32 @@ The results are stored in
 `obj[["sample"]][["percent_MT"]]`, and `obj[["data"]][["raw"]]`.
 
 Users can always check the parameter values in `obj[["history"]]`.
-For example, `obj[["history"]][["do_quickQC"]][["min_nsamples"]]`.
+For example, see `obj[["history"]][["do_quickQC"]][["min_nsamples"]]`.
 
 Check the size of the gene-by-sample matrix.
 ```{r, eval = FALSE}
-rbind(dim(day1_norm[["data"]][["raw"]]), dim(day7_hypo[["data"]][["raw"]]),
-      dim(sc68_vehi[["data"]][["raw"]]), dim(sc68_cisp[["data"]][["raw"]]),
+rbind(dim(sc68_vehi[["data"]][["raw"]]), dim(sc68_cisp[["data"]][["raw"]]),
+      dim(pdac_ast1[["data"]][["raw"]]), dim(pdac_arna[["data"]][["raw"]]),
       dim(pbmc_4000[["data"]][["raw"]]), dim(pbmc_6000[["data"]][["raw"]]))
 ```
 
 ```
-[1,] 16820 11417
-[2,] 15795  6117
-[3,] 16784  5905
-[4,] 15605  3433
-[5,] 13829  4340
-[6,] 11946  5419
+[1,] 16784 5905
+[2,] 15605 3433
+[3,] 10364  428
+[4,] 13653 8701
+[5,] 13829 4340
+[6,] 11946 5419
 ```
 
 Save the objects.
 ```{r, eval = FALSE}
-saveRDS(day1_norm, file = "backup/01_002_day1_norm_quickQC.rds")
-saveRDS(day7_hypo, file = "backup/02_002_day7_hypo_quickQC.rds")
-saveRDS(sc68_vehi, file = "backup/03_002_sc68_vehi_quickQC.rds")
-saveRDS(sc68_cisp, file = "backup/04_002_sc68_cisp_quickQC.rds")
-saveRDS(pbmc_4000, file = "backup/05_002_pbmc_4000_quickQC.rds")
-saveRDS(pbmc_6000, file = "backup/06_002_pbmc_6000_quickQC.rds")
+saveRDS(sc68_vehi, file = "backup/01_002_sc68_vehi_quickQC.rds")
+saveRDS(sc68_cisp, file = "backup/02_002_sc68_cisp_quickQC.rds")
+saveRDS(pdac_ast1, file = "backup/05_002_pdac_ast1_quickQC.rds")
+saveRDS(pdac_arna, file = "backup/06_002_pdac_arna_quickQC.rds")
+saveRDS(pbmc_4000, file = "backup/10_002_pbmc_4000_quickQC.rds")
+saveRDS(pbmc_6000, file = "backup/11_002_pbmc_6000_quickQC.rds")
 ```
 
 
@@ -99,28 +95,12 @@ Load the data.
 ```{r, eval = FALSE}
 source("R/function_general.R")
 source("R/plot.R")
-day1_norm <- readRDS(file = "backup/01_002_day1_norm_quickQC.rds")
-day7_hypo <- readRDS(file = "backup/02_002_day7_hypo_quickQC.rds")
-sc68_vehi <- readRDS(file = "backup/03_002_sc68_vehi_quickQC.rds")
-sc68_cisp <- readRDS(file = "backup/04_002_sc68_cisp_quickQC.rds")
-pbmc_4000 <- readRDS(file = "backup/05_002_pbmc_4000_quickQC.rds")
-pbmc_6000 <- readRDS(file = "backup/06_002_pbmc_6000_quickQC.rds")
-```
-
-Check the size of the gene-by-sample matrices.
-```{r, eval = FALSE}
-rbind(dim(day1_norm[["data"]][["raw"]]), dim(day7_hypo[["data"]][["raw"]]),
-      dim(sc68_vehi[["data"]][["raw"]]), dim(sc68_cisp[["data"]][["raw"]]),
-      dim(pbmc_4000[["data"]][["raw"]]), dim(pbmc_6000[["data"]][["raw"]]))
-```
-
-```
-[1,] 16820 11417
-[2,] 15795  6117
-[3,] 16784  5905
-[4,] 15605  3433
-[5,] 13829  4340
-[6,] 11946  5419
+sc68_vehi <- readRDS(file = "backup/01_002_sc68_vehi_quickQC.rds")
+sc68_cisp <- readRDS(file = "backup/02_002_sc68_cisp_quickQC.rds")
+pdac_ast1 <- readRDS(file = "backup/05_002_pdac_ast1_quickQC.rds")
+pdac_arna <- readRDS(file = "backup/06_002_pdac_arna_quickQC.rds")
+pbmc_4000 <- readRDS(file = "backup/10_002_pbmc_4000_quickQC.rds")
+pbmc_6000 <- readRDS(file = "backup/11_002_pbmc_6000_quickQC.rds")
 ```
 
 The following function `plot_metaData()` outputs a scatter plot between the
@@ -138,84 +118,84 @@ my_func <- function(obj, metaname1, metaname2){
   return(p)
 }
 # ----------------------------------------
-# For `day1_norm`
+# sc68_vehi
 # ----------------------------------------
-p <- my_func(obj = day1_norm, metaname1 = "nReads", metaname2 = "nGenes")
+p <- my_func(obj = sc68_vehi, metaname1 = "nReads", metaname2 = "nGenes")
 filename <- "figures/figure_01_0010.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 
-p <- my_func(obj = day1_norm, metaname1 = "nGenes", metaname2 = "percent_MT")
+p <- my_func(obj = sc68_vehi, metaname1 = "nGenes", metaname2 = "percent_MT")
 filename <- "figures/figure_01_0011.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 ```
 
 ```{r, eval = FALSE, echo = FALSE, results = "hide"}
 # ----------------------------------------
-# For `day7_hypo`
+# sc68_cisp
 # ----------------------------------------
-p <- my_func(obj = day7_hypo, metaname1 = "nReads", metaname2 = "nGenes")
+p <- my_func(obj = sc68_cisp, metaname1 = "nReads", metaname2 = "nGenes")
 filename <- "figures/figure_02_0010.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 
-p <- my_func(obj = day7_hypo, metaname1 = "nGenes", metaname2 = "percent_MT")
+p <- my_func(obj = sc68_cisp, metaname1 = "nGenes", metaname2 = "percent_MT")
 filename <- "figures/figure_02_0011.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 # ----------------------------------------
-# For `sc68_vehi`
+# pdac_ast1
 # ----------------------------------------
-p <- my_func(obj = sc68_vehi, metaname1 = "nReads", metaname2 = "nGenes")
-filename <- "figures/figure_03_0010.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
-
-p <- my_func(obj = sc68_vehi, metaname1 = "nGenes", metaname2 = "percent_MT")
-filename <- "figures/figure_03_0011.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
-# ----------------------------------------
-# For `sc68_cisp`
-# ----------------------------------------
-p <- my_func(obj = sc68_cisp, metaname1 = "nReads", metaname2 = "nGenes")
-filename <- "figures/figure_04_0010.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
-
-p <- my_func(obj = sc68_cisp, metaname1 = "nGenes", metaname2 = "percent_MT")
-filename <- "figures/figure_04_0011.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
-# ----------------------------------------
-# For `pbmc_4000`
-# ----------------------------------------
-p <- my_func(obj = pbmc_4000, metaname1 = "nReads", metaname2 = "nGenes")
+p <- my_func(obj = pdac_ast1, metaname1 = "nReads", metaname2 = "nGenes")
 filename <- "figures/figure_05_0010.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 
-p <- my_func(obj = pbmc_4000, metaname1 = "nGenes", metaname2 = "percent_MT")
+p <- my_func(obj = pdac_ast1, metaname1 = "nGenes", metaname2 = "percent_MT")
 filename <- "figures/figure_05_0011.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 # ----------------------------------------
-# For `pbmc_6000`
+# pdac_arna
 # ----------------------------------------
-p <- my_func(obj = pbmc_6000, metaname1 = "nReads", metaname2 = "nGenes")
+p <- my_func(obj = pdac_arna, metaname1 = "nReads", metaname2 = "nGenes")
 filename <- "figures/figure_06_0010.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 
-p <- my_func(obj = pbmc_6000, metaname1 = "nGenes", metaname2 = "percent_MT")
+p <- my_func(obj = pdac_arna, metaname1 = "nGenes", metaname2 = "percent_MT")
 filename <- "figures/figure_06_0011.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
+# ----------------------------------------
+# pbmc_4000
+# ----------------------------------------
+p <- my_func(obj = pbmc_4000, metaname1 = "nReads", metaname2 = "nGenes")
+filename <- "figures/figure_10_0010.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
+
+p <- my_func(obj = pbmc_4000, metaname1 = "nGenes", metaname2 = "percent_MT")
+filename <- "figures/figure_10_0011.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
+# ----------------------------------------
+# pbmc_6000
+# ----------------------------------------
+p <- my_func(obj = pbmc_6000, metaname1 = "nReads", metaname2 = "nGenes")
+filename <- "figures/figure_11_0010.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
+
+p <- my_func(obj = pbmc_6000, metaname1 = "nGenes", metaname2 = "percent_MT")
+filename <- "figures/figure_11_0011.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 ```
 
-<img src="figures/figure_01_0010.png" width="150px">
-<img src="figures/figure_01_0011.png" width="150px">
-<img src="figures/figure_02_0010.png" width="150px">
-<img src="figures/figure_02_0011.png" width="150px">
+<img src="figures/figure_01_0010.png" width="180px">
+<img src="figures/figure_01_0011.png" width="180px">
+<img src="figures/figure_02_0010.png" width="180px">
+<img src="figures/figure_02_0011.png" width="180px">
 
-<img src="figures/figure_03_0010.png" width="150px">
-<img src="figures/figure_03_0011.png" width="150px">
-<img src="figures/figure_04_0010.png" width="150px">
-<img src="figures/figure_04_0011.png" width="150px">
+<img src="figures/figure_05_0010.png" width="180px">
+<img src="figures/figure_05_0011.png" width="180px">
+<img src="figures/figure_06_0010.png" width="180px">
+<img src="figures/figure_06_0011.png" width="180px">
 
-<img src="figures/figure_05_0010.png" width="150px">
-<img src="figures/figure_05_0011.png" width="150px">
-<img src="figures/figure_06_0010.png" width="150px">
-<img src="figures/figure_06_0011.png" width="150px">
+<img src="figures/figure_10_0010.png" width="180px">
+<img src="figures/figure_10_0011.png" width="180px">
+<img src="figures/figure_11_0010.png" width="180px">
+<img src="figures/figure_11_0011.png" width="180px">
 
 The following function `plot_metaData_wAnnotation()` outputs a scatter plot for
 the meta data input, which is ranked according to their values.
@@ -224,9 +204,8 @@ e.g., one of `obj[["sample"]][["nReads"]]`, `obj[["sample"]][["nGenes"]]`),
 `target_xRange` (x-axis interval in which one would like to find an
 inflection point), `n` (number of dividing points for `target_xRange`),
 `title`, `xlabel`, and `ylabel`.
-Note that the inflection points are used for the cell filtering below.
-Note that the calculated inflection points are approximated to the nearest
-integers.
+Note that the inflection points will be used for the cell filtering, and
+the calculated inflection points are approximated to the nearest integers.
 ```{r, eval = FALSE}
 my_func <- function(obj, metaname, target_xRange){
   vec <- obj[["sample"]][[metaname]]
@@ -239,108 +218,100 @@ my_func <- function(obj, metaname, target_xRange){
   return(p)
 }
 # ----------------------------------------
-# day1_norm
+# sc68_vehi
 # ----------------------------------------
-target_xRange <- c(100, 10000)
-p <- my_func(day1_norm, metaname = "nReads", target_xRange = target_xRange)
+target_xRange <- c(100, 4500)
+p <- my_func(sc68_vehi, metaname = "nReads", target_xRange = target_xRange)
 filename <- "figures/figure_01_0020.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
 
-target_xRange <- c(100, 10000)
-p <- my_func(day1_norm, metaname = "nGenes", target_xRange = target_xRange)
+target_xRange <- c(100, 5400)
+p <- my_func(sc68_vehi, metaname = "nGenes", target_xRange = target_xRange)
 filename <- "figures/figure_01_0021.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
 ```
 
 ```{r, eval = FALSE, echo = FALSE, results = "hide"}
 # ----------------------------------------
-# day7_hypo
-# ----------------------------------------
-target_xRange <- c(100, 5000)
-p <- my_func(day7_hypo, metaname = "nReads", target_xRange = target_xRange)
-filename <- "figures/figure_02_0020.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
-
-target_xRange <- c(100, 5900)
-p <- my_func(day7_hypo, metaname = "nGenes", target_xRange = target_xRange)
-filename <- "figures/figure_02_0021.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
-# ----------------------------------------
-# sc68_vehi
-# ----------------------------------------
-target_xRange <- c(100, 4500)
-p <- my_func(sc68_vehi, metaname = "nReads", target_xRange = target_xRange)
-filename <- "figures/figure_03_0020.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
-
-target_xRange <- c(100, 5400)
-p <- my_func(sc68_vehi, metaname = "nGenes", target_xRange = target_xRange)
-filename <- "figures/figure_03_0021.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
-# ----------------------------------------
 # sc68_cisp
 # ----------------------------------------
 target_xRange <- c(100, 3000)
 p <- my_func(sc68_cisp, metaname = "nReads", target_xRange = target_xRange)
-filename <- "figures/figure_04_0020.png"
+filename <- "figures/figure_02_0020.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
 
 target_xRange <- c(100, 3000)
 p <- my_func(sc68_cisp, metaname = "nGenes", target_xRange = target_xRange)
-filename <- "figures/figure_04_0021.png"
+filename <- "figures/figure_02_0021.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
+# ----------------------------------------
+# pdac_ast1
+# ----------------------------------------
+target_xRange <- c(0, 420)
+p <- my_func(pdac_ast1, metaname = "nReads", target_xRange = target_xRange)
+filename <- "figures/figure_05_0020.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
+
+target_xRange <- c(0, 420)
+p <- my_func(pdac_ast1, metaname = "nGenes", target_xRange = target_xRange)
+filename <- "figures/figure_05_0021.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
+# ----------------------------------------
+# pdac_arna
+# ----------------------------------------
+target_xRange <- c(2000, 4000)
+p <- my_func(pdac_arna, metaname = "nReads", target_xRange = target_xRange)
+filename <- "figures/figure_06_0020.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
+
+target_xRange <- c(2000, 4000)
+p <- my_func(pdac_arna, metaname = "nGenes", target_xRange = target_xRange)
+filename <- "figures/figure_06_0021.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
 # ----------------------------------------
 # pbmc_4000
 # ----------------------------------------
 target_xRange <- c(2000, 4000)
 p <- my_func(pbmc_4000, metaname = "nReads", target_xRange = target_xRange)
-filename <- "figures/figure_05_0020.png"
+filename <- "figures/figure_10_0020.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
 
 target_xRange <- c(2000, 4000)
 p <- my_func(pbmc_4000, metaname = "nGenes", target_xRange = target_xRange)
-filename <- "figures/figure_05_0021.png"
+filename <- "figures/figure_10_0021.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
 # ----------------------------------------
 # pbmc_6000
 # ----------------------------------------
 target_xRange <- c(2000, 5000)
 p <- my_func(pbmc_6000, metaname = "nReads", target_xRange = target_xRange)
-filename <- "figures/figure_06_0020.png"
+filename <- "figures/figure_11_0020.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
 
 target_xRange <- c(2000, 5000)
 p <- my_func(pbmc_6000, metaname = "nGenes", target_xRange = target_xRange)
-filename <- "figures/figure_06_0021.png"
+filename <- "figures/figure_11_0021.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
 ```
 
-<img src="figures/figure_01_0020.png" width="150px">
-<img src="figures/figure_01_0021.png" width="150px">
-<img src="figures/figure_02_0020.png" width="150px">
-<img src="figures/figure_02_0021.png" width="150px">
+<img src="figures/figure_01_0020.png" width="180px">
+<img src="figures/figure_01_0021.png" width="180px">
+<img src="figures/figure_02_0020.png" width="180px">
+<img src="figures/figure_02_0021.png" width="180px">
 
-<img src="figures/figure_03_0020.png" width="150px">
-<img src="figures/figure_03_0021.png" width="150px">
-<img src="figures/figure_04_0020.png" width="150px">
-<img src="figures/figure_04_0021.png" width="150px">
+<img src="figures/figure_05_0020.png" width="180px">
+<img src="figures/figure_05_0021.png" width="180px">
+<img src="figures/figure_06_0020.png" width="180px">
+<img src="figures/figure_06_0021.png" width="180px">
 
-<img src="figures/figure_05_0020.png" width="150px">
-<img src="figures/figure_05_0021.png" width="150px">
-<img src="figures/figure_06_0020.png" width="150px">
-<img src="figures/figure_06_0021.png" width="150px">
+<img src="figures/figure_10_0020.png" width="180px">
+<img src="figures/figure_10_0021.png" width="180px">
+<img src="figures/figure_11_0020.png" width="180px">
+<img src="figures/figure_11_0021.png" width="180px">
 
 The following function `trim_samples()` filters out the low quality
 cells by setting minimum and maximum values of the calculated QC metrics.
 ```{r, eval = FALSE}
-day1_norm_red <- trim_samples(obj = day1_norm,
-                              min_nReads = 2606, max_nReads = 30000,
-                              min_nGenes = 993, max_nGenes = 1e+10,
-                              min_percent_MT = 0, max_percent_MT = 14)
-day7_hypo_red <- trim_samples(obj = day7_hypo,
-                              min_nReads = 2748, max_nReads = 20000,
-                              min_nGenes = 1205, max_nGenes = 1e+10,
-                              min_percent_MT = 0, max_percent_MT = 12)
 sc68_vehi_red <- trim_samples(obj = sc68_vehi,
                               min_nReads = 4828, max_nReads = 40000,
                               min_nGenes = 1363, max_nGenes = 1e+10,
@@ -349,6 +320,14 @@ sc68_cisp_red <- trim_samples(obj = sc68_cisp,
                               min_nReads = 1424, max_nReads = 40000,
                               min_nGenes = 1138, max_nGenes = 1e+10,
                               min_percent_MT = 0, max_percent_MT = 15)
+pdac_ast1_red <- trim_samples(obj = pdac_ast1,
+                              min_nReads = 0, max_nReads = 1e+10,
+                              min_nGenes = 0, max_nGenes = 1e+10,
+                              min_percent_MT = 0, max_percent_MT = 100)
+pdac_arna_red <- trim_samples(obj = pdac_arna,
+                              min_nReads = 1005, max_nReads = 20000,
+                              min_nGenes = 487, max_nGenes = 1e+10,
+                              min_percent_MT = 0, max_percent_MT = 20)
 pbmc_4000_red <- trim_samples(obj = pbmc_4000,
                               min_nReads = 2239, max_nReads = 20000,
                               min_nGenes = 884, max_nGenes = 1e+10,
@@ -359,14 +338,33 @@ pbmc_6000_red <- trim_samples(obj = pbmc_6000,
                               min_percent_MT = 0, max_percent_MT = 8)
 ```
 
+Check the size of the gene-by-sample matrices.
+```{r, eval = FALSE}
+rbind(dim(sc68_cisp_red[["data"]][["raw"]]),
+      dim(sc68_vehi_red[["data"]][["raw"]]),
+      dim(pdac_ast1_red[["data"]][["raw"]]),
+      dim(pdac_arna_red[["data"]][["raw"]]),
+      dim(pbmc_4000_red[["data"]][["raw"]]),
+      dim(pbmc_6000_red[["data"]][["raw"]]))
+```
+
+```
+[1,] 15605 2285
+[2,] 16784 3923
+[3,] 10364  428
+[4,] 13653 2051
+[5,] 13829 3815
+[6,] 11946 4878
+```
+
 Save the objects.
 ```{r, eval = FALSE}
-saveRDS(day1_norm_red, file = "backup/01_003_day1_norm_trim_samples.rds")
-saveRDS(day7_hypo_red, file = "backup/02_003_day7_hypo_trim_samples.rds")
-saveRDS(sc68_vehi_red, file = "backup/03_003_sc68_vehi_trim_samples.rds")
-saveRDS(sc68_cisp_red, file = "backup/04_003_sc68_cisp_trim_samples.rds")
-saveRDS(pbmc_4000_red, file = "backup/05_003_pbmc_4000_trim_samples.rds")
-saveRDS(pbmc_6000_red, file = "backup/06_003_pbmc_6000_trim_samples.rds")
+saveRDS(sc68_vehi_red, file = "backup/01_003_sc68_vehi_trim_samples.rds")
+saveRDS(sc68_cisp_red, file = "backup/02_003_sc68_cisp_trim_samples.rds")
+saveRDS(pdac_ast1_red, file = "backup/05_003_pdac_ast1_trim_samples.rds")
+saveRDS(pdac_arna_red, file = "backup/06_003_pdac_arna_trim_samples.rds")
+saveRDS(pbmc_4000_red, file = "backup/10_003_pbmc_4000_trim_samples.rds")
+saveRDS(pbmc_6000_red, file = "backup/11_003_pbmc_6000_trim_samples.rds")
 ```
 
 
@@ -374,34 +372,19 @@ saveRDS(pbmc_6000_red, file = "backup/06_003_pbmc_6000_trim_samples.rds")
 ## Variable QC
 Load the data.
 ```{r, eval = FALSE}
+rm(list = ls())
 source("R/function_general.R")
 source("R/plot.R")
-day1_norm <- readRDS(file = "backup/01_003_day1_norm_trim_samples.rds")
-day7_hypo <- readRDS(file = "backup/02_003_day7_hypo_trim_samples.rds")
-sc68_vehi <- readRDS(file = "backup/03_003_sc68_vehi_trim_samples.rds")
-sc68_cisp <- readRDS(file = "backup/04_003_sc68_cisp_trim_samples.rds")
-pbmc_4000 <- readRDS(file = "backup/05_003_pbmc_4000_trim_samples.rds")
-pbmc_6000 <- readRDS(file = "backup/06_003_pbmc_6000_trim_samples.rds")
+sc68_vehi <- readRDS(file = "backup/01_003_sc68_vehi_trim_samples.rds")
+sc68_cisp <- readRDS(file = "backup/02_003_sc68_cisp_trim_samples.rds")
+pdac_ast1 <- readRDS(file = "backup/05_003_pdac_ast1_trim_samples.rds")
+pdac_arna <- readRDS(file = "backup/06_003_pdac_arna_trim_samples.rds")
+pbmc_4000 <- readRDS(file = "backup/10_003_pbmc_4000_trim_samples.rds")
+pbmc_6000 <- readRDS(file = "backup/11_003_pbmc_6000_trim_samples.rds")
 ```
 
-Check the size of the gene-by-sample matrices.
-```{r, eval = FALSE}
-rbind(dim(day1_norm[["data"]][["raw"]]), dim(day7_hypo[["data"]][["raw"]]),
-      dim(sc68_vehi[["data"]][["raw"]]), dim(sc68_cisp[["data"]][["raw"]]),
-      dim(pbmc_4000[["data"]][["raw"]]), dim(pbmc_6000[["data"]][["raw"]]))
-```
-
-```
-[1,] 16820 3663
-[2,] 15795 1947
-[3,] 16784 3923
-[4,] 15605 2285
-[5,] 13829 3815
-[6,] 11946 4878
-```
-
-The following function `plot_meanReads_wAnnotation()` outputs a scatter plot for
-mean of number of reads for each gene, which is ranked according to their
+The following function `plot_meanReads_wAnnotation()` outputs a scatter plot
+for mean of number of reads for each gene, which is ranked according to their
 values.
 The arguments are `obj`, `threshold` (set by trial and error),
 `digits` (number of digits after the decimal point for the annotated value),
@@ -416,61 +399,62 @@ my_func <- function(obj, threshold){
   return(p)
 }
 # ----------------------------------------
-# day1_norm
+# sc68_vehi
 # ----------------------------------------
-p <- my_func(obj = day1_norm, threshold = 0.2)
+p <- my_func(obj = sc68_vehi, threshold = 0.2)
 filename <- "figures/figure_01_0030.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
 ```
 
 ```{r, eval = FALSE, echo = FALSE, results = "hide"}
 # ----------------------------------------
-# day7_hypo
-# ----------------------------------------
-p <- my_func(obj = day7_hypo, threshold = 0.2)
-filename <- "figures/figure_02_0030.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
-# ----------------------------------------
-# sc68_vehi
-# ----------------------------------------
-p <- my_func(obj = sc68_vehi, threshold = 0.2)
-filename <- "figures/figure_03_0030.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
-# ----------------------------------------
 # sc68_cisp
 # ----------------------------------------
 p <- my_func(obj = sc68_cisp, threshold = 0.2)
-filename <- "figures/figure_04_0030.png"
+filename <- "figures/figure_02_0030.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
+# ----------------------------------------
+# pdac_ast1
+# ----------------------------------------
+p <- my_func(obj = pdac_ast1, threshold = 0.1)
+filename <- "figures/figure_05_0030.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
+# ----------------------------------------
+# pdac_arna
+# ----------------------------------------
+p <- my_func(obj = pdac_arna, threshold = 0.1)
+filename <- "figures/figure_06_0030.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
 # ----------------------------------------
 # pbmc_4000
 # ----------------------------------------
 p <- my_func(obj = pbmc_4000, threshold = 0.05)
-filename <- "figures/figure_05_0030.png"
+filename <- "figures/figure_10_0030.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
 # ----------------------------------------
 # pbmc_6000
 # ----------------------------------------
 p <- my_func(obj = pbmc_6000, threshold = 0.03)
-filename <- "figures/figure_06_0030.png"
+filename <- "figures/figure_11_0030.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 3.7)
 ```
 
-<img src="figures/figure_01_0030.png" width="150px">
-<img src="figures/figure_02_0030.png" width="150px">
-<img src="figures/figure_03_0030.png" width="150px">
-<img src="figures/figure_04_0030.png" width="150px">
+<img src="figures/figure_01_0030.png" width="180px">
+<img src="figures/figure_02_0030.png" width="180px">
 
-<img src="figures/figure_05_0030.png" width="150px">
-<img src="figures/figure_06_0030.png" width="150px">
+<img src="figures/figure_05_0030.png" width="180px">
+<img src="figures/figure_06_0030.png" width="180px">
+
+<img src="figures/figure_10_0030.png" width="180px">
+<img src="figures/figure_11_0030.png" width="180px">
 
 The following function `trim_variables()` filters out the low quality
 genes by setting a minimum value as `min_meanReads`.
 ```{r, eval = FALSE}
-day1_norm_red <- trim_variables(obj = day1_norm, min_meanReads = 0.2)
-day7_hypo_red <- trim_variables(obj = day7_hypo, min_meanReads = 0.2)
-sc68_vehi_red <- trim_variables(obj = sc68_vehi, min_meanReads = 0.2)
-sc68_cisp_red <- trim_variables(obj = sc68_cisp, min_meanReads = 0.2)
+sc68_vehi_red <- trim_variables(obj = sc68_vehi, min_meanReads = 0.20)
+sc68_cisp_red <- trim_variables(obj = sc68_cisp, min_meanReads = 0.20)
+pdac_ast1_red <- trim_variables(obj = pdac_ast1, min_meanReads = 0.10)
+pdac_arna_red <- trim_variables(obj = pdac_arna, min_meanReads = 0.10)
 pbmc_4000_red <- trim_variables(obj = pbmc_4000, min_meanReads = 0.05)
 pbmc_6000_red <- trim_variables(obj = pbmc_6000, min_meanReads = 0.03)
 ```
@@ -486,111 +470,112 @@ my_func <- function(obj, metaname1, metaname2){
   return(p)
 }
 # ----------------------------------------
-# For `day1_norm`
+# sc68_vehi
 # ----------------------------------------
-p <- my_func(day1_norm_red, metaname1 = "nReads", metaname2 = "nGenes")
+p <- my_func(sc68_vehi_red, metaname1 = "nReads", metaname2 = "nGenes")
 filename <- "figures/figure_01_0035.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 
-p <- my_func(day1_norm_red, metaname1 = "nGenes", metaname2 = "percent_MT")
+p <- my_func(sc68_vehi_red, metaname1 = "nGenes", metaname2 = "percent_MT")
 filename <- "figures/figure_01_0036.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 ```
 
 ```{r, eval = FALSE, echo = FALSE, results = "hide"}
 # ----------------------------------------
-# For `day7_hypo`
+# sc68_cisp
 # ----------------------------------------
-p <- my_func(day7_hypo_red, metaname1 = "nReads", metaname2 = "nGenes")
+p <- my_func(sc68_cisp_red, metaname1 = "nReads", metaname2 = "nGenes")
 filename <- "figures/figure_02_0035.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 
-p <- my_func(day7_hypo_red, metaname1 = "nGenes", metaname2 = "percent_MT")
+p <- my_func(sc68_cisp_red, metaname1 = "nGenes", metaname2 = "percent_MT")
 filename <- "figures/figure_02_0036.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 # ----------------------------------------
-# For `sc68_vehi`
+# pdac_ast1
 # ----------------------------------------
-p <- my_func(sc68_vehi_red, metaname1 = "nReads", metaname2 = "nGenes")
-filename <- "figures/figure_03_0035.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
-
-p <- my_func(sc68_vehi_red, metaname1 = "nGenes", metaname2 = "percent_MT")
-filename <- "figures/figure_03_0036.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
-# ----------------------------------------
-# For `sc68_cisp`
-# ----------------------------------------
-p <- my_func(sc68_cisp_red, metaname1 = "nReads", metaname2 = "nGenes")
-filename <- "figures/figure_04_0035.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
-
-p <- my_func(sc68_cisp_red, metaname1 = "nGenes", metaname2 = "percent_MT")
-filename <- "figures/figure_04_0036.png"
-ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
-# ----------------------------------------
-# For `pbmc_4000`
-# ----------------------------------------
-p <- my_func(pbmc_4000_red, metaname1 = "nReads", metaname2 = "nGenes")
+p <- my_func(pdac_ast1_red, metaname1 = "nReads", metaname2 = "nGenes")
 filename <- "figures/figure_05_0035.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 
-p <- my_func(pbmc_4000_red, metaname1 = "nGenes", metaname2 = "percent_MT")
+p <- my_func(pdac_ast1_red, metaname1 = "nGenes", metaname2 = "percent_MT")
 filename <- "figures/figure_05_0036.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 # ----------------------------------------
-# For `pbmc_6000`
+# pdac_arna
 # ----------------------------------------
-p <- my_func(pbmc_6000_red, metaname1 = "nReads", metaname2 = "nGenes")
+p <- my_func(pdac_arna_red, metaname1 = "nReads", metaname2 = "nGenes")
 filename <- "figures/figure_06_0035.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 
-p <- my_func(pbmc_6000_red, metaname1 = "nGenes", metaname2 = "percent_MT")
+p <- my_func(pdac_arna_red, metaname1 = "nGenes", metaname2 = "percent_MT")
 filename <- "figures/figure_06_0036.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
+# ----------------------------------------
+# pbmc_4000
+# ----------------------------------------
+p <- my_func(pbmc_4000_red, metaname1 = "nReads", metaname2 = "nGenes")
+filename <- "figures/figure_10_0035.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
+
+p <- my_func(pbmc_4000_red, metaname1 = "nGenes", metaname2 = "percent_MT")
+filename <- "figures/figure_10_0036.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
+# ----------------------------------------
+# pbmc_6000
+# ----------------------------------------
+p <- my_func(pbmc_6000_red, metaname1 = "nReads", metaname2 = "nGenes")
+filename <- "figures/figure_11_0035.png"
+ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
+
+p <- my_func(pbmc_6000_red, metaname1 = "nGenes", metaname2 = "percent_MT")
+filename <- "figures/figure_11_0036.png"
 ggsave(file = filename, plot = p, dpi = 300, width = 4, height = 4)
 ```
 
-<img src="figures/figure_01_0035.png" width="150px">
-<img src="figures/figure_01_0036.png" width="150px">
-<img src="figures/figure_02_0035.png" width="150px">
-<img src="figures/figure_02_0036.png" width="150px">
+<img src="figures/figure_01_0035.png" width="180px">
+<img src="figures/figure_01_0036.png" width="180px">
+<img src="figures/figure_02_0035.png" width="180px">
+<img src="figures/figure_02_0036.png" width="180px">
 
-<img src="figures/figure_03_0035.png" width="150px">
-<img src="figures/figure_03_0036.png" width="150px">
-<img src="figures/figure_04_0035.png" width="150px">
-<img src="figures/figure_04_0036.png" width="150px">
+<img src="figures/figure_05_0035.png" width="180px">
+<img src="figures/figure_05_0036.png" width="180px">
+<img src="figures/figure_06_0035.png" width="180px">
+<img src="figures/figure_06_0036.png" width="180px">
+<img src="figures/figure_07_0035.png" width="180px">
+<img src="figures/figure_07_0036.png" width="180px">
 
-<img src="figures/figure_05_0035.png" width="150px">
-<img src="figures/figure_05_0036.png" width="150px">
-<img src="figures/figure_06_0035.png" width="150px">
-<img src="figures/figure_06_0036.png" width="150px">
-
+<img src="figures/figure_10_0035.png" width="180px">
+<img src="figures/figure_10_0036.png" width="180px">
+<img src="figures/figure_11_0035.png" width="180px">
+<img src="figures/figure_11_0036.png" width="180px">
 
 Check the size of the gene-by-sample matrices.
 ```{r, eval = FALSE}
-rbind(dim(day1_norm_red[["data"]][["raw"]]),
-      dim(day7_hypo_red[["data"]][["raw"]]),
-      dim(sc68_vehi_red[["data"]][["raw"]]),
+rbind(dim(sc68_vehi_red[["data"]][["raw"]]),
       dim(sc68_cisp_red[["data"]][["raw"]]),
+      dim(pdac_ast1_red[["data"]][["raw"]]),
+      dim(pdac_arna_red[["data"]][["raw"]]),
       dim(pbmc_4000_red[["data"]][["raw"]]),
       dim(pbmc_6000_red[["data"]][["raw"]]))
 ```
 
 ```
-[1,] 5272 3663
-[2,] 6213 1947
-[3,] 6581 3923
-[4,] 6347 2285
+[1,] 6581 3923
+[2,] 6347 2285
+[3,] 4497  428
+[4,] 5893 2051
 [5,] 6658 3815
 [6,] 5169 4878
 ```
 
 Save the objects.
 ```{r, eval = FALSE}
-saveRDS(day1_norm_red, file = "backup/01_004_day1_norm_trim_variables.rds")
-saveRDS(day7_hypo_red, file = "backup/02_004_day7_hypo_trim_variables.rds")
-saveRDS(sc68_vehi_red, file = "backup/03_004_sc68_vehi_trim_variables.rds")
-saveRDS(sc68_cisp_red, file = "backup/04_004_sc68_cisp_trim_variables.rds")
-saveRDS(pbmc_4000_red, file = "backup/05_004_pbmc_4000_trim_variables.rds")
-saveRDS(pbmc_6000_red, file = "backup/06_004_pbmc_6000_trim_variables.rds")
+saveRDS(sc68_vehi_red, file = "backup/01_004_sc68_vehi_trim_variables.rds")
+saveRDS(sc68_cisp_red, file = "backup/02_004_sc68_cisp_trim_variables.rds")
+saveRDS(pdac_ast1_red, file = "backup/05_004_pdac_ast1_trim_variables.rds")
+saveRDS(pdac_arna_red, file = "backup/06_004_pdac_arna_trim_variables.rds")
+saveRDS(pbmc_4000_red, file = "backup/10_004_pbmc_4000_trim_variables.rds")
+saveRDS(pbmc_6000_red, file = "backup/11_004_pbmc_6000_trim_variables.rds")
 ```

@@ -1,19 +1,20 @@
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_metaData <- function(df, title, title_size, xlabel, ylabel){
   p <- ggplot() +
     geom_point(aes(x=df[,1], y=df[,2]), color="black", alpha=1, size=1) +
     labs(title=title, x=xlabel, y=ylabel) +
-    theme_classic(base_size=16, base_family="Helvetica") +
+    theme_classic(base_size=20, base_family="Helvetica") +
     theme(plot.title=element_text(hjust=0.5, size=title_size),
-      plot.margin=unit(c(0.5,2,0.5,0.5), "lines"))
-  p <- ggMarginal(p, type="histogram", margins="both", size=5, col="black", fill="gray")
+      plot.margin=unit(c(1.5,1.5,1.5,1.5), "lines"))
+  p <- ggMarginal(p, type="histogram", margins="both", size=5, col="black",
+                  fill="gray")
   return(p)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 find_inflection <- function(log_appr){
   I <- length(log_appr$x) - 1
   tmp <- c()
@@ -27,9 +28,9 @@ find_inflection <- function(log_appr){
   infp <- 10^(infp)
   return(infp)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_metaData_wAnnotation <- function(
   vec, target_xRange, n, title, title_size, xlabel, ylabel
 ){
@@ -73,9 +74,9 @@ plot_metaData_wAnnotation <- function(
     )
   return(p)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_meanReads_wAnnotation <- function(
   obj, threshold, digits, title, title_size, xlabel, ylabel
 ){
@@ -116,14 +117,14 @@ plot_meanReads_wAnnotation <- function(
     )
   return(p)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_Heatmap_GenexSamp <- function(obj, genes, method, show_nReads, title, name){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
-  mat <- as.matrix(obj[["data"]][["log1p"]])
+  mat <- as.matrix(obj[["data"]][["normalized"]])
   if(length(genes) == 1){
     mat <- t(as.matrix(mat[which(rownames(mat) %in% genes),]))
     rownames(mat) <- genes
@@ -180,16 +181,16 @@ plot_Heatmap_GenexSamp <- function(obj, genes, method, show_nReads, title, name)
 
   return(p)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_Heatmap_SignxSamp <- function(
   obj, data_type, category, algo_name, method, show_nReads, title, name,
   show_rownames_sign, show_rownames_label, show_rownames_nReads,
   default_color = TRUE
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
   sign <- "sign"
   slot_name <- paste(data_type, "xSample", sep = "")
@@ -287,15 +288,15 @@ plot_Heatmap_SignxSamp <- function(
 
   return(p)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_tsne_sign <- function(
   obj, data_type, category, algo_name, theta = 40, phi = 40, title, title_size,
   xlabel, ylabel, zlabel, default_color = TRUE
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
   mat <- obj[["reduction"]][["tsne"]][[data_type]][[category]][["Y"]]
   df <- as.data.frame(mat)
@@ -353,7 +354,8 @@ plot_tsne_sign <- function(
         theme_classic(base_size=20, base_family="Helvetica") +
         theme(plot.title=element_text(hjust=0.5, size=title_size),
           plot.margin=unit(c(1.5,1.5,1.5,1.5), "lines"), legend.position="right") +
-        geom_text(aes(x=cog[,1], y=cog[,2], label=sprintf("%d", cluster_num)), size=6)
+        geom_text(aes(x=cog[,1], y=cog[,2], label=sprintf("%d", cluster_num)), size=6) +
+        guides(colour = guide_legend(override.aes = list(size=4)))
     }
     return(p)
   }else if(dim_tsne == 3){
@@ -400,15 +402,15 @@ plot_tsne_sign <- function(
     }
   }
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_umap_sign <- function(
   obj, data_type, category, algo_name, theta = 40, phi = 40, title, title_size,
   xlabel, ylabel, zlabel, default_color = TRUE
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
   mat <- obj[["reduction"]][["umap"]][[data_type]][[category]][["layout"]]
   df <- as.data.frame(mat)
@@ -466,7 +468,8 @@ plot_umap_sign <- function(
         theme_classic(base_size=20, base_family="Helvetica") +
         theme(plot.title=element_text(hjust=0.5, size=title_size),
           plot.margin=unit(c(1.5,1.5,1.5,1.5), "lines"), legend.position="right") +
-        geom_text(aes(x=cog[,1], y=cog[,2], label=sprintf("%d", cluster_num)), size=6)
+#        geom_text(aes(x=cog[,1], y=cog[,2], label=sprintf("%d", cluster_num)), size=6) +
+        guides(colour = guide_legend(override.aes = list(size=4)))
     }
     return(p)
   }else if(dim_umap == 3){
@@ -513,15 +516,15 @@ plot_umap_sign <- function(
     }
   }
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
-plot_DiffusionMap_sign <- function(
+#-----------------------------------------------------------------------------80
+plot_dmap_sign <- function(
   obj, data_type, category, algo_name, dims, theta = 40, phi = 40,
   title, title_size, xlabel, ylabel, zlabel, default_color = TRUE
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
   mat <- obj[["reduction"]][["dmap"]][[data_type]][[category]]@eigenvectors
   df <- as.data.frame(mat)
@@ -578,7 +581,8 @@ plot_DiffusionMap_sign <- function(
         theme_classic(base_size=20, base_family="Helvetica") +
         theme(plot.title=element_text(hjust=0.5, size=title_size),
           plot.margin=unit(c(1.5,1.5,1.5,1.5), "lines"), legend.position="right") +
-        geom_text(aes(x=cog[,1], y=cog[,2], label=sprintf("%d", cluster_num)), size=6)
+        geom_text(aes(x=cog[,1], y=cog[,2], label=sprintf("%d", cluster_num)), size=6) +
+        guides(colour = guide_legend(override.aes = list(size=4)))
     }
     return(p)
   }else if(length(dims) == 3){
@@ -626,17 +630,17 @@ plot_DiffusionMap_sign <- function(
     }
   }
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_ElasticTree_dmap <- function(
   obj, data_type, category, theta = 40, phi = 40, title, title_size,
   xlabel, ylabel, zlabel, default_color = TRUE
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
-  tmp <- obj[["classification"]][["merlot"]][[data_type]][[category]][["ElasticTree"]]
+  tmp <- obj[["clustering"]][["merlot"]][[data_type]][[category]][["ElasticTree"]]
   #--------------------------------------------------
   # Prepare data frames to be output
   #--------------------------------------------------
@@ -711,17 +715,17 @@ plot_ElasticTree_dmap <- function(
       col=my_colors[1:n_groups], cex=1.3, inset=c(0.02))
   }
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_Pseudotime_dmap <- function(
   obj, data_type, category, theta = 40, phi = 40, title, title_size,
   xlabel, ylabel, zlabel
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
-  tmp <- obj[["classification"]][["merlot"]][[data_type]][[category]]
+  tmp <- obj[["clustering"]][["merlot"]][[data_type]][[category]]
   #--------------------------------------------------
   # Prepare data frames to be output
   #--------------------------------------------------
@@ -777,9 +781,9 @@ plot_Pseudotime_dmap <- function(
     legend.col(col=plasma(50), lev = df$color)
   }
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_bargraph_sign <- function(
   obj, data_type, category, algo_name, title, title_size, xlabel, ylabel, ymax
 ){
@@ -803,9 +807,9 @@ plot_bargraph_sign <- function(
 
   return(p)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_violin_signScore <- function(
   obj, sign_name, data_type_for_label, category_for_label, algo_name_for_label,
   data_type_for_expr, category_for_expr, title, title_size, default_color = TRUE
@@ -817,9 +821,9 @@ plot_violin_signScore <- function(
   slot_name <- paste(data_type_for_expr, "xSample", sep = "")
   mat <- as.matrix(obj[[sign]][[slot_name]][[category_for_expr]])
   slot_name <- paste(algo_name_for_label, "_", data_type_for_label, "_",
-    category_for_label, sep = "")
+                     category_for_label, sep = "")
   df <- data.frame(label = obj[["sample"]][[slot_name]],
-    expr = mat[which(rownames(mat) == sign_name),])
+                   expr = mat[which(rownames(mat) == sign_name),])
   #--------------------------------------------------
   # Plot
   #--------------------------------------------------
@@ -854,20 +858,20 @@ plot_violin_signScore <- function(
 
   return(p)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_tsne_geneExpression <- function(
   obj, gene_names, zscore = FALSE, data_type_for_tsne, category_for_tsne,
   theta, phi, title, title_size, label_name, xlabel, ylabel, zlabel
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
   mat <- obj[["reduction"]][["tsne"]][[data_type_for_tsne]][[category_for_tsne]][["Y"]]
   df <- as.data.frame(mat)
   dim_tsne <- dim(mat)[2]
-  mat <- as.matrix(obj[["data"]][["log1p"]])
+  mat <- as.matrix(obj[["data"]][["normalized"]])
   if(length(gene_names) == 1){
     df$expr <- mat[which(rownames(mat) == gene_names),]
   }else{ 
@@ -927,16 +931,16 @@ plot_tsne_geneExpression <- function(
     legend.col(col=colorRampPalette(c("blue", "white", "red"))(50), lev = df$expr)
   }
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_tsne_signScore <- function(
   obj, sign_name, data_type_for_tsne, category_for_tsne, data_type_for_expr,
   category_for_expr, theta, phi, title, title_size, label_name, xlabel, ylabel,
   zlabel
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
   mat <- obj[["reduction"]][["tsne"]][[data_type_for_tsne]][[category_for_tsne]][["Y"]]
   df <- as.data.frame(mat)
@@ -997,20 +1001,20 @@ plot_tsne_signScore <- function(
     legend.col(col=colorRampPalette(c("blue", "white", "red"))(50), lev = df$expr)
   }
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_umap_geneExpression <- function(
-  obj, gene_name, zscore = FALSE, data_type_for_umap, category_for_umap,
+  obj, gene_names, zscore = FALSE, data_type_for_umap, category_for_umap,
   theta, phi, title, title_size, label_name, xlabel, ylabel, zlabel
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
   mat <- obj[["reduction"]][["umap"]][[data_type_for_umap]][[category_for_umap]][["layout"]]
   df <- as.data.frame(mat)
-  dim_tsne <- dim(mat)[2]
-  mat <- as.matrix(obj[["data"]][["log1p"]])
+  dim_umap <- dim(mat)[2]
+  mat <- as.matrix(obj[["data"]][["normalized"]])
   if(length(gene_names) == 1){
     df$expr <- mat[which(rownames(mat) == gene_names),]
   }else{ 
@@ -1023,7 +1027,7 @@ plot_umap_geneExpression <- function(
   #--------------------------------------------------
   # Plot
   #--------------------------------------------------
-  if(dim_tsne == 2){
+  if(dim_umap == 2){
     p <- ggplot() +
       geom_point(aes(x=df[,1], y=df[,2], color=df$expr), size=0.5, alpha=1.0) +
       labs(title=title, x=xlabel, y=ylabel, color=label_name) +
@@ -1032,7 +1036,7 @@ plot_umap_geneExpression <- function(
       theme(plot.title=element_text(hjust=0.5, size=title_size),
         plot.margin=unit(c(1.5,1.5,1.5,1.5), "lines"), legend.position="right")
     return(p)
-  }else if(dim_tsne == 3){
+  }else if(dim_umap == 3){
     #------------------------------
     # scatter3D in plot3d package
     #------------------------------
@@ -1070,20 +1074,20 @@ plot_umap_geneExpression <- function(
     legend.col(col=colorRampPalette(c("blue", "white", "red"))(50), lev = df$expr)
   }
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_umap_signScore <- function(
   obj, sign_name, data_type_for_umap, category_for_umap, data_type_for_expr,
   category_for_expr, theta, phi, title, title_size, label_name, xlabel, ylabel,
   zlabel
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
   mat <- obj[["reduction"]][["umap"]][[data_type_for_umap]][[category_for_umap]][["layout"]]
   df <- as.data.frame(mat)
-  dim_tsne <- dim(mat)[2]
+  dim_umap <- dim(mat)[2]
   sign <- "sign"
   slot_name <- paste(data_type_for_expr, "xSample", sep = "")
   mat <- as.matrix(obj[[sign]][[slot_name]][[category_for_expr]])
@@ -1093,7 +1097,7 @@ plot_umap_signScore <- function(
   #--------------------------------------------------
   # Plot
   #--------------------------------------------------
-  if(dim_tsne == 2){
+  if(dim_umap == 2){
     p <- ggplot() +
       geom_point(aes(x=df[,1], y=df[,2], color=df$expr), size=0.5, alpha=1.0) +
       labs(title=title, x=xlabel, y=ylabel, color=label_name) +
@@ -1102,7 +1106,7 @@ plot_umap_signScore <- function(
       theme(plot.title=element_text(hjust=0.5, size=title_size),
         plot.margin=unit(c(1.5,1.5,1.5,1.5), "lines"), legend.position="right")
     return(p)
-  }else if(dim_tsne == 3){
+  }else if(dim_umap == 3){
     #------------------------------
     # scatter3D in plot3d package
     #------------------------------
@@ -1140,19 +1144,19 @@ plot_umap_signScore <- function(
     legend.col(col=colorRampPalette(c("blue", "white", "red"))(50), lev = df$expr)
   }
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_dmap_geneExpression <- function(
   obj, gene_names, zscore = FALSE, data_type_for_dmap, category_for_dmap,
   dim_dmap, theta, phi, title, title_size, label_name, xlabel, ylabel, zlabel
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
   mat <- obj[["reduction"]][["dmap"]][[data_type_for_dmap]][[category_for_dmap]]@eigenvectors
   df <- as.data.frame(mat)
-  mat <- as.matrix(obj[["data"]][["log1p"]])
+  mat <- as.matrix(obj[["data"]][["normalized"]])
   if(length(gene_names) == 1){
     df$expr <- mat[which(rownames(mat) == gene_names),]
   }else{ 
@@ -1214,16 +1218,16 @@ plot_dmap_geneExpression <- function(
     stop("Error: length(dim_dmap) must be 2 or 3.")
   }
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_dmap_signScore <- function(
   obj, sign_name, data_type_for_dmap, category_for_dmap, data_type_for_expr,
   category_for_expr, dim_dmap, theta, phi, title, title_size, label_name, xlabel,
   ylabel, zlabel
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
   mat <- obj[["reduction"]][["dmap"]][[data_type_for_dmap]][[category_for_dmap]]@eigenvectors
   df <- as.data.frame(mat)
@@ -1285,18 +1289,18 @@ plot_dmap_signScore <- function(
     stop("Error: length(dim_dmap) must be 2 or 3.")
   }
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_pseudotime_vs_signscore <- function(
   obj, sign_name, data_type_for_tree, category_for_tree, data_type_for_expr,
   category_for_expr, title, title_size, label_name, xlabel, ylabel,
   default_color = TRUE
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
-  tmp <- obj[["classification"]][["merlot"]][[data_type_for_tree]][[category_for_tree]]
+  tmp <- obj[["clustering"]][["merlot"]][[data_type_for_tree]][[category_for_tree]]
   slot_name <- paste(data_type_for_expr, "xSample", sep = "")
   mat <- obj[["sign"]][[slot_name]][[category_for_expr]]
   n_groups <- length(tmp[["Pseudotimes"]][["Branches"]])
@@ -1363,16 +1367,100 @@ plot_pseudotime_vs_signscore <- function(
 
   return(p)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
+plot_manifold_sign <- function(
+  obj, batch, plot_type, data_type, category, algo_name, title, title_size,
+  xlabel, ylabel, default_color
+){
+  #--------------------------------------------------
+  # Prepare a data frame to be output
+  #--------------------------------------------------
+  if(plot_type == "tsne"){
+    mat <- obj[["reduction"]][["tsne"]][[data_type]][[category]][["Y"]][,1:2]
+  }else if(plot_type == "umap"){
+    mat <- obj[["reduction"]][["umap"]][[data_type]][[category]][["layout"]][,1:2]
+  }else if(plot_type == "dmap"){
+    mat <- obj[["reduction"]][["dmap"]][[data_type]][[category]]@eigenvectors[,1:2]
+  }else{
+    stop("Check plot_type.")
+  }
+  if(batch){
+    df <- data.frame(x = mat[,1], y = mat[,2],
+                     label = obj[["sample"]][["orig_ident"]])
+  }else{
+    slot_name <- paste(algo_name, "_", data_type, "_", category, sep = "")
+    df <- data.frame(x = mat[,1], y = mat[,2],
+                     label = obj[["sample"]][[slot_name]])
+  }
+  if(default_color){
+    #------------------------------
+    # Option 1: ggplot's default
+    #------------------------------
+    n_groups <- length(unique(df$label))
+    ggColorHue <- function(n, l=65){   # To produce default colors of ggplot2
+      hues <- seq(15, 375, length=n+1)
+      hcl(h=hues, l=l, c=100)[1:n]
+    }
+    my_colors <- ggColorHue(n_groups)
+  }else{
+    #------------------------------
+    # Option 2: rainbow colors
+    #------------------------------
+    n_groups <- length(unique(df$label))
+    my_colors <- rainbow(n_groups)
+  }
+  if(batch){
+    #------------------------------
+    # ggplot
+    #------------------------------
+    dg <- df[which(df$label == sort(unique(df$label))[2]),]
+    p <- ggplot() +
+      geom_point(aes(x=df[,1], y=df[,2], color=as.factor(df$label)), size=0.1, alpha=1.0) +
+      geom_point(aes(x=dg[,1], y=dg[,2], color=as.factor(dg$label)), size=0.1, alpha=1.0) +
+      labs(title=title, x=xlabel, y=ylabel, colour="") +
+      scale_colour_manual(values=my_colors) +
+      theme_classic(base_size=20, base_family="Helvetica") +
+      theme(plot.title=element_text(hjust=0.5, size=title_size),
+        plot.margin=unit(c(1.5,1.5,1.5,1.5), "lines"), legend.position="right") +
+      guides(colour = guide_legend(override.aes = list(size=4)))
+  }else{
+    #------------------------------
+    # Positions of labels
+    #------------------------------
+    cluster_num <- sort(unique(df$label))
+    cog <- c()  # Center of gravity
+    for(i in cluster_num){
+      cog <- rbind(cog, cbind(
+        mean(df[which(df$label == i),][,1]), mean(df[which(df$label == i),][,2])))
+    }
+    cog <- data.frame(x = cog[,1], y = cog[,2], label = cluster_num)
+    #------------------------------
+    # ggplot
+    #------------------------------
+    p <- ggplot() +
+      geom_point(aes(x=df[,1], y=df[,2], color=as.factor(df$label)), size=0.1, alpha=1.0) +
+      labs(title=title, x=xlabel, y=ylabel, colour="") +
+      scale_colour_manual(values=my_colors) +
+      theme_classic(base_size=20, base_family="Helvetica") +
+      theme(plot.title=element_text(hjust=0.5, size=title_size),
+        plot.margin=unit(c(1.5,1.5,1.5,1.5), "lines"), legend.position="right") +
+      guides(colour = guide_legend(override.aes = list(size=4)))
+  }
+
+  return(p)
+}
+#-----------------------------------------------------------------------------80
+#
+#-----------------------------------------------------------------------------80
 plot_MultiHeatmaps_SignxSamp <- function(
-  obj, data_types, categories, algo_names, show_classes, split, method,
+  obj, data_types, categories, algo_names, show_labels, splitting, method,
   show_nReads, title, names, show_rownames_sign, show_rownames_label,
   show_rownames_nReads, default_colors
 ){
   #--------------------------------------------------
-  # Definitions
+  # Definition
   #--------------------------------------------------
   sign <- "sign"
   mat <- list()
@@ -1392,8 +1480,8 @@ plot_MultiHeatmaps_SignxSamp <- function(
   #--------------------------------------------------
   ht_opt$message = FALSE
   i <- 1
-  if(split){
-    if(show_classes[i]){
+  if(splitting){
+    if(show_labels[i]){
       if(default_colors[i]){
         #------------------------------
         # Option 1: ggplot's default
@@ -1414,7 +1502,7 @@ plot_MultiHeatmaps_SignxSamp <- function(
         names(my_colors) <- tmp
       }
       ha <- HeatmapAnnotation(
-        Label_1 = labels[[i]], col = list(Label_1 = my_colors),
+        Label = labels[[i]], col = list(Label = my_colors),
         annotation_name_side = "left"
       )
       column_split <- labels[[i]]
@@ -1424,8 +1512,8 @@ plot_MultiHeatmaps_SignxSamp <- function(
         name=names[i],
         column_split=column_split, column_gap=unit(1.5, "mm"),
         border=FALSE,
-        show_row_names=show_rownames_sign, row_names_side="right", row_dend_side="left",
-        row_title=paste("Sign (", data_types[i], ": ", categories[i], ")", sep = ""),
+        show_row_names=show_rownames_sign, row_names_side="right", show_row_dend=FALSE,
+#        row_title=paste("Sign (", data_types[i], ")", sep = ""),
         show_column_names=FALSE, column_dend_side="top",
         show_parent_dend_line=FALSE, top_annotation=ha
       )
@@ -1436,19 +1524,19 @@ plot_MultiHeatmaps_SignxSamp <- function(
         name=names[i],
         column_split=column_split, column_gap=unit(1.5, "mm"),
         border=FALSE,
-        show_row_names=show_rownames_sign, row_names_side="right", row_dend_side="left",
-        row_title=paste("Sign (", data_types[i], ": ", categories[i], ")", sep = ""),
+        show_row_names=show_rownames_sign, row_names_side="right", show_row_dend=FALSE,
+        row_title=paste("Sign (", data_types[i], ")", sep = ""),
         show_column_names=FALSE, column_dend_side="top",
         show_parent_dend_line=FALSE
       )
     }
   }else{
-    if(show_classes[i]){
+    if(show_labels[i]){
       tmp <- unique(sort(labels[[i]]))
       my_colors <- rainbow(length(tmp))
       names(my_colors) <- tmp
       ha <- HeatmapAnnotation(
-        Label_1 = labels[[i]], col = list(Label_1 = my_colors),
+        Label = labels[[i]], col = list(Label = my_colors),
         annotation_name_side = "left"
       )
       p <- Heatmap(
@@ -1457,7 +1545,7 @@ plot_MultiHeatmaps_SignxSamp <- function(
         name=names[i],
         cluster_columns=col_hc,
         show_row_names=show_rownames_sign, row_names_side="right", row_dend_side="left",
-        row_title=paste("Sign (", data_types[i], ": ", categories[i], ")", sep = ""),
+#        row_title=paste("Sign (", data_types[i], ")", sep = ""),
         show_column_names=FALSE, column_dend_side="top",
         show_parent_dend_line=FALSE, top_annotation=ha
       )
@@ -1467,15 +1555,15 @@ plot_MultiHeatmaps_SignxSamp <- function(
         column_title=title, column_title_gp=gpar(fontsize=16, fontface="bold"),
         name=names[i],
         cluster_columns=col_hc,
-        show_row_names=show_rownames_sign, row_names_side="right", row_dend_side="left",
-        row_title=paste("Sign (", data_types[i], ": ", categories[i], ")", sep = ""),
+        show_row_names=show_rownames_sign, row_names_side="right", show_row_dend=FALSE,
+#        row_title=paste("Sign (", data_types[i], ")", sep = ""),
         show_column_names=FALSE, column_dend_side="top",
         show_parent_dend_line=FALSE
       )
     }
   }
   for(i in 2:length(data_types)){
-    if(show_classes[i]){
+    if(show_labels[i]){
       if(default_colors[i]){
         #------------------------------
         # Option 1: ggplot's default
@@ -1540,8 +1628,8 @@ plot_MultiHeatmaps_SignxSamp <- function(
         column_title=title, column_title_gp=gpar(fontsize=16, fontface="bold"),
         name=names[i],
         cluster_columns=col_hc,
-        show_row_names=show_rownames_sign, row_names_side="right", row_dend_side="left",
-        row_title=paste("Sign (", data_types[i], ": ", categories[i], ")", sep = ""),
+        show_row_names=show_rownames_sign, row_names_side="right", show_row_dend=FALSE,
+#        row_title=paste("Sign (", data_types[i], ")", sep = ""),
         show_column_names=FALSE, column_dend_side="top",
         show_parent_dend_line=FALSE, top_annotation=ha
       )
@@ -1551,8 +1639,8 @@ plot_MultiHeatmaps_SignxSamp <- function(
         column_title=title, column_title_gp=gpar(fontsize=16, fontface="bold"),
         name=names[i],
         cluster_columns=col_hc,
-        show_row_names=show_rownames_sign, row_names_side="right", row_dend_side="left",
-        row_title=paste("Sign (", data_types[i], ": ", categories[i], ")", sep = ""),
+        show_row_names=show_rownames_sign, row_names_side="right", show_row_dend=FALSE,
+#        row_title=paste("Sign (", data_types[i], ")", sep = ""),
         show_column_names=FALSE, column_dend_side="top",
         show_parent_dend_line=FALSE
       )
@@ -1566,7 +1654,7 @@ plot_MultiHeatmaps_SignxSamp <- function(
       mtx,
       name="nReads",
       cluster_columns=col_hc,
-      show_row_names=show_rownames_nReads, row_names_side="right", show_row_dend="left",
+      show_row_names=show_rownames_nReads, row_names_side="left", show_row_dend=FALSE,
       show_column_names=FALSE, show_column_dend=FALSE,
       col=colorRamp2(c(min(mtx), max(mtx)), c("cyan", "magenta"))
     )
@@ -1575,9 +1663,9 @@ plot_MultiHeatmaps_SignxSamp <- function(
 
   return(p)
 }
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 #
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------80
 plot_MultiBargraphs_sign <- function(
   obj, data_type_1, category_1, algo_name_1, data_type_2, category_2, algo_name_2,
   title, title_size, cbar_title, xlabel, ylabel, ymax, default_color
@@ -1636,3 +1724,256 @@ plot_MultiBargraphs_sign <- function(
 
   return(p)
 } 
+#-----------------------------------------------------------------------------80
+#
+#-----------------------------------------------------------------------------80
+plot_MultiHeatmaps_SignxSamp_GenexSamp <- function(
+  obj, topn_genes, topn_signs, data_types, categories, algo_names, show_labels,
+  method, show_nReads, title, names_signs, name_genes,
+  show_rownames_sign, show_rownames_label, show_rownames_nReads, default_colors,
+  show_cellcycle
+){
+  #--------------------------------------------------
+  # Definition for sign-by-sample matrices
+  #--------------------------------------------------
+  sign <- "sign"
+  mat <- list()
+  col_labels <- list()
+  row_labels <- list()
+  for(i in 1:length(data_types)){
+    slot_name <- paste(data_types[i], "xSample", sep = "")
+    mat[[i]] <- as.matrix(obj[[sign]][[slot_name]][[categories[i]]])
+    mat[[i]] <- mat[[i]][which(rownames(mat[[i]]) %in% topn_signs[[i]]$sign), ]
+    slot_name <- paste(algo_names[i], "_", data_types[i], "_", categories[i], sep = "")
+    col_labels[[i]] <- obj[["sample"]][[slot_name]]
+    row_labels[[i]] <- topn_signs[[i]]$label
+  }
+  tmp <- list()
+  soi <- list()
+  for(i in 1:length(data_types)){
+    tmp2 <- c()
+    soi2 <- c()
+    for(j in 1:nrow(topn_signs[[i]])){
+      tmp2 <- rbind(tmp2, mat[[i]][which(rownames(mat[[i]]) == topn_signs[[i]]$sign[j]),])
+      soi2 <- rbind(soi2, topn_signs[[i]]$sign[j])
+    }
+    rownames(tmp2) <- soi2
+    tmp[[i]] <- tmp2
+    soi[[i]] <- soi2
+  }
+  mat <- tmp
+  
+  set.seed(8)
+  col_hc <- hclust(dist(t(mat[[1]])), method = method)
+  #--------------------------------------------------
+  # Heatmap (sign-by-sample matrices)
+  # Note: the positions of dendrogram leaves are
+  # slightly adjusted by the gaps between slices.
+  #--------------------------------------------------
+  ht_opt$message = FALSE
+  i <- 1
+  if(show_labels[i]){
+    if(default_colors[i]){
+      #------------------------------
+      # Option 1: ggplot's default
+      #------------------------------
+      tmp <- unique(sort(col_labels[[i]]))
+      ggColorHue <- function(n, l=65){   # To produce default colors of ggplot2
+        hues <- seq(15, 375, length=n+1)
+        hcl(h=hues, l=l, c=100)[1:n]
+      }
+      my_colors <- ggColorHue(length(tmp))
+      names(my_colors) <- tmp
+    }else{
+      #------------------------------
+      # Option 2: rainbow colors
+      #------------------------------
+      tmp <- unique(sort(col_labels[[i]]))
+      my_colors <- rainbow(length(tmp))
+      names(my_colors) <- tmp
+    }
+    ha <- HeatmapAnnotation(
+      Label = col_labels[[i]], col = list(Label = my_colors),
+      annotation_name_side = "left"
+    )
+    column_split <- col_labels[[i]]
+    p <- Heatmap(
+      mat[[i]],
+      column_title=title, column_title_gp=gpar(fontsize=16, fontface="bold"),
+      name=names_signs[i],
+      column_split=column_split, column_gap=unit(1.5, "mm"),
+      row_split=row_labels[[i]], row_gap=unit(1.0, "mm"),
+      border=FALSE,
+      show_row_names=show_rownames_sign, row_names_side="left", show_row_dend=FALSE,
+#      row_title=paste("Sign (", data_types[i], ")", sep = ""),
+      show_column_names=FALSE, column_dend_side="top",
+      show_parent_dend_line=FALSE, top_annotation=ha
+    )
+  }
+  for(i in 2:length(data_types)){
+    if(show_labels[i]){
+      if(default_colors[i]){
+        #------------------------------
+        # Option 1: ggplot's default
+        #------------------------------
+        tmp <- unique(sort(col_labels[[i]]))
+        ggColorHue <- function(n, l=65){   # To produce default colors of ggplot2
+          hues <- seq(15, 375, length=n+1)
+          hcl(h=hues, l=l, c=100)[1:n]
+        }
+        my_colors <- ggColorHue(length(tmp))
+        names(my_colors) <- tmp
+      }else{
+        #------------------------------
+        # Option 2: rainbow colors
+        #------------------------------
+        tmp <- unique(sort(col_labels[[i]]))
+        my_colors <- rainbow(length(tmp))
+        names(my_colors) <- tmp
+      }
+      if(i == 2){
+        ha <- HeatmapAnnotation(
+          Label_2 = col_labels[[i]], col = list(Label_2 = my_colors), annotation_name_side = "left"
+        )
+      }
+      if(i == 3){
+        ha <- HeatmapAnnotation(
+          Label_3 = col_labels[[i]], col = list(Label_3 = my_colors), annotation_name_side = "left"
+        )
+      }
+      if(i == 4){
+        ha <- HeatmapAnnotation(
+          Label_4 = col_labels[[i]], col = list(Label_4 = my_colors), annotation_name_side = "left"
+        )
+      }
+      if(i == 5){
+        ha <- HeatmapAnnotation(
+          Label_5 = col_labels[[i]], col = list(Label_5 = my_colors), annotation_name_side = "left"
+        )
+      }
+      if(i == 6){
+        ha <- HeatmapAnnotation(
+          Label_6 = col_labels[[i]], col = list(Label_6 = my_colors), annotation_name_side = "left"
+        )
+      }
+      if(i == 7){
+        ha <- HeatmapAnnotation(
+          Label_7 = col_labels[[i]], col = list(Label_7 = my_colors), annotation_name_side = "left"
+        )
+      }
+      if(i == 8){
+        ha <- HeatmapAnnotation(
+          Label_8 = col_labels[[i]], col = list(Label_8 = my_colors), annotation_name_side = "left"
+        )
+      }
+      if(i == 9){
+        ha <- HeatmapAnnotation(
+          Label_9 = col_labels[[i]], col = list(Label_9 = my_colors), annotation_name_side = "left"
+        )
+      }
+      q <- Heatmap(
+        mat[[i]],
+        column_title=title, column_title_gp=gpar(fontsize=16, fontface="bold"),
+        name=names_signs[i],
+        cluster_columns=col_hc,
+        show_row_names=show_rownames_sign, row_names_side="left", show_row_dend=FALSE,
+#        row_title=paste("Sign (", data_types[i], ")", sep = ""),
+        show_column_names=FALSE, column_dend_side="top",
+        show_parent_dend_line=FALSE, top_annotation=ha
+      )
+    }else{
+      q <- Heatmap(
+        mat[[i]],
+        column_title=title, column_title_gp=gpar(fontsize=16, fontface="bold"),
+        name=names_signs[i],
+        cluster_columns=col_hc,
+        row_split=row_labels[[i]], row_gap=unit(1.0, "mm"),
+        show_row_names=show_rownames_sign, row_names_side="left", show_row_dend=FALSE,
+#        row_title=paste("Sign (", data_types[i], ")", sep = ""),
+        show_column_names=FALSE, column_dend_side="top",
+        show_parent_dend_line=FALSE
+      )
+    }
+    p <- p %v% q
+  }
+  #--------------------------------------------------
+  # Definition for gene-by-sample matrices
+  #--------------------------------------------------
+  res <- c()
+  mat <- t(scale(t(obj[["data"]][["normalized"]])))
+  if(nrow(topn_genes) == 1){
+    mat <- t(as.matrix(mat[which(rownames(mat) %in% topn_genes$gene),]))
+    rownames(mat) <- topn_genes$gene
+  }else{
+    mat <- as.matrix(mat[which(rownames(mat) %in% topn_genes$gene),])
+  }
+  tmp <- c()
+  goi <- c()
+  for(i in 1:length(topn_genes$gene)){
+    if(topn_genes$gene[i] %in% rownames(mat)){
+      tmp <- rbind(tmp, mat[which(rownames(mat) == topn_genes$gene[i]),])
+      goi <- rbind(goi, topn_genes$gene[i])
+    }
+  }
+  rownames(tmp) <- goi
+  mat <- as.matrix(tmp)
+  row_labels <- topn_genes$label
+  #--------------------------------------------------
+  # Heatmap (gene-by-sample matrices)
+  # Note: the positions of dendrogram leaves are
+  # slightly adjusted by the gaps between slices.
+  #--------------------------------------------------  
+  if(show_cellcycle){
+    tmp <- unique(sort(obj[["sample"]][["phase"]]))
+    my_colors <- rainbow(length(tmp)) 
+#    my_colors <- c("#0000FF", "#00FF00", "#FF0000") 
+    names(my_colors) <- tmp 
+    ha <- HeatmapAnnotation(
+      Label_cc = obj[["sample"]][["phase"]], col = list(Label_cc = my_colors), 
+      annotation_name_side = "left" 
+    ) 
+    q <- Heatmap(
+      mat,
+      column_title=title, column_title_gp=gpar(fontsize=16, fontface="bold"),
+      name=name_genes,
+      cluster_columns=col_hc,
+      row_split=row_labels, row_gap=unit(1.0, "mm"),
+      border=FALSE,
+      show_row_names=TRUE, row_names_side="left", show_row_dend=FALSE,
+      show_column_names=FALSE, column_dend_side="top",
+      show_parent_dend_line=FALSE, top_annotation=ha
+    )
+  }else{
+    q <- Heatmap(
+      mat,
+      column_title=title, column_title_gp=gpar(fontsize=16, fontface="bold"),
+      name=name_genes,
+      cluster_columns=col_hc,
+      row_split=row_labels, row_gap=unit(1.0, "mm"),
+      border=FALSE,
+      show_row_names=TRUE, row_names_side="left", show_row_dend=FALSE,
+      show_column_names=FALSE, column_dend_side="top",
+      show_parent_dend_line=FALSE
+    )
+  }
+  p <- p %v% q
+  if(show_nReads){
+    mtx <- t(obj[["sample"]][["nReads"]])
+    rownames(mtx) <- "nReads"
+    q <- Heatmap(
+      mtx,
+      name="nReads",
+      cluster_columns=col_hc,
+      show_row_names=show_rownames_nReads, row_names_side="left", show_row_dend=FALSE,
+      show_column_names=FALSE, show_column_dend=FALSE,
+      col=colorRamp2(c(min(mtx), max(mtx)), c("cyan", "magenta"))
+    )
+    p <- p %v% q
+  }
+
+  return(p)
+}
+#-----------------------------------------------------------------------------80
+#
+#-----------------------------------------------------------------------------80
+
