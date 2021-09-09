@@ -20,6 +20,14 @@ https://keita-iida.github.io/ASURAT_0.0.0.9001/
 
 ## Quick start from a Seurat object
 
+The latest version is witten here:
+
+https://github.com/keita-iida/ASURAT_0.0.0.9001
+
+
+
+## Quick start from a Seurat object
+
 See the following URL:
 
 https://github.com/keita-iida/ASURAT_0.0.0.9001
