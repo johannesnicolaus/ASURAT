@@ -12,11 +12,11 @@ Our preprint was released on bioRxiv (12th June, 2021), which will be updated so
 
 https://www.biorxiv.org/content/10.1101/2021.06.09.447731v1
 
-All the input and output files used in the preprint and user-friendly documentation written in R bookdown can be found from the following URL:
+All the procedures necessary for writing the manuscript are written in R bookdown, which can be found from the following URL:
 
 https://keita-iida.github.io/ASURAT_0.0.0.9001/
 
-<br>
+
 
 ## Quick start from a Seurat object
 
