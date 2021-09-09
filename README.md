@@ -32,23 +32,9 @@ https://github.com/keita-iida/ASURAT_0.0.0.9001
 
 ## What can ASURAT do?
 
-Using ASURAT, users can transform single-cell RNA-seq data into novel sign-by-sample matrices (SSMs), in which rows and columns stand for biological terms (i.e., signs) and samples (cells), respectively. Here, biological terms are defined by functional gene sets, in terms of cell type, disease, functions, and signaling pathway activity. Thus, users can cluster single-cell transcriptomes from multiple biological aspects and obtain the most interpretable results (see movie).
+Using ASURAT, users can transform single-cell RNA-seq data into novel sign-by-sample matrices (SSMs), in which rows and columns stand for biological terms (i.e., signs) and samples (cells), respectively. Here, biological terms are defined by functional gene sets, in terms of cell type, disease, functions, and signaling pathway activity. Thus, users can cluster single-cell transcriptomes from multiple biological aspects and obtain the most interpretable results (movie will be uploaded).
 
-
-
-<br>
-
-https://user-images.githubusercontent.com/50622599/132666882-ba8af64a-4b17-4fa7-a543-0772dc6048b6.mov
-
-<br>
-
-Concatenating multiple SSMs, gene expression matrices, and other information such as cell cycle, users can characterize individual cells in columns from multiple biological terms in rows, facilitating the interpretation (see the figure below).
-
-
-
-<br>
-
-<img src="figures/figure_00_0001.png" width="400px">
+Concatenating multiple SSMs, gene expression matrices, and other information such as cell cycle, users can characterize individual cells in columns from multiple biological terms in rows, facilitating the interpretation (figures will be uploaded).
 
 
 
