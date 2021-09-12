@@ -12,10 +12,6 @@ Our preprint was released on bioRxiv (12th September 2021).
 
 https://www.biorxiv.org/content/10.1101/2021.06.09.447731v2
 
-All the procedures necessary for writing the manuscript are written in R bookdown, which can be found from the following URL:
-
-https://keita-iida.github.io/ASURAT_0.0.0.9001/
-
 
 
 <br>
