@@ -37,9 +37,8 @@ Using ASURAT, users can transform single-cell RNA-seq data into novel sign-by-sa
 
 <br>
 https://user-images.githubusercontent.com/50622599/132991603-4a834e17-9c34-4e80-b47e-74930b970fa4.mov
+
 <br>
-
-
 Concatenating multiple SSMs, gene expression matrices, and other information such as cell cycle, users can characterize individual cells in columns from multiple biological terms in rows, facilitating the interpretation (figures will be uploaded).
 
 
