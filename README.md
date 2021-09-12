@@ -10,7 +10,7 @@ ASURAT is an analysis pipeline, which simultaneously performs unsupervised clust
 
 Our preprint was released on bioRxiv (12th June, 2021), which will be updated soon, including spatial transcriptome analysis.
 
-https://www.biorxiv.org/content/10.1101/2021.06.09.447731v1
+https://www.biorxiv.org/content/10.1101/2021.06.09.447731v2
 
 All the procedures necessary for writing the manuscript are written in R bookdown, which can be found from the following URL:
 
@@ -32,7 +32,13 @@ https://github.com/keita-iida/ASURAT_0.0.0.9001
 
 ## What can ASURAT do?
 
-Using ASURAT, users can transform single-cell RNA-seq data into novel sign-by-sample matrices (SSMs), in which rows and columns stand for biological terms (i.e., signs) and samples (cells), respectively. Here, biological terms are defined by functional gene sets, in terms of cell type, disease, functions, and signaling pathway activity. Thus, users can cluster single-cell transcriptomes from multiple biological aspects and obtain the most interpretable results (movie will be uploaded).
+Using ASURAT, users can transform single-cell RNA-seq data into novel sign-by-sample matrices (SSMs), in which rows and columns stand for biological terms (i.e., signs) and samples (cells), respectively. Here, biological terms are defined by functional gene sets, in terms of cell type, disease, functions, and signaling pathway activity. Thus, users can cluster single-cell transcriptomes from multiple biological aspects and obtain the most interpretable results.
+
+
+<br>
+https://user-images.githubusercontent.com/50622599/132990381-93450c10-ed2b-4660-a6ee-18235be63858.mov
+<br>
+
 
 Concatenating multiple SSMs, gene expression matrices, and other information such as cell cycle, users can characterize individual cells in columns from multiple biological terms in rows, facilitating the interpretation (figures will be uploaded).
 
