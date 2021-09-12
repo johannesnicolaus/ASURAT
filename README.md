@@ -8,7 +8,7 @@ ASURAT is an analysis pipeline, which simultaneously performs unsupervised clust
 
 
 
-Our preprint was released on bioRxiv (12th June, 2021), which will be updated soon, including spatial transcriptome analysis.
+Our preprint was released on bioRxiv (12th September 2021).
 
 https://www.biorxiv.org/content/10.1101/2021.06.09.447731v2
 
@@ -36,7 +36,7 @@ Using ASURAT, users can transform single-cell RNA-seq data into novel sign-by-sa
 
 https://user-images.githubusercontent.com/50622599/132992121-95c344d7-4262-45bf-83b8-25febd41365b.mov
 
-Concatenating multiple SSMs, gene expression matrices, and other information such as cell cycle, users can characterize individual cells in columns from multiple biological terms in rows, facilitating the interpretation (figures will be uploaded).
+Concatenating multiple SSMs, gene expression matrices, and other information such as cell cycle, users can characterize individual cells in columns from multiple biological terms in rows, facilitating the interpretation.
 
 
 
