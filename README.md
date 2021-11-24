@@ -8,9 +8,9 @@ ASURAT is an analysis pipeline, which simultaneously performs unsupervised clust
 
 
 
-Our preprint was released on bioRxiv (12th September 2021).
+Our preprint was released on bioRxiv (12th October 2021).
 
-https://www.biorxiv.org/content/10.1101/2021.06.09.447731v2
+https://www.biorxiv.org/content/10.1101/2021.06.09.447731v3
 
 
 
