@@ -5,12 +5,12 @@ Using ASURAT, one can simultaneously perform unsupervised clustering and biologi
 
 Below is a vignette, in which we analyze public scRNA-seq data of human small cell lung cancer (SCLC) and peripheral blood mononuclear cells (PBMCs).
 
-* https://keita-iida.github.io/ASURAT_0.1.0/
+* https://keita-iida.github.io/ASURAT/
 
 One can install ASURAT by the following code:
 
 ```{r}
-devtools::install_github("keita-iida/ASURAT_0.1.0", upgrade = "never")
+devtools::install_github("keita-iida/ASURAT", upgrade = "never")
 ```
 
 Keita Iida
