@@ -8,6 +8,10 @@ Our preprint was released on bioRxiv (12th October 2021).
 
 https://www.biorxiv.org/content/10.1101/2021.06.09.447731v3
 
+Below is a vignette, in which we analyze public scRNA-seq data of human small cell lung cancer (SCLC) and peripheral blood mononuclear cells (PBMCs).
+
+https://keita-iida.github.io/ASURAT_0.1.0/
+
 
 
 <br>
