@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 # Install libraries
 ASURAT version 0.1.0 is now available on GitHub.
 ```{r, eval = FALSE}
-devtools::install_github("keita-iida/ASURAT_0.1.0", upgrade = "never")
+devtools::install_github("keita-iida/ASURAT", upgrade = "never")
 ```
 
 Below are required libraries:

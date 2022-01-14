@@ -1,2 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^backup$
+^databases$
+^docs$
+^figures$
+^inst$
