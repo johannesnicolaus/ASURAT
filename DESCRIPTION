@@ -12,7 +12,7 @@ Description: ASURAT is a computational pipeline for single-cell data analysis,
     ASURAT transforms read count tables into an original multivariate tables,
     termed a sign-by-sample matrices (SSMs). Analyzing SSMs, one can cluster
     samples (cells) to aid their interpretation.
-License: GPL-3
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: TRUE
 Imports:
