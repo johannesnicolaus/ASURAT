@@ -25,7 +25,7 @@ ASURAT requires to install the following R packages:
 
 * SingleCellExperiment
 * SummerizedExperiment
-* Cluster
+* cluster
 
 ## Preprint
 https://www.biorxiv.org/content/10.1101/2021.06.09.447731v3.full
