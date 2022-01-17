@@ -20,6 +20,13 @@ One can install ASURAT by the following code:
 devtools::install_github("keita-iida/ASURAT", upgrade = "never")
 ```
 
+## Requirements
+ASURAT requires to install the following R packages:
+
+* SingleCellExperiment
+* SummerizedExperiment
+* Cluster
+
 ## Preprint
 https://www.biorxiv.org/content/10.1101/2021.06.09.447731v3.full
 
