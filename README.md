@@ -3,6 +3,7 @@
 ASURAT is a computational pipeline, implemented in the R programming language, for single-cell RNA sequencing (scRNA-seq) data analysis.
 Using ASURAT, one can simultaneously perform unsupervised clustering and biological interpretation in terms of cell type, disease, biological process, and signaling pathway activity.
 
+## Graphical abstract
 <img src="figures/figure_00_0001.png" width="600px">
 
 ## Vignettes
