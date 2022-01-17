@@ -189,11 +189,13 @@ cluster_genesets_asrt <- function(sce, cormat, th_posi, th_nega){
       gs <- c()
       for(j in 1:length(genes_strg)){
         inds <- which(rownames(tmp) == genes_strg[j])
-        if((ncol(tmp) == 1) & (colnames(tmp) == "geneID")){
-          gs <- c(gs, tmp[inds, ])
-        }else if((ncol(tmp) == 1) & (colnames(tmp) != "geneID")){
-          stop("rowData() has only one column, whose name must be \"geneID\".")
-        }else if(ncol(tmp) > 1){
+        if(ncol(tmp) == 1){
+          if(colnames(tmp) == "geneID"){
+            gs <- c(gs, tmp[inds, ])
+          }else{
+            stop("rowData() has only one column; the name must be \"geneID\".")
+          }
+        }else{
           gs <- c(gs, tmp[inds, ]$geneID)
         }
       }
@@ -207,11 +209,13 @@ cluster_genesets_asrt <- function(sce, cormat, th_posi, th_nega){
       gs <- c()
       for(j in 1:length(genes_vari)){
         inds <- which(rownames(tmp) == genes_vari[j])
-        if((ncol(tmp) == 1) & (colnames(tmp) == "geneID")){
-          gs <- c(gs, tmp[inds, ])
-        }else if((ncol(tmp) == 1) & (colnames(tmp) != "geneID")){
-          stop("rowData() has only one column, whose name must be \"geneID\".")
-        }else if(ncol(tmp) > 1){
+        if(ncol(tmp) == 1){
+          if(colnames(tmp) == "geneID"){
+            gs <- c(gs, tmp[inds, ])
+          }else{
+            stop("rowData() has only one column; the name must be \"geneID\".")
+          }
+        }else{
           gs <- c(gs, tmp[inds, ]$geneID)
         }
       }
@@ -225,11 +229,13 @@ cluster_genesets_asrt <- function(sce, cormat, th_posi, th_nega){
       gs <- c()
       for(j in 1:length(genes_weak)){
         inds <- which(rownames(tmp) == genes_weak[j])
-        if((ncol(tmp) == 1) & (colnames(tmp) == "geneID")){
-          gs <- c(gs, tmp[inds, ])
-        }else if((ncol(tmp) == 1) & (colnames(tmp) != "geneID")){
-          stop("rowData() has only one column, whose name must be \"geneID\".")
-        }else if(ncol(tmp) > 1){
+        if(ncol(tmp) == 1){
+          if(colnames(tmp) == "geneID"){
+            gs <- c(gs, tmp[inds, ])
+          }else{
+            stop("rowData() has only one column; the name must be \"geneID\".")
+          }
+        }else{
           gs <- c(gs, tmp[inds, ]$geneID)
         }
       }
@@ -676,7 +682,7 @@ create_sce_signmatrix <- function(sce, weight_strg = 0.5, weight_vari = 0.5){
   # Error handling
   #--------------------------------------------------
   if((weight_strg == 99) & (weight_strg == 99)){
-    message("Search a way to bring harmony.")
+    stop("Search a way to bring harmony.")
   }
   if((weight_strg < 0) | (weight_strg > 1) |
      (weight_vari < 0) | (weight_vari > 1)){
