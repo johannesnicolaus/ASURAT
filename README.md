@@ -7,7 +7,7 @@ Using ASURAT, one can simultaneously perform unsupervised clustering and biologi
 <img src="figures/figure_00_0001.png" width="600px">
 
 ## Vignettes
-Well-documented vignette and tutorial is available from the following URL:
+Well-documented vignette and tutorial are available from the following URL:
 
 * https://keita-iida.github.io/ASURAT/,
 
