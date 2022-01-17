@@ -1,5 +1,7 @@
 # ASURAT
 
+<img src="figures/figure_00_0001.png" width="600px">
+
 ASURAT is a computational pipeline, implemented in the R programming language, for single-cell RNA sequencing (scRNA-seq) data analysis.
 Using ASURAT, one can simultaneously perform unsupervised clustering and biological interpretation in terms of cell type, disease, biological process, and signaling pathway activity.
 
@@ -13,4 +15,3 @@ One can install ASURAT by the following code:
 devtools::install_github("keita-iida/ASURAT", upgrade = "never")
 ```
 
-Keita Iida
