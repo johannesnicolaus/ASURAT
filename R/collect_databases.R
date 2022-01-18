@@ -22,15 +22,15 @@ format_DO_asrt <- function(dict, all_geneIDs, orgdb){
   docount <- table(doterms)
   doids <- names(docount)  #unique(doterms)
   xx <- as.list(DO.db::DOOFFSPRING)
-  cnt <- vapply(doids, function(x){
+  cnt <- sapply(doids, function(x){
       n = docount[xx[[x]]]
-      docount[x]+sum(n[!is.na(n)])
+      docount[x] + sum(n[!is.na(n)])
   })
   names(cnt) <- doids
   p <- cnt / sum(docount)
   IC <- -log(p)
   dict$IC <- NA
-  for(i in 1:nrow(dict)){
+  for(i in seq_len(nrow(dict))){
     if(is.element(dict$ID[i], names(IC))){
       dict$IC[i] <- IC[which(names(IC) == dict$ID[i])]
     }else{
@@ -46,36 +46,37 @@ format_DO_asrt <- function(dict, all_geneIDs, orgdb){
   dictionary <- AnnotationDbi::select(orgdb, key = unique(all_geneIDs),
                                       columns = "SYMBOL",
                                       keytype = "ENTREZID")
-  for(category in names(res)){
-    for(i in 1:nrow(res[[category]])){
-      genes <- c() ; geneIDs <- c()
-      g <- unlist(strsplit(res[[category]]$GeneID[i], "/"))
+  for(k in seq_len(length(res))){
+    for(i in seq_len(nrow(res[[k]]))){
+      genes <- c()
+      geneIDs <- c()
+      g <- unlist(strsplit(res[[k]]$GeneID[i], "/"))
       if(length(g) == 0){
         next
       }
-      for(j in 1:length(g)){
+      for(j in seq_len(length(g))){
         ind <- which(dictionary$ENTREZID == g[j])
         if(!is.na(dictionary[ind, ]$SYMBOL[1])){
           genes <- c(genes, dictionary[ind, ]$SYMBOL[1])
           geneIDs <- c(geneIDs, g[j])
         }
       }
-      res[[category]]$Gene[i] <- paste(genes, collapse = "/")
-      res[[category]]$GeneID[i] <- paste(geneIDs, collapse = "/")
-      res[[category]]$Count[i] <- as.integer(length(geneIDs))
+      res[[k]]$Gene[i] <- paste(genes, collapse = "/")
+      res[[k]]$GeneID[i] <- paste(geneIDs, collapse = "/")
+      res[[k]]$Count[i] <- as.integer(length(geneIDs))
     }
   }
   tidy <- list()
-  for(category in names(res)){
-    tidy[[category]] <- res[[category]]
+  for(k in seq_len(length(res))){
+    tidy[[names(res)[k]]] <- res[[k]]
   }
   #--------------------------------------------------
   # Compute a similarity matrix.
   #--------------------------------------------------
-  for(category in names(res)){
-    df <- res[[category]]
+  for(k in seq_len(length(res))){
+    df <- res[[k]]
     simmat <- DOSE::doSim(df$ID, df$ID, measure = "Jiang")
-    tidy[["similarity_matrix"]][[category]] <- simmat
+    tidy[["similarity_matrix"]][[names(res)[k]]] <- simmat
   }
 
   return(tidy)
@@ -124,13 +125,13 @@ collect_CO_asrt <- function(orgdb){
   #--------------------------------------------------
   res <- c("ID", "Description", "Symbol", "GO", "Evidence")
   res <- data.frame(matrix(ncol = 5, nrow = 0, dimnames = list(NULL, res)))
-  for(i in 1:nrow(co)){
+  for(i in seq_len(nrow(co))){
     tmp <- try(do_cellTypeToGenes(co$Description[i], orgdb = orgdb),
                silent = TRUE)
     if(class(tmp) == "try-error"){
       next
     }else if(nrow(tmp) != 0){
-      for(j in 1:nrow(tmp)){
+      for(j in seq_len(nrow(tmp))){
         res <- rbind(res, data.frame(
           ID = co$ID[i],
           Description = co$Description[i],
@@ -187,7 +188,7 @@ make_treeTable_CO_asrt <- function(tidy){
   for(category in categories_woALL){
     df <- tidy[[category]]
     map <- c() ; tmp <- c()
-    for(i in 1:nrow(df)){
+    for(i in seq_len(nrow(df))){
       dg <- data.frame(child = find_descendants_asrt(df$ID[i], co, map),
                        parent = df$ID[i])
       tmp <- rbind(tmp, dg) 
@@ -225,7 +226,7 @@ compute_IC_CO_asrt <- function(dict, tidy, treeTable){
     #--------------------------------------------------
     # Count the number of times that a gene is annotated with children.
     #--------------------------------------------------
-    for(i in 1:nrow(tmp)){
+    for(i in seq_len(nrow(tmp))){
       cnt <- res[which(res$ID == tmp$child[i]), ]$Count
       if(length(cnt) != 0){
         tmp$num_annot_child[i] <- cnt
@@ -238,7 +239,7 @@ compute_IC_CO_asrt <- function(dict, tidy, treeTable){
     #--------------------------------------------------
     ids <- unique(tmp$parent)
     tbl <- data.frame(parent = ids, num_annot_parent = NA, sum_annot_child = NA)
-    for(i in 1:length(ids)){
+    for(i in seq_len(length(ids))){
       cnt <- res[which(res$ID == ids[i]), ]$Count
       if(length(cnt) != 0){
         tbl$num_annot_parent[i] <- cnt
@@ -290,12 +291,12 @@ format_CO_asrt <- function(dict, orgdb){
   df <- data.frame(ID = dict$ID, Description = dict$Description, IC = NA,
                    Count = NA, Gene = NA, GeneID = NA)
   df <- unique(df)
-  for(i in 1:nrow(df)){
+  for(i in seq_len(nrow(df))){
     genes <- unique(dict[which(dict$ID == df$ID[i]), ]$Symbol)
     df$Gene[i] <- paste(genes, collapse = "/")
     df$Count[i] <- length(genes)
   }
-  rownames(df) <- 1:nrow(df)
+  rownames(df) <- seq_len(nrow(df))
   res <- list(cell = df)
   #--------------------------------------------------
   # Compute information contents, defined in
@@ -309,13 +310,14 @@ format_CO_asrt <- function(dict, orgdb){
   dictionary <- AnnotationDbi::select(orgdb, key = unique(dict$Symbol),
                                       columns = "ENTREZID", keytype = "SYMBOL")
   for(category in names(res)){
-    for(i in 1:nrow(res[[category]])){
-      genes <- c() ; geneIDs <- c()
+    for(i in seq_len(nrow(res[[category]]))){
+      genes <- c()
+      geneIDs <- c()
       g <- unlist(strsplit(res[[category]]$Gene[i], "/"))
       if(length(g) == 0){
         next
       }
-      for(j in 1:length(g)){
+      for(j in seq_len(length(g))){
         ind <- which(dictionary$SYMBOL == g[j])
         if(!is.na(dictionary[ind, ]$ENTREZID[1])){
           geneIDs <- c(geneIDs, dictionary[ind, ]$ENTREZID[1])
@@ -338,8 +340,8 @@ format_CO_asrt <- function(dict, orgdb){
     df <- res[[category]]
     simmat <- matrix(0, nrow = nrow(df), ncol = nrow(df))
     tree <- treeTable[[category]]
-    for(i in 1:(nrow(df)-1)){
-      for(j in (i+1):nrow(df)){
+    for(i in seq_len(nrow(df) - 1)){
+      for(j in seq(i + 1, nrow(df))){
         #------------------------------
         # IC of most informative common ancestor (MICA)
         #------------------------------
@@ -350,7 +352,7 @@ format_CO_asrt <- function(dict, orgdb){
           simmat[i, j] <- 0
         }else{
           common_ancestors <- data.frame(ID = common_ancestors, IC = NA)
-          for(n in 1:nrow(common_ancestors)){
+          for(n in seq_len(nrow(common_ancestors))){
             common_ancestors$IC[n] <-
               df[which(df$ID == common_ancestors$ID[n]), ]$IC
           }
@@ -469,7 +471,7 @@ format_GO_asrt <- function(dict, orgdb){
   for(category in categories){
     tmp <- c()
     levels <- length(dict[[category]])
-    for(lv in 1:levels){
+    for(lv in seq_len(levels)){
       tmp <- rbind(tmp, as.data.frame(dict[[category]][[lv]]@result))
     }
     tmp <- unique(tmp)  # Notice: the right hand side must be data.frame
@@ -489,7 +491,7 @@ format_GO_asrt <- function(dict, orgdb){
   for(category in categories){
     simdata <- res_godata[[category]]
     df <- res[[category]]
-    for(i in 1:nrow(df)){
+    for(i in seq_len(nrow(df))){
       if(is.element(df$ID[i], names(simdata@IC))){
         df$IC[i] <- simdata@IC[which(names(simdata@IC) == df$ID[i])]
         df$IC[i] <- ifelse(is.infinite(df$IC[i]), 99, df$IC[i])
@@ -512,13 +514,14 @@ format_GO_asrt <- function(dict, orgdb){
   dictionary <- AnnotationDbi::select(orgdb, key = geneIDs, columns = "SYMBOL",
                                       keytype = "ENTREZID")
   for(category in names(res)){
-    for(i in 1:nrow(res[[category]])){
-      genes <- c() ; geneIDs <- c()
+    for(i in seq_len(nrow(res[[category]]))){
+      genes <- c()
+      geneIDs <- c()
       g <- unlist(strsplit(res[[category]]$GeneID[i], "/"))
       if(length(g) == 0){
         next
       }
-      for(j in 1:length(g)){
+      for(j in seq_len(length(g))){
         ind <- which(dictionary$ENTREZID == g[j])
         if(!is.na(dictionary[ind, ]$SYMBOL[1])){
           genes <- c(genes, dictionary[ind, ]$SYMBOL[1])
@@ -588,7 +591,7 @@ collect_KEGG_asrt <- function(organism, categories){
     map$NCBI_geneID <- NA
     flags <- c()
     I <- length(map$ID)
-    for(i in 1:I){
+    for(i in seq_len(I)){
       Sys.sleep(0.1)
       #--------------------------------------------------
       # Print the current process.
@@ -733,7 +736,7 @@ format_KEGG_asrt <- function(dict, orgdb){
       Gene = NA,
       GeneID = NA
     ))
-    for(i in 1:nrow(map)){
+    for(i in seq_len(nrow(map))){
       #------------------------------
       # Gene and Count
       #------------------------------
@@ -741,7 +744,7 @@ format_KEGG_asrt <- function(dict, orgdb){
       map$GeneID[i] <- paste(genes, collapse = "/")
       map$Count[i] <- length(genes)
     }
-    rownames(map) <- 1:nrow(map)
+    rownames(map) <- seq_len(nrow(map))
     res[[category]] <- map
   }
   #--------------------------------------------------
@@ -752,13 +755,14 @@ format_KEGG_asrt <- function(dict, orgdb){
     dictionary <- AnnotationDbi::select(orgdb, key = geneIDs,
                                         columns = "SYMBOL",
                                         keytype = "ENTREZID")
-    for(i in 1:nrow(res[[category]])){
-      genes <- c() ; geneIDs <- c()
+    for(i in seq_len(nrow(res[[category]]))){
+      genes <- c()
+      geneIDs <- c()
       g <- unlist(strsplit(res[[category]]$GeneID[i], "/"))
       if(length(g) == 0){
         next
       }
-      for(j in 1:length(g)){
+      for(j in seq_len(length(g))){
         ind <- which(dictionary$ENTREZID == g[j])
         if(!is.na(dictionary[ind, ]$SYMBOL[1])){
           genes <- c(genes, dictionary[ind, ]$SYMBOL[1])
