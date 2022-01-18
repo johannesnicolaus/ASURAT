@@ -1,3 +1,3 @@
 .onAttach <- function(libname, pkgname){
-  packageStartupMessage("ASURAT version 0.1.0.")
+  packageStartupMessage("ASURAT version 0.1.")
 }

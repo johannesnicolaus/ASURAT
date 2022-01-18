@@ -22,7 +22,7 @@ format_DO_asrt <- function(dict, all_geneIDs, orgdb){
   docount <- table(doterms)
   doids <- names(docount)  #unique(doterms)
   xx <- as.list(DO.db::DOOFFSPRING)
-  cnt <- sapply(doids, function(x){
+  cnt <- vapply(doids, function(x){
       n = docount[xx[[x]]]
       docount[x]+sum(n[!is.na(n)])
   })
