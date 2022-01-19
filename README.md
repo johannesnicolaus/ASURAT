@@ -18,6 +18,11 @@ One can install ASURAT by the following code:
 devtools::install_github("keita-iida/ASURAT", upgrade = "never")
 ```
 
+## Preprint
+The latest version was submitted to bioRxiv:
+
+* https://www.biorxiv.org/content/10.1101/2021.06.09.447731v3
+
 ## Author
 Keita Iida
 
