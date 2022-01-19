@@ -24,6 +24,7 @@ NULL
 #' This function prints future work.
 #'
 #' @return A sentences.
+#' @export
 #'
 print_future_asrt <- function(){
   message("* Create biological sentences by combining multiple signs.")
