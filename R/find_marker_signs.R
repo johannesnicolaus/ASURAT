@@ -41,20 +41,22 @@ compute_nswaps <- function(vec1, vec2){
 
   # (1)
   dict <- c()
-  for(w in unique(vec1)){
-    val <- which(vec1 == w)
+  words <- unique(vec1)
+  for(w in seq_len(length(words))){
+    val <- which(vec1 == words[w])
     dict <- c(dict, list(val))
   }
   names(dict) <- unique(vec1)
 
   # (2)
   cnt <- c()
-  for(c in names(dict)){
+  dictnames <- names(dict)
+  for(c in seq_len(length(dictnames))){
     cnt <- c(cnt, list(1))
   }
   names(cnt) <- names(dict)
   enco <- vec2
-  for(i in 1:I){
+  for(i in seq_len(I)){
     enco[i] <- dict[[as.character(vec2[i])]][cnt[[as.character(vec2[i])]]]
     cnt[[as.character(vec2[i])]] <- cnt[[as.character(vec2[i])]] + 1
   }
@@ -101,7 +103,7 @@ compute_sepI_clusters <- function(sce, labels, ident_1, ident_2){
     sepI = NA,
     Rank = rep(NA, dim(subsce)[1])
   )
-  for(i in 1:dim(subsce)[1]){
+  for(i in seq_len(dim(subsce)[1])){
     res$SignID[i] <- rownames(subsce)[i]
     res$Description[i] <- rowData(subsce)$Description[i]
     res$CorrGene[i] <- rowData(subsce)$CorrGene[i]
@@ -123,8 +125,8 @@ compute_sepI_clusters <- function(sce, labels, ident_1, ident_2){
   #--------------------------------------------------
   inds <- order(res$sepI, decreasing = TRUE)
   res <- res[inds, ]
-  res$Rank <- 1:length(inds)
-  rownames(res) <- 1:nrow(res)
+  res$Rank <- seq_len(length(inds))
+  rownames(res) <- seq_len(nrow(res))
   #--------------------------------------------------
   # Output
   #--------------------------------------------------
@@ -161,7 +163,7 @@ compute_sepI_all <- function(sce, labels){
   # Loop
   #--------------------------------------------------
   idents <- unique(sort(labels))
-  for(i in 1:length(idents)){
+  for(i in seq_len(length(idents))){
     ident_1 <- idents[i]
     ident_2 <- setdiff(idents, ident_1)
     tmp <- compute_sepI_clusters(sce = tmp, labels = labels,
@@ -172,10 +174,10 @@ compute_sepI_all <- function(sce, labels){
     metadata(sce)$marker_signs[[slot_name]] <- res[[i]]
   }
   res_all <- c()
-  for(i in 1:length(res)){
+  for(i in seq_len(length(res))){
     res_all <- rbind(res_all, res[[i]])
   }
-  rownames(res_all) <- 1:nrow(res_all)
+  rownames(res_all) <- seq_len(nrow(res_all))
   metadata(sce)$marker_signs$all <- res_all
 
   return(sce)

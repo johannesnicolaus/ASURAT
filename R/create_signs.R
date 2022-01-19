@@ -29,7 +29,7 @@ remove_signs_asrt <- function(sce, min_ngenes = 2, max_ngenes = 1000){
   #--------------------------------------------------
   innate_g <- data.frame(gene = rownames(sce), geneID = rowData(sce)$geneID)
   tmp <- metadata(sce)$sign
-  for(i in 1:nrow(tmp)){
+  for(i in seq_len(nrow(tmp))){
     #------------------------------
     # GeneID: ENTREZ Gene ID
     #------------------------------
@@ -40,7 +40,7 @@ remove_signs_asrt <- function(sce, min_ngenes = 2, max_ngenes = 1000){
     # Gene: gene symbol
     #------------------------------
     genes <- c()
-    for(j in 1:length(geneIDs)){
+    for(j in seq_len(length(geneIDs))){
       genes <- c(genes, innate_g[which(innate_g$geneID == geneIDs[j]), ]$gene)
     }
     tmp$Gene[i] <- paste(genes, collapse = "/")
@@ -55,7 +55,7 @@ remove_signs_asrt <- function(sce, min_ngenes = 2, max_ngenes = 1000){
   #--------------------------------------------------
   tmp <- metadata(sce)$sign
   res <- tmp[which((tmp$Count >= min_ngenes) & (tmp$Count <= max_ngenes)), ]
-  rownames(res) <- 1:nrow(res)
+  rownames(res) <- seq_len(nrow(res))
   metadata(sce)$sign <- as.data.frame(res)
 
   return(sce)
@@ -96,7 +96,7 @@ cluster_genesets_asrt <- function(sce, cormat, th_posi, th_nega){
            "StrgCorrGene", "VariCorrGene", "WeakCorrGene",
            "StrgCorrGeneID", "VariCorrGeneID", "WeakCorrGeneID")
   res <- data.frame(matrix(ncol = 15, nrow = 0, dimnames = list(NULL, res)))
-  for(i in 1:nrow(df)){
+  for(i in seq_len(nrow(df))){
     genes <- unlist(strsplit(df$Gene[i], "/"))
     if(length(genes) <= 1){
       next
@@ -151,7 +151,7 @@ cluster_genesets_asrt <- function(sce, cormat, th_posi, th_nega){
         c <- pam(submat, k = 2)
         diag(submat) <- 99
         gset <- list() ; mu <- c()
-        for(j in 1:2){
+        for(j in seq_len(2)){
           gset[[j]] <- names(c[["clustering"]])[which(c[["clustering"]] == j)]
           inds <- which(rownames(submat) %in% gset[[j]])
           tmp <- submat[inds, inds]
@@ -187,7 +187,7 @@ cluster_genesets_asrt <- function(sce, cormat, th_posi, th_nega){
     }else{
       count_strg <- length(genes_strg)
       gs <- c()
-      for(j in 1:length(genes_strg)){
+      for(j in seq_len(length(genes_strg))){
         inds <- which(rownames(tmp) == genes_strg[j])
         if(ncol(tmp) == 1){
           if(colnames(tmp) == "geneID"){
@@ -207,7 +207,7 @@ cluster_genesets_asrt <- function(sce, cormat, th_posi, th_nega){
     }else{
       count_vari <- length(genes_vari)
       gs <- c()
-      for(j in 1:length(genes_vari)){
+      for(j in seq_len(length(genes_vari))){
         inds <- which(rownames(tmp) == genes_vari[j])
         if(ncol(tmp) == 1){
           if(colnames(tmp) == "geneID"){
@@ -227,7 +227,7 @@ cluster_genesets_asrt <- function(sce, cormat, th_posi, th_nega){
     }else{
       count_weak <- length(genes_weak)
       gs <- c()
-      for(j in 1:length(genes_weak)){
+      for(j in seq_len(length(genes_weak))){
         inds <- which(rownames(tmp) == genes_weak[j])
         if(ncol(tmp) == 1){
           if(colnames(tmp) == "geneID"){
@@ -377,7 +377,7 @@ remove_signs_redundant <- function(
 
   report <- list()
   s_or_v <- c("sign_SCG", "sign_VCG")
-  for(k in 1:length(s_or_v)){
+  for(k in seq_len(length(s_or_v))){
     #--------------------------------------------------
     # Report format
     #--------------------------------------------------
@@ -404,12 +404,12 @@ remove_signs_redundant <- function(
       # case I
       #--------------------------------------------------
       I <- dim(submat)[1]
-      for(i in I:2){
+      for(i in seq(I, 2)){
         J <- dim(submat)[2] - (I - i + 1) # Be careful
         if(flag[i] == 1){                 # Be careful
           next
         }
-        for(j in 1:J){
+        for(j in seq_len(J)){
           if(is.na(submat[i, j])){
             next
           }
@@ -458,12 +458,12 @@ remove_signs_redundant <- function(
       #--------------------------------------------------
       I <- dim(submat)[1] - 1
       J <- dim(submat)[2]
-      for(i in 1:I){
+      for(i in seq_len(I)){
         j0 <- i + 1       # Be careful
         if(flag[i] == 1){ # Be careful
           next
         }
-        for(j in j0:J){
+        for(j in seq(j0, J)){
           if(is.na(submat[i, j])){
             next
           }
@@ -513,7 +513,7 @@ remove_signs_redundant <- function(
     if(length(report[[k]]$Removed_SignID) >= 1){
       kept_IDs <- setdiff(df$SignID, report[[k]]$Removed_SignID)
       res <- df[which(df$SignID %in% kept_IDs), ]
-      rownames(res) <- 1:nrow(res)
+      rownames(res) <- seq_len(nrow(res))
     }else{
       res <- df
     }
@@ -542,7 +542,7 @@ remove_signs_redundant <- function(
   #--------------------------------------------------
   # Store the report.
   #--------------------------------------------------
-  for(k in 1:length(s_or_v)){
+  for(k in seq_len(length(s_or_v))){
     if(nrow(metadata(sce)[[s_or_v[k]]]) < 2){
       next
     }
@@ -573,12 +573,12 @@ remove_signs_manually <- function(sce, keywords = NULL){
     return(sce)
   }
   s_or_v <- c("sign_SCG", "sign_VCG")
-  for(k in 1:length(s_or_v)){
+  for(k in seq_len(length(s_or_v))){
     df <- metadata(sce)[[s_or_v[k]]]
     if(nrow(df) != 0){
       tmp <- ((grepl(keywords, df$SignID)) | (grepl(keywords, df$Description)))
       df <- df[!tmp, ]
-      rownames(df) <- 1:nrow(df)
+      rownames(df) <- seq_len(nrow(df))
     }
     metadata(sce)[[s_or_v[k]]] <- df
   }
@@ -626,12 +626,12 @@ select_signs_manually <- function(sce, keywords = NULL){
     return(sce)
   }
   s_or_v <- c("sign_SCG", "sign_VCG")
-  for(k in 1:length(s_or_v)){
+  for(k in seq_len(length(s_or_v))){
     df <- metadata(sce)[[s_or_v[k]]]
     if(nrow(df) != 0){
       tmp <- ((grepl(keywords, df$SignID)) | (grepl(keywords, df$Description)))
       df <- df[tmp, ]
-      rownames(df) <- 1:nrow(df)
+      rownames(df) <- seq_len(nrow(df))
     }
     metadata(sce)[[s_or_v[k]]] <- df
   }
@@ -682,7 +682,7 @@ create_sce_signmatrix <- function(sce, weight_strg = 0.5, weight_vari = 0.5){
   # Error handling
   #--------------------------------------------------
   if((weight_strg == 99) & (weight_strg == 99)){
-    stop("Search a way to bring harmony.")
+    message("Search a way to bring harmony.")
   }
   if((weight_strg < 0) | (weight_strg > 1) |
      (weight_vari < 0) | (weight_vari > 1)){
@@ -696,10 +696,10 @@ create_sce_signmatrix <- function(sce, weight_strg = 0.5, weight_vari = 0.5){
   rowdata <- matrix(ncol = 5, nrow = 0, dimnames = list(NULL, rowdata))
 
   s_or_v <- c("sign_SCG", "sign_VCG")
-  for(k in 1:length(s_or_v)){
+  for(k in seq_len(length(s_or_v))){
     df <- metadata(sce)[[s_or_v[k]]]
     if(nrow(df) != 0){
-      for(i in 1:nrow(df)){
+      for(i in seq_len(nrow(df))){
         #--------------------------------------------------
         # Create a sign-by-sample matrix for weakly correlated gene sets
         #--------------------------------------------------
@@ -779,14 +779,14 @@ create_sce_signmatrix <- function(sce, weight_strg = 0.5, weight_vari = 0.5){
   }
   new_sce <- SingleCellExperiment(assays = list(counts = res),
                                   rowData = rowdata, colData = colData(sce))
-  for(k in 1:length(s_or_v)){
+  for(k in seq_len(length(s_or_v))){
     metadata(new_sce)[[s_or_v[k]]] <- metadata(sce)[[s_or_v[k]]]
   }
   if(!is.null(metadata(sce)[["sign_all"]])){
     metadata(new_sce)[["sign_all"]] <- metadata(sce)[["sign_all"]]
   }
   if(length(altExpNames(sce)) != 0){
-    for(i in 1:length(altExpNames(sce))){
+    for(i in seq_len(length(altExpNames(sce)))){
       altExp(new_sce, altExpNames(sce)[i]) <- altExp(sce, altExpNames(sce)[i])
     }
   }

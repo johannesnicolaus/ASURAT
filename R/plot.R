@@ -291,11 +291,12 @@ plot_heatmaps_asrt <- function(
         mycolor <- myggcolor(length(unique(ssmlabel_list[[i]]$label)))
       }
       names(mycolor) <- unique(ssmlabel_list[[i]][inds, ]$label)
-      ha[[i]] <- HeatmapAnnotation(Label = ssmlabel_list[[i]]$label,
-                                   col = list(Label = mycolor),
+      mycolor <- list(mycolor)
+      names(mycolor) <- names(ssmlabel_list)[[i]]
+      mylabel <- list(ssmlabel_list[[i]]$label)
+      names(mylabel) <- names(ssmlabel_list)[[i]]
+      ha[[i]] <- HeatmapAnnotation(df = mylabel, col = mycolor,
                                    annotation_name_side = "left")
-      names(ha[[i]]) <- names(ssmlabel_list)[[i]]
-      ha[[i]]@anno_list[[names(ha[[i]])]]@label <- names(ha[[i]]) # NG code!!
 
       if(show_row_names){
         q <- Heatmap(ssm_list[[i]], top_annotation = ha[[i]],
@@ -392,11 +393,12 @@ plot_heatmaps_asrt <- function(
         mycolor <- myggcolor(length(unique(gemlabel_list[[i]]$label)))
       }
       names(mycolor) <- unique(gemlabel_list[[i]][inds, ]$label)
-      ha2[[i]] <- HeatmapAnnotation(Label = gemlabel_list[[i]]$label,
-                                    col = list(Label = mycolor),
+      mycolor <- list(mycolor)
+      names(mycolor) <- names(gemlabel_list)[[i]]
+      mylabel <- list(gemlabel_list[[i]]$label)
+      names(mylabel) <- names(gemlabel_list)[[i]]
+      ha2[[i]] <- HeatmapAnnotation(df = mylabel, col = mycolor,
                                     annotation_name_side = "left")
-      names(ha2[[i]]) <- names(gemlabel_list)[[i]]
-      ha2[[i]]@anno_list[[names(ha2[[i]])]]@label <- names(ha2[[i]]) # NG code!!
 
       if(show_row_names){
         q <- Heatmap(gem_list[[i]], top_annotation = ha2[[i]],

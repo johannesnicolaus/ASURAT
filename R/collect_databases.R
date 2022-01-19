@@ -22,10 +22,10 @@ format_DO_asrt <- function(dict, all_geneIDs, orgdb){
   docount <- table(doterms)
   doids <- names(docount)  #unique(doterms)
   xx <- as.list(DO.db::DOOFFSPRING)
-  cnt <- sapply(doids, function(x){
-      n = docount[xx[[x]]]
-      docount[x] + sum(n[!is.na(n)])
-  })
+  cnt <- vapply(doids, function(x){
+    n <- docount[xx[[x]]]
+    docount[x] + sum(n[!is.na(n)])
+  }, integer(1))
   names(cnt) <- doids
   p <- cnt / sum(docount)
   IC <- -log(p)
@@ -67,16 +67,18 @@ format_DO_asrt <- function(dict, all_geneIDs, orgdb){
     }
   }
   tidy <- list()
-  for(k in seq_len(length(res))){
-    tidy[[names(res)[k]]] <- res[[k]]
+  categories <- names(res)
+  for(k in seq_len(length(categories))){
+    tidy[[categories[k]]] <- res[[k]]
   }
   #--------------------------------------------------
   # Compute a similarity matrix.
   #--------------------------------------------------
-  for(k in seq_len(length(res))){
+  categories <- names(res)
+  for(k in seq_len(length(categories))){
     df <- res[[k]]
     simmat <- DOSE::doSim(df$ID, df$ID, measure = "Jiang")
-    tidy[["similarity_matrix"]][[names(res)[k]]] <- simmat
+    tidy[["similarity_matrix"]][[categories[k]]] <- simmat
   }
 
   return(tidy)
@@ -163,8 +165,8 @@ find_descendants_asrt <- function(id, co, map){
   if(length(children) == 0){
     return(NA)
   }else{
-    for(child in children){
-      map <- c(map, c(child, find_descendants_asrt(child, co, map)))
+    for(i in seq_len(length(children))){
+      map <- c(map, c(children[i], find_descendants_asrt(children[i], co, map)))
     }
     return(setdiff(map, NA))
   }
@@ -181,19 +183,18 @@ find_descendants_asrt <- function(id, co, map){
 #' @return Parent-child relation table.
 #'
 make_treeTable_CO_asrt <- function(tidy){
-  categories <- names(tidy)
-  categories_woALL <- setdiff(categories, "ALL")
+  categories_woALL <- setdiff(names(tidy), "ALL")
   co <- ontoProc::getCellOnto()
   res <- list() 
-  for(category in categories_woALL){
-    df <- tidy[[category]]
+  for(k in seq_len(length(categories_woALL))){
+    df <- tidy[[categories_woALL[k]]]
     map <- c() ; tmp <- c()
     for(i in seq_len(nrow(df))){
       dg <- data.frame(child = find_descendants_asrt(df$ID[i], co, map),
                        parent = df$ID[i])
       tmp <- rbind(tmp, dg) 
     }
-    res[[category]] <- tmp
+    res[[categories_woALL[k]]] <- tmp
   }
 
   return(res)
@@ -213,16 +214,16 @@ make_treeTable_CO_asrt <- function(tidy){
 #' @seealso Mistry and Pavlidis, BMC Bioinformatics, 2008.
 #'
 compute_IC_CO_asrt <- function(dict, tidy, treeTable){
-  categories <- names(tidy)
-  categories_woALL <- setdiff(categories, "ALL")
-  for(category in categories_woALL){
+  categories_woALL <- setdiff(names(tidy), "ALL")
+  for(k in seq_len(length(categories_woALL))){
     #------------------------------
     # Definition
     #------------------------------
     all_genes <- unique(dict$Symbol)
-    res <- tidy[[category]]
-    tmp <- data.frame(num_annot_child = NA, child = treeTable[[category]]$child,
-                      parent = treeTable[[category]]$parent)
+    res <- tidy[[categories_woALL[k]]]
+    tmp <- data.frame(num_annot_child = NA,
+                      child = treeTable[[categories_woALL[k]]]$child,
+                      parent = treeTable[[categories_woALL[k]]]$parent)
     #--------------------------------------------------
     # Count the number of times that a gene is annotated with children.
     #--------------------------------------------------
@@ -253,7 +254,7 @@ compute_IC_CO_asrt <- function(dict, tidy, treeTable){
     # Compute IC for each parent.
     #--------------------------------------------------
     tbl$Freq_parent <- tbl$num_annot_parent + tbl$sum_annot_child
-    if(category == "cell"){
+    if(categories_woALL[k] == "cell"){
       ind <- which(tbl$parent == "CL:0000000")
       if(length(ind) == 0){
         stop("tidy_CO must include root ontology term.")
@@ -267,7 +268,7 @@ compute_IC_CO_asrt <- function(dict, tidy, treeTable){
     }else{
       stop("IDs are inconsistent. Check the code of compute_IC_CO_asrt().")
     }
-    tidy[[category]] <- res
+    tidy[[categories_woALL[k]]] <- res
   }
   return(tidy)
 }
@@ -309,11 +310,12 @@ format_CO_asrt <- function(dict, orgdb){
   #--------------------------------------------------
   dictionary <- AnnotationDbi::select(orgdb, key = unique(dict$Symbol),
                                       columns = "ENTREZID", keytype = "SYMBOL")
-  for(category in names(res)){
-    for(i in seq_len(nrow(res[[category]]))){
+  categories <- names(res)
+  for(k in seq_len(length(categories))){
+    for(i in seq_len(nrow(res[[categories[k]]]))){
       genes <- c()
       geneIDs <- c()
-      g <- unlist(strsplit(res[[category]]$Gene[i], "/"))
+      g <- unlist(strsplit(res[[categories[k]]]$Gene[i], "/"))
       if(length(g) == 0){
         next
       }
@@ -324,22 +326,24 @@ format_CO_asrt <- function(dict, orgdb){
           genes <- c(genes, g[j])
         }
       }
-      res[[category]]$Gene[i] <- paste(genes, collapse = "/")
-      res[[category]]$GeneID[i] <- paste(geneIDs, collapse = "/")
-      res[[category]]$Count[i] <- as.integer(length(geneIDs))
+      res[[categories[k]]]$Gene[i] <- paste(genes, collapse = "/")
+      res[[categories[k]]]$GeneID[i] <- paste(geneIDs, collapse = "/")
+      res[[categories[k]]]$Count[i] <- as.integer(length(geneIDs))
     }
   }
   tidy <- list()
-  for(category in names(res)){
-    tidy[[category]] <- res[[category]]
+  categories <- names(res)
+  for(k in seq_len(length(categories))){
+    tidy[[categories[k]]] <- res[[categories[k]]]
   }
   #--------------------------------------------------
   # Compute a similarity matrix.
   #--------------------------------------------------
-  for(category in names(res)){
-    df <- res[[category]]
+  categories <- names(res)
+  for(k in seq_len(length(categories))){
+    df <- res[[categories[k]]]
     simmat <- matrix(0, nrow = nrow(df), ncol = nrow(df))
-    tree <- treeTable[[category]]
+    tree <- treeTable[[categories[k]]]
     for(i in seq_len(nrow(df) - 1)){
       for(j in seq(i + 1, nrow(df))){
         #------------------------------
@@ -369,7 +373,7 @@ format_CO_asrt <- function(dict, orgdb){
     diag(simmat) <- 1
     rownames(simmat) <- df$ID
     colnames(simmat) <- df$ID
-    tidy[["similarity_matrix"]][[category]] <- simmat
+    tidy[["similarity_matrix"]][[categories[k]]] <- simmat
   }
 
   return(tidy)
@@ -428,12 +432,12 @@ collect_GO_asrt <- function(orgdb){
   # groupGO
   #--------------------------------------------------
   res <- list()
-  for(category in categories){
+  for(k in seq_len(length(categories))){
     tmp <- c()
     level <- 1
     while(1){
       ggo <- try(
-        do_groupGO(genes = all_geneIDs, orgdb = orgdb, ont = category,
+        do_groupGO(genes = all_geneIDs, orgdb = orgdb, ont = categories[k],
                    level = level),
         silent = TRUE
       )
@@ -444,7 +448,7 @@ collect_GO_asrt <- function(orgdb){
         level <- level + 1
       }
     }
-    res[[category]] <- tmp
+    res[[categories[k]]] <- tmp
   }
 
   return(res)
@@ -468,29 +472,30 @@ format_GO_asrt <- function(dict, orgdb){
   #--------------------------------------------------
   categories <- names(dict)
   res <- list()
-  for(category in categories){
+  for(k in seq_len(length(categories))){
     tmp <- c()
-    levels <- length(dict[[category]])
+    levels <- length(dict[[categories[k]]])
     for(lv in seq_len(levels)){
-      tmp <- rbind(tmp, as.data.frame(dict[[category]][[lv]]@result))
+      tmp <- rbind(tmp, as.data.frame(dict[[categories[k]]][[lv]]@result))
     }
     tmp <- unique(tmp)  # Notice: the right hand side must be data.frame
     df <- data.frame(ID = tmp$ID, Description = tmp$Description, IC = NA,
                      Count = tmp$Count, Gene = NA, GeneID = tmp$geneID)
     df$Count <- as.integer(df$Count)
-    res[[category]] <- df
+    res[[categories[k]]] <- df
   }
   #--------------------------------------------------
   # Compute information contents.
   #--------------------------------------------------
   res_godata <- list()
-  for(category in categories){
-    res_godata[[category]] <- GOSemSim::godata(OrgDb = orgdb, ont = category,
-                                               computeIC = TRUE)
+  for(k in seq_len(length(categories))){
+    res_godata[[categories[k]]] <- GOSemSim::godata(OrgDb = orgdb,
+                                                    ont = categories[k],
+                                                    computeIC = TRUE)
   }
-  for(category in categories){
-    simdata <- res_godata[[category]]
-    df <- res[[category]]
+  for(k in seq_len(length(categories))){
+    simdata <- res_godata[[categories[k]]]
+    df <- res[[categories[k]]]
     for(i in seq_len(nrow(df))){
       if(is.element(df$ID[i], names(simdata@IC))){
         df$IC[i] <- simdata@IC[which(names(simdata@IC) == df$ID[i])]
@@ -499,7 +504,7 @@ format_GO_asrt <- function(dict, orgdb){
         df$IC[i] <- 99
       }
     }
-    res[[category]] <- df
+    res[[categories[k]]] <- df
   }
   #--------------------------------------------------
   # Fix the slots of gene symbols and ENTREZ Gene IDs.
@@ -513,11 +518,12 @@ format_GO_asrt <- function(dict, orgdb){
   geneIDs <- unique(c(geneIDs_MF, geneIDs_BP, geneIDs_CC))
   dictionary <- AnnotationDbi::select(orgdb, key = geneIDs, columns = "SYMBOL",
                                       keytype = "ENTREZID")
-  for(category in names(res)){
-    for(i in seq_len(nrow(res[[category]]))){
+  categories <- names(res)
+  for(k in seq_len(length(categories))){
+    for(i in seq_len(nrow(res[[categories[k]]]))){
       genes <- c()
       geneIDs <- c()
-      g <- unlist(strsplit(res[[category]]$GeneID[i], "/"))
+      g <- unlist(strsplit(res[[categories[k]]]$GeneID[i], "/"))
       if(length(g) == 0){
         next
       }
@@ -528,23 +534,24 @@ format_GO_asrt <- function(dict, orgdb){
           geneIDs <- c(geneIDs, g[j])
         }
       }
-      res[[category]]$Gene[i] <- paste(genes, collapse = "/")
-      res[[category]]$GeneID[i] <- paste(geneIDs, collapse = "/")
-      res[[category]]$Count[i] <- as.integer(length(geneIDs))
+      res[[categories[k]]]$Gene[i] <- paste(genes, collapse = "/")
+      res[[categories[k]]]$GeneID[i] <- paste(geneIDs, collapse = "/")
+      res[[categories[k]]]$Count[i] <- as.integer(length(geneIDs))
     }
   }
   tidy <- list()
-  for(category in names(res)){
-    tidy[[category]] <- res[[category]]
+  for(k in seq_len(length(categories))){
+    tidy[[categories[k]]] <- res[[categories[k]]]
   }
   #--------------------------------------------------
   # Compute a similarity matrix.
   #--------------------------------------------------
-  for(category in names(res)){
-    df <- res[[category]]
-    simmat <- GOSemSim::mgoSim(df$ID, df$ID, semData = res_godata[[category]],
+  for(k in seq_len(length(categories))){
+    df <- res[[categories[k]]]
+    simmat <- GOSemSim::mgoSim(df$ID, df$ID,
+                               semData = res_godata[[categories[k]]],
                                measure = "Jiang", combine = NULL)
-    tidy[["similarity_matrix"]][[category]] <- simmat
+    tidy[["similarity_matrix"]][[categories[k]]] <- simmat
   }
   
   return(tidy)
@@ -581,8 +588,8 @@ collect_KEGG_asrt <- function(organism, categories){
   # Collect KEGG terms.
   #--------------------------------------------------
   res <- list()
-  for(category in categories){
-    ids <- KEGGREST::keggLink(category, organism)  # names(ids) are gene IDs
+  for(k in seq_len(length(categories))){
+    ids <- KEGGREST::keggLink(categories[k], organism) #names(ids) are gene IDs
     map <- data.frame(
       ID = ids,
       Description = NA,
@@ -598,14 +605,14 @@ collect_KEGG_asrt <- function(organism, categories){
       #--------------------------------------------------
       if((i == 1) || (i %% floor(0.25 * I) == 0 && i < 0.95 * I) || (i == I)){
         text <- paste("Now processing ", i, "/", I, " for ",
-                      category, "...\n", sep = "")
+                      categories[k], "...\n", sep = "")
         cat(text)
       }
       #--------------------------------------------------
       # (i) Description
       #--------------------------------------------------
       category_id <- map$ID[i]
-      if(category == "module")
+      if(categories[k] == "module")
         category_id <- stringr::str_extract(category_id, "(?<=_)(.*)")
       tmp_description <- try(do_keggGet(category_id), silent = TRUE)
       if(class(tmp_description) == "try-error"){
@@ -633,7 +640,7 @@ collect_KEGG_asrt <- function(organism, categories){
       id <- gsub("NCBI-GeneID: ", "", id)
       map$NCBI_geneID[i] <- id
     }
-    res[[category]][["success"]] <- map
+    res[[categories[k]]][["success"]] <- map
     #--------------------------------------------------
     # Rescue the failures.
     #--------------------------------------------------
@@ -644,7 +651,7 @@ collect_KEGG_asrt <- function(organism, categories){
         # (i) Description
         #------------------------------
         category_id <- map$ID[i]
-        if(category == "module")
+        if(categories[k] == "module")
           category_id <- stringr::str_extract(category_id, "(?<=_)(.*)")
         tmp_description <- try(do_keggGet(category_id), silent = TRUE)
         cnt = 0
@@ -688,7 +695,7 @@ collect_KEGG_asrt <- function(organism, categories){
         id <- gsub("NCBI-GeneID: ", "", id)
         map$NCBI_geneID[i] <- id
       }
-      res[[category]][["success"]] <- map
+      res[[categories[k]]][["success"]] <- map
       tmp <- data.frame(
         matrix(ncol = 2, nrow = 0, dimnames = list(NULL, c(
           "Input_category_for_keggGet", "Input_for_keggGet"
@@ -697,7 +704,7 @@ collect_KEGG_asrt <- function(organism, categories){
         Input_category_for_keggGet = unique(failure)[, 1],
         Input_for_keggGet = unique(failure)[, 2]
       ))
-      res[[category]][["failure"]] <- tmp
+      res[[categories[k]]][["failure"]] <- tmp
     }
   }
 
@@ -726,8 +733,8 @@ format_KEGG_asrt <- function(dict, orgdb){
   # Reformat
   #--------------------------------------------------
   res <- list()
-  for(category in categories){
-    tmp <- dict[[category]]
+  for(k in seq_len(length(categories))){
+    tmp <- dict[[categories[k]]]
     map <- unique(data.frame(
       ID = tmp[["ID"]],
       Description = tmp[["Description"]],
@@ -745,20 +752,20 @@ format_KEGG_asrt <- function(dict, orgdb){
       map$Count[i] <- length(genes)
     }
     rownames(map) <- seq_len(nrow(map))
-    res[[category]] <- map
+    res[[categories[k]]] <- map
   }
   #--------------------------------------------------
   # Fix the slots of gene symbols and ENTREZ Gene IDs.
   #--------------------------------------------------
-  for(category in categories){
-    geneIDs <- unique(dict[[category]][["NCBI_geneID"]])
+  for(k in seq_len(length(categories))){
+    geneIDs <- unique(dict[[categories[k]]][["NCBI_geneID"]])
     dictionary <- AnnotationDbi::select(orgdb, key = geneIDs,
                                         columns = "SYMBOL",
                                         keytype = "ENTREZID")
-    for(i in seq_len(nrow(res[[category]]))){
+    for(i in seq_len(nrow(res[[categories[k]]]))){
       genes <- c()
       geneIDs <- c()
-      g <- unlist(strsplit(res[[category]]$GeneID[i], "/"))
+      g <- unlist(strsplit(res[[categories[k]]]$GeneID[i], "/"))
       if(length(g) == 0){
         next
       }
@@ -769,14 +776,15 @@ format_KEGG_asrt <- function(dict, orgdb){
           geneIDs <- c(geneIDs, g[j])
         }
       }
-      res[[category]]$Gene[i] <- paste(genes, collapse = "/")
-      res[[category]]$GeneID[i] <- paste(geneIDs, collapse = "/")
-      res[[category]]$Count[i] <- as.integer(length(geneIDs))
+      res[[categories[k]]]$Gene[i] <- paste(genes, collapse = "/")
+      res[[categories[k]]]$GeneID[i] <- paste(geneIDs, collapse = "/")
+      res[[categories[k]]]$Count[i] <- as.integer(length(geneIDs))
     }
   }
   tidy <- list()
-  for(category in names(res)){
-    tidy[[category]] <- res[[category]]
+  categories <- names(res)
+  for(k in seq_len(length(categories))){
+    tidy[[categories[k]]] <- res[[categories[k]]]
   }
 
   return(tidy)
