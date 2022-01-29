@@ -19,7 +19,7 @@ compute_nswap_001 <- "int compute_nswap_001(NumericVector enco){
   }
   return(swaps);
 }"
-cppFunction(compute_nswap_001)
+Rcpp::cppFunction(compute_nswap_001)
 #-----------------------------------------------------------------------------80
 #
 #-----------------------------------------------------------------------------80
