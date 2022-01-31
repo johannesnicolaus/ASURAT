@@ -15,7 +15,7 @@
 #' @import SummarizedExperiment
 #' @export
 #'
-add_metadata_asrt <- function(sce = NULL, mitochondria_symbol = NULL){
+add_metadata <- function(sce = NULL, mitochondria_symbol = NULL){
   mat <- assay(sce, "counts")
   #--------------------------------------------------
   # Variable metadata
@@ -48,7 +48,7 @@ add_metadata_asrt <- function(sce = NULL, mitochondria_symbol = NULL){
 #' @import SummarizedExperiment
 #' @export
 #'
-remove_variables_asrt <- function(sce = NULL, min_nsamples = 0){
+remove_variables <- function(sce = NULL, min_nsamples = 0){
   mat <- assay(sce, "counts")
   inds <- which(apply(mat, 1, function(x) sum(x > 0)) >= min_nsamples)
 
@@ -79,7 +79,7 @@ remove_variables_asrt <- function(sce = NULL, min_nsamples = 0){
 #' @import SummarizedExperiment
 #' @export
 #'
-remove_samples_asrt <- function(
+remove_samples <- function(
   sce = NULL, min_nReads = NULL, max_nReads = NULL,
   min_nGenes = NULL, max_nGenes = NULL, min_percMT = NULL, max_percMT = NULL
 ){
