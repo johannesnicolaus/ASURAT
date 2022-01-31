@@ -4,16 +4,7 @@
 \alias{plot_violin_asrt}
 \title{Violin plots of a one-dimensional data with labels and colors.}
 \usage{
-plot_violin_asrt(
-  dataframe1D,
-  labels = NULL,
-  colors = NULL,
-  title = "",
-  title_size = 20,
-  xlabel = "",
-  ylabel = "",
-  clabel = ""
-)
+plot_violin_asrt(dataframe1D, labels = NULL, colors = NULL, ...)
 }
 \arguments{
 \item{dataframe1D}{A dataframe with one column.}
@@ -23,16 +14,6 @@ corresponding to colors.}
 
 \item{colors}{NULL or a vector of colors of all the samples,
 corresponding to labels.}
-
-\item{title}{Title.}
-
-\item{title_size}{Title size.}
-
-\item{xlabel}{x-axis label.}
-
-\item{ylabel}{y-axis label.}
-
-\item{clabel}{Name of color bar.}
 }
 \value{
 A ggplot object.

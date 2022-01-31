@@ -4,7 +4,7 @@
 \alias{remove_variables_asrt}
 \title{Remove variables based on expression profiles across samples.}
 \usage{
-remove_variables_asrt(sce, min_nsamples)
+remove_variables_asrt(sce = NULL, min_nsamples = 0)
 }
 \arguments{
 \item{sce}{A SingleCellExperiment object.}

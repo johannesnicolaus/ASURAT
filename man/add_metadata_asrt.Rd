@@ -4,7 +4,7 @@
 \alias{add_metadata_asrt}
 \title{Add metadata of variables and samples.}
 \usage{
-add_metadata_asrt(sce, mitochondria_symbol)
+add_metadata_asrt(sce = NULL, mitochondria_symbol = NULL)
 }
 \arguments{
 \item{sce}{A SingleCellExperiment object.}

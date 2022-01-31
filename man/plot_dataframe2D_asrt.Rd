@@ -4,16 +4,7 @@
 \alias{plot_dataframe2D_asrt}
 \title{Visualize a two-dimensional data with labels and colors.}
 \usage{
-plot_dataframe2D_asrt(
-  dataframe2D,
-  labels = NULL,
-  colors = NULL,
-  title = "",
-  title_size = 20,
-  xlabel = "",
-  ylabel = "",
-  clabel = ""
-)
+plot_dataframe2D_asrt(dataframe2D, labels = NULL, colors = NULL)
 }
 \arguments{
 \item{dataframe2D}{A dataframe with two columns.}
@@ -23,16 +14,6 @@ corresponding to colors.}
 
 \item{colors}{NULL or a vector of colors of all the samples,
 corresponding to labels.}
-
-\item{title}{Title.}
-
-\item{title_size}{Title size.}
-
-\item{xlabel}{x-axis label.}
-
-\item{ylabel}{y-axis label.}
-
-\item{clabel}{Name of color bar.}
 }
 \value{
 A ggplot object.

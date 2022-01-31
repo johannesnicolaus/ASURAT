@@ -4,7 +4,7 @@
 \alias{remove_variables_second}
 \title{Remove variables based on the mean expression levels across samples.}
 \usage{
-remove_variables_second(sce, min_meannReads)
+remove_variables_second(sce = NULL, min_meannReads = 0)
 }
 \arguments{
 \item{sce}{A SingleCellExperiment object.}
