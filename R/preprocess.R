@@ -15,7 +15,7 @@
 #' @import SummarizedExperiment
 #' @export
 #'
-add_metadata_asrt <- function(sce, mitochondria_symbol){
+add_metadata_asrt <- function(sce = NULL, mitochondria_symbol = NULL){
   mat <- assay(sce, "counts")
   #--------------------------------------------------
   # Variable metadata
@@ -48,7 +48,7 @@ add_metadata_asrt <- function(sce, mitochondria_symbol){
 #' @import SummarizedExperiment
 #' @export
 #'
-remove_variables_asrt <- function(sce, min_nsamples){
+remove_variables_asrt <- function(sce = NULL, min_nsamples = 0){
   mat <- assay(sce, "counts")
   inds <- which(apply(mat, 1, function(x) sum(x > 0)) >= min_nsamples)
 
@@ -80,13 +80,25 @@ remove_variables_asrt <- function(sce, min_nsamples){
 #' @export
 #'
 remove_samples_asrt <- function(
-  sce, min_nReads = 0, max_nReads = 1e+10, min_nGenes = 0, max_nGenes = 1e+10,
-  min_percMT = 0, max_percMT = 100
+  sce = NULL, min_nReads = NULL, max_nReads = NULL,
+  min_nGenes = NULL, max_nGenes = NULL, min_percMT = NULL, max_percMT = NULL
 ){
   mat <- assay(sce, "counts")
-  inds_1 <- which((sce$nReads >= min_nReads) & (sce$nReads <= max_nReads))
-  inds_2 <- which((sce$nGenes >= min_nGenes) & (sce$nGenes <= max_nGenes))
-  inds_3 <- which((sce$percMT >= min_percMT) & (sce$percMT <= max_percMT))
+  if(!((is.null(min_nReads)) || (is.null(max_nReads)))){
+    inds_1 <- which((sce$nReads >= min_nReads) & (sce$nReads <= max_nReads))
+  }else{
+    inds_1 <- seq_len(dim(sce)[2])
+  }
+  if(!((is.null(min_nGenes)) || (is.null(max_nGenes)))){
+    inds_2 <- which((sce$nGenes >= min_nGenes) & (sce$nGenes <= max_nGenes))
+  }else{
+    inds_2 <- seq_len(dim(sce)[2])
+  }
+  if(!((is.null(min_percMT)) || (is.null(max_percMT)))){
+    inds_3 <- which((sce$percMT >= min_percMT) & (sce$percMT <= max_percMT))
+  }else{
+    inds_3 <- seq_len(dim(sce)[2])
+  }
   inds <- intersect(intersect(inds_1, inds_2), inds_3)
 
   return(sce[, inds])
@@ -108,7 +120,7 @@ remove_samples_asrt <- function(
 #' @import SummarizedExperiment
 #' @export
 #'
-remove_variables_second <- function(sce, min_meannReads){
+remove_variables_second <- function(sce = NULL, min_meannReads = 0){
   mat <- assay(sce, "counts")
   inds <- which(apply(mat, 1, mean) >= min_meannReads)
 

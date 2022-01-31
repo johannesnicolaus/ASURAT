@@ -11,30 +11,18 @@
 #'   corresponding to colors.
 #' @param colors NULL or a vector of colors of all the samples,
 #'   corresponding to labels.
-#' @param title Title.
-#' @param title_size Title size.
-#' @param xlabel x-axis label.
-#' @param ylabel y-axis label.
-#' @param clabel Name of color bar.
 #'
 #' @return A ggplot object.
 #' @import ggplot2
 #' @export
-plot_violin_asrt <- function(
-  dataframe1D, labels = NULL, colors = NULL, title = "", title_size = 20,
-  xlabel = "", ylabel = "", clabel = ""
-){
+plot_violin_asrt <- function(dataframe1D, labels = NULL, colors = NULL, ...){
   if(is.null(labels)){
     dataframe1D$label <- ""
     p <- ggplot() +
       geom_violin(aes(x = as.factor(dataframe1D$label), y = dataframe1D[, 1]),
                   fill = "gray80", trim = FALSE, size = 0.5) +
       geom_boxplot(aes(x = as.factor(dataframe1D$label), y = dataframe1D[, 1]),
-                   width = 0.15, alpha = 0.6) +
-      labs(title = title, x = xlabel, y = ylabel, color = clabel) +
-      theme_classic(base_size = 20, base_family = "Helvetica") +
-      theme(plot.title = element_text(hjust = 0.5, size = title_size),
-            legend.position = "none")
+                   width = 0.15, alpha = 0.6)
   }else{
     dataframe1D$label <- labels
     dataframe1D <- dataframe1D[order(dataframe1D$label), ]
@@ -43,11 +31,7 @@ plot_violin_asrt <- function(
                       fill = as.factor(dataframe1D$label)),
                   trim = FALSE, size = 0.5) +
       geom_boxplot(aes(x = as.factor(dataframe1D$label), y = dataframe1D[, 1]),
-                   width = 0.15, alpha = 0.6) +
-      labs(title = title, x = xlabel, y = ylabel, fill = clabel) +
-      theme_classic(base_size = 20, base_family = "Helvetica") +
-      theme(plot.title = element_text(hjust = 0.5, size = title_size),
-            legend.position = "right")
+                   width = 0.15, alpha = 0.6)
     if(!is.null(colors)){
       dataframe1D$color <- colors
       p <- p + scale_fill_manual(values = unique(dataframe1D$color))
@@ -68,37 +52,20 @@ plot_violin_asrt <- function(
 #'   corresponding to colors.
 #' @param colors NULL or a vector of colors of all the samples,
 #'   corresponding to labels.
-#' @param title Title.
-#' @param title_size Title size.
-#' @param xlabel x-axis label.
-#' @param ylabel y-axis label.
-#' @param clabel Name of color bar.
 #'
 #' @return A ggplot object.
 #' @import ggplot2
 #' @export
-plot_dataframe2D_asrt <- function(
-  dataframe2D, labels = NULL, colors = NULL, title = "", title_size = 20,
-  xlabel = "", ylabel = "", clabel = ""
-){
+plot_dataframe2D_asrt <- function(dataframe2D, labels = NULL, colors = NULL){
   if(is.null(labels)){
     p <- ggplot() + geom_point(aes(x = dataframe2D[, 1], y = dataframe2D[, 2]),
-                               color = "black", size = 0.5, alpha = 1.0) +
-      labs(title = title, x = xlabel, y = ylabel) +
-      theme_classic(base_size = 20, base_family = "Helvetica") +
-      theme(plot.title = element_text(hjust = 0.5, size = title_size),
-            legend.position = "none")
+                               color = "black", size = 0.5, alpha = 1.0)
   }else{
     dataframe2D$label <- labels
     dataframe2D <- dataframe2D[order(dataframe2D$label), ]
     p <- ggplot() + geom_point(aes(x = dataframe2D[, 1], y = dataframe2D[, 2],
                                    color = dataframe2D$label),
-                               size = 0.5, alpha = 1.0) +
-      labs(title = title, x = xlabel, y = ylabel, color = clabel) +
-      theme_classic(base_size = 20, base_family = "Helvetica") +
-      theme(plot.title = element_text(hjust = 0.5, size = title_size),
-            legend.position = "right") +
-      guides(colour = guide_legend(override.aes = list(size=4)))
+                               size = 0.5, alpha = 1.0)
     if(!is.null(colors)){
       dataframe2D$color <- colors
       p <- p + scale_colour_manual(values=unique(dataframe2D$color))
