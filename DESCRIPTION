@@ -48,6 +48,7 @@ Suggests:
     ontoProc,
     GOSemSim,
     KEGGREST,
+    qgraph,
     knitr,
     rmarkdown
 RoxygenNote: 7.1.2
