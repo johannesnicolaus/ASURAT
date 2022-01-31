@@ -15,7 +15,7 @@
 #' @return A ggplot object.
 #' @import ggplot2
 #' @export
-plot_violin_asrt <- function(dataframe1D, labels = NULL, colors = NULL, ...){
+plot_violin <- function(dataframe1D, labels = NULL, colors = NULL, ...){
   if(is.null(labels)){
     dataframe1D$label <- ""
     p <- ggplot() +
@@ -56,7 +56,7 @@ plot_violin_asrt <- function(dataframe1D, labels = NULL, colors = NULL, ...){
 #' @return A ggplot object.
 #' @import ggplot2
 #' @export
-plot_dataframe2D_asrt <- function(dataframe2D, labels = NULL, colors = NULL){
+plot_dataframe2D <- function(dataframe2D, labels = NULL, colors = NULL){
   if(is.null(labels)){
     p <- ggplot() + geom_point(aes(x = dataframe2D[, 1], y = dataframe2D[, 2]),
                                color = "black", size = 0.5, alpha = 1.0)
@@ -97,7 +97,7 @@ plot_dataframe2D_asrt <- function(dataframe2D, labels = NULL, colors = NULL){
 #' @return A scatter3D object in plot3D package.
 #' @import plot3D
 #' @export
-plot_dataframe3D_asrt <- function(
+plot_dataframe3D <- function(
   dataframe3D, labels = NULL, colors = NULL, theta = 30, phi = 30,
   title = "", title_size = 1.5, xlabel = "", ylabel = "", zlabel = ""
 ){
@@ -168,7 +168,7 @@ plot_dataframe3D_asrt <- function(
 #' @import circlize
 #' @import grid
 #' @export
-plot_heatmaps_asrt <- function(
+plot_multiheatmaps <- function(
   ssm_list, gem_list = NULL, ssmlabel_list = NULL, gemlabel_list = NULL,
   nSamples = NULL, show_row_names = FALSE, title, title_size = 20
 ){
