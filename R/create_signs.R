@@ -15,7 +15,7 @@
 #' @import S4Vectors
 #' @export
 #'
-remove_signs_asrt <- function(sce, min_ngenes = 2, max_ngenes = 1000){
+remove_signs <- function(sce, min_ngenes = 2, max_ngenes = 1000){
   #--------------------------------------------------
   # Error handling
   #--------------------------------------------------
@@ -80,7 +80,7 @@ remove_signs_asrt <- function(sce, min_ngenes = 2, max_ngenes = 1000){
 #' @importFrom cluster pam
 #' @export
 #'
-cluster_genesets_asrt <- function(sce, cormat, th_posi, th_nega){
+cluster_genesets <- function(sce, cormat, th_posi, th_nega){
   #--------------------------------------------------
   # Error handling
   #--------------------------------------------------
@@ -281,7 +281,7 @@ cluster_genesets_asrt <- function(sce, cormat, th_posi, th_nega){
 #' @import S4Vectors
 #' @export
 #'
-create_signs_asrt <- function(sce, min_cnt_strg = 2, min_cnt_vari = 2){
+create_signs <- function(sce, min_cnt_strg = 2, min_cnt_vari = 2){
   #--------------------------------------------------
   # Error handling
   #--------------------------------------------------

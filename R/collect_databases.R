@@ -12,7 +12,7 @@
 #' @return A formatted database.
 #' @export
 #'
-format_DO_asrt <- function(dict, all_geneIDs, orgdb){
+format_DO <- function(dict, all_geneIDs, orgdb){
   #--------------------------------------------------
   # Compute information contents.
   # See computeIC() in DOSE package.
@@ -114,7 +114,7 @@ do_cellTypeToGenes <- function(data, orgdb){
 #' @return Results from getCellOnto().
 #' @export
 #'
-collect_CO_asrt <- function(orgdb){
+collect_CO <- function(orgdb){
   #--------------------------------------------------
   # Definition
   #--------------------------------------------------
@@ -160,13 +160,13 @@ collect_CO_asrt <- function(orgdb){
 #'
 #' @return A map data.
 #'
-find_descendants_asrt <- function(id, co, map){
+find_descendants <- function(id, co, map){
   children <- co[["children"]][[id]]
   if(length(children) == 0){
     return(NA)
   }else{
     for(i in seq_len(length(children))){
-      map <- c(map, c(children[i], find_descendants_asrt(children[i], co, map)))
+      map <- c(map, c(children[i], find_descendants(children[i], co, map)))
     }
     return(setdiff(map, NA))
   }
@@ -182,7 +182,7 @@ find_descendants_asrt <- function(id, co, map){
 #'
 #' @return Parent-child relation table.
 #'
-make_treeTable_CO_asrt <- function(tidy){
+make_treeTable_CO <- function(tidy){
   categories_woALL <- setdiff(names(tidy), "ALL")
   co <- ontoProc::getCellOnto()
   res <- list() 
@@ -190,7 +190,7 @@ make_treeTable_CO_asrt <- function(tidy){
     df <- tidy[[categories_woALL[k]]]
     map <- c() ; tmp <- c()
     for(i in seq_len(nrow(df))){
-      dg <- data.frame(child = find_descendants_asrt(df$ID[i], co, map),
+      dg <- data.frame(child = find_descendants(df$ID[i], co, map),
                        parent = df$ID[i])
       tmp <- rbind(tmp, dg) 
     }
@@ -208,12 +208,12 @@ make_treeTable_CO_asrt <- function(tidy){
 #'
 #' @param dict A result of format_CO().
 #' @param tidy A list of result of format_CO().
-#' @param treeTable A result of make_treeTable_CO_asrt().
+#' @param treeTable A result of make_treeTable_CO().
 #'
 #' @return A list of result of format_CO().
 #' @seealso Mistry and Pavlidis, BMC Bioinformatics, 2008.
 #'
-compute_IC_CO_asrt <- function(dict, tidy, treeTable){
+compute_IC_CO <- function(dict, tidy, treeTable){
   categories_woALL <- setdiff(names(tidy), "ALL")
   for(k in seq_len(length(categories_woALL))){
     #------------------------------
@@ -266,7 +266,7 @@ compute_IC_CO_asrt <- function(dict, tidy, treeTable){
     if(identical(tbl$parent, res$ID)){
       res$IC <- tbl$IC
     }else{
-      stop("IDs are inconsistent. Check the code of compute_IC_CO_asrt().")
+      stop("IDs are inconsistent. Check the code of compute_IC_CO().")
     }
     tidy[[categories_woALL[k]]] <- res
   }
@@ -285,7 +285,7 @@ compute_IC_CO_asrt <- function(dict, tidy, treeTable){
 #' @return A formatted database.
 #' @export
 #'
-format_CO_asrt <- function(dict, orgdb){
+format_CO <- function(dict, orgdb){
   #--------------------------------------------------
   # Reformat dict.
   #--------------------------------------------------
@@ -303,8 +303,8 @@ format_CO_asrt <- function(dict, orgdb){
   # Compute information contents, defined in
   # Mistry and Pavlidis, BMC Bioinformatics, 2008.
   #--------------------------------------------------
-  treeTable <- make_treeTable_CO_asrt(tidy = res)
-  res <- compute_IC_CO_asrt(dict = dict, tidy = res, treeTable = treeTable)
+  treeTable <- make_treeTable_CO(tidy = res)
+  res <- compute_IC_CO(dict = dict, tidy = res, treeTable = treeTable)
   #--------------------------------------------------
   # Fix the slots of gene symbols and ENTREZ Gene IDs.
   #--------------------------------------------------
@@ -415,7 +415,7 @@ do_groupGO <- function(genes, orgdb, ont, level){
 #' @return Results from groupGO().
 #' @export
 #'
-collect_GO_asrt <- function(orgdb){
+collect_GO <- function(orgdb){
   #--------------------------------------------------
   # Preparation
   #--------------------------------------------------
@@ -466,7 +466,7 @@ collect_GO_asrt <- function(orgdb){
 #' @return A formatted database.
 #' @export
 #'
-format_GO_asrt <- function(dict, orgdb){
+format_GO <- function(dict, orgdb){
   #--------------------------------------------------
   # Reformat dict.
   #--------------------------------------------------
@@ -583,7 +583,7 @@ do_keggGet <- function(data){
 #' @return Results from keggGet().
 #' @export
 #'
-collect_KEGG_asrt <- function(organism, categories){
+collect_KEGG <- function(organism, categories){
   #--------------------------------------------------
   # Collect KEGG terms.
   #--------------------------------------------------
@@ -723,7 +723,7 @@ collect_KEGG_asrt <- function(organism, categories){
 #' @return A formatted database.
 #' @export
 #'
-format_KEGG_asrt <- function(dict, orgdb){
+format_KEGG <- function(dict, orgdb){
   #--------------------------------------------------
   # Definition
   #--------------------------------------------------
