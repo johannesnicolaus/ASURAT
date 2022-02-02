@@ -13,13 +13,13 @@ compute_nswap_001 <- "int compute_nswap_001(NumericVector enco){
   int  swaps = 0;
   for(int i=0; i<(enco.length()-1); ++i){
     for(int j=i+1; j<enco.length(); ++j){
-      if(enco[i] > enco[j])
+      if(enco[i] > enco[j]){
         swaps++;
+      }
     }
   }
   return(swaps);
 }"
-Rcpp::cppFunction(compute_nswap_001)
 #-----------------------------------------------------------------------------80
 #
 #-----------------------------------------------------------------------------80
@@ -37,8 +37,6 @@ Rcpp::cppFunction(compute_nswap_001)
 #' @import Rcpp
 #'
 compute_nswaps <- function(vec1 = NULL, vec2 = NULL){
-  I <- length(vec1)
-
   # (1)
   dict <- c()
   words <- unique(vec1)
@@ -56,13 +54,13 @@ compute_nswaps <- function(vec1 = NULL, vec2 = NULL){
   }
   names(cnt) <- names(dict)
   enco <- vec2
-  for(i in seq_len(I)){
+  for(i in seq_len(length(vec1))){
     enco[i] <- dict[[as.character(vec2[i])]][cnt[[as.character(vec2[i])]]]
     cnt[[as.character(vec2[i])]] <- cnt[[as.character(vec2[i])]] + 1
   }
 
   # (3): this step is time consuming.
-  swaps <- compute_nswap_001(enco)
+  swaps <- Rcpp::cppFunction(compute_nswap_001(enco))
 
   return(swaps)
 }
