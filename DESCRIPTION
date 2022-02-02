@@ -1,7 +1,7 @@
 Package: ASURAT
 Type: Package
 Title: Functional annotation-driven unsupervised clustering for single-cell data
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: person("Keita", "Iida", email = "kiida@protein.osaka-u.ac.jp",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0002-1076-830X"))
 Description: ASURAT is a computational pipeline for single-cell data analysis,
