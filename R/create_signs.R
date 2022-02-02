@@ -677,7 +677,7 @@ select_signs_manually <- function(sce, keywords = NULL){
 #' @import S4Vectors
 #' @export
 #'
-create_sce_signmatrix <- function(sce, weight_strg = 0.5, weight_vari = 0.5){
+make_signmatrix <- function(sce, weight_strg = 0.5, weight_vari = 0.5){
   #--------------------------------------------------
   # Error handling
   #--------------------------------------------------
