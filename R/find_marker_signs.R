@@ -6,6 +6,7 @@
 #' This function computes the number of swaps.
 #'
 #' @param enco A vector.
+#' @import Rcpp
 #' @export
 #'
 compute_nswap_001 <- "int compute_nswap_001(NumericVector enco){
