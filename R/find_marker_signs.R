@@ -61,7 +61,7 @@ compute_nswaps <- function(vec1 = NULL, vec2 = NULL){
   }
 
   # (3): this step is time consuming.
-  Rcpp::cppFunction(compute_nswap_001)
+  cppFunction(compute_nswap_001)
   swaps <- compute_nswap_001(enco)
 
   return(swaps)

@@ -519,8 +519,8 @@ for(i in seq_len(length(pbmcs))){
 }
 ```
 
-The results can be visualized by ASURAT functions `plot_dataframe2D()`
-(see [here](#visualization_lowdim) for details).
+The results can be visualized by ASURAT functions `plot_dataframe2D()` or
+`plot_dataframe3D()` (see [here](#visualization_lowdim) for details).
 ```{r}
 labels <- colData(pbmcs$CM)$seurat_clusters
 dataframe2D <- as.data.frame(reducedDim(pbmcs$CM, "TSNE"))
@@ -700,7 +700,7 @@ gem_list <- list(GeneExpr = assay(expr_sub, "counts"))
 labels <- list() ; ssmlabel_list <- list()
 for(i in seq_len(length(pbmcs))){
   labels[[i]] <- data.frame(label = colData(pbmcs_sub[[i]])$seurat_clusters)
-  labels[[i]]$color <- rainbow(length(unique(labels[[i]]$label)))[labels[[i]]$label]
+  labels[[i]]$color <- NA
   ssmlabel_list[[i]] <- labels[[i]]
 }
 names(ssmlabel_list) <- c("Label_COMSig", "Label_GO", "Label_KEGG")
@@ -710,7 +710,7 @@ gemlabel_list <- list(CellCycle = label_CC)
 ```
 
 Finally, plot heatmaps for the selected signs and genes.
-```{r}
+```{r, message = FALSE, warning = FALSE}
 set.seed(1)
 plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
                    ssmlabel_list = ssmlabel_list, gemlabel_list = gemlabel_list,
@@ -854,7 +854,7 @@ gemlabel_list <- list(CellCycle = label_CC)
 ```
 
 Plot heatmaps.
-```{r}
+```{r, message = FALSE, warning = FALSE}
 set.seed(1)
 plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
                    ssmlabel_list = ssmlabel_list, gemlabel_list = gemlabel_list,
