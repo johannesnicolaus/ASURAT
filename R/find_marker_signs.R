@@ -20,6 +20,7 @@ compute_nswap_001 <- "int compute_nswap_001(NumericVector enco){
   }
   return(swaps);
 }"
+Rcpp::cppFunction(compute_nswap_001)
 #-----------------------------------------------------------------------------80
 #
 #-----------------------------------------------------------------------------80
@@ -60,7 +61,7 @@ compute_nswaps <- function(vec1 = NULL, vec2 = NULL){
   }
 
   # (3): this step is time consuming.
-  swaps <- Rcpp::cppFunction(compute_nswap_001(enco))
+  swaps <- compute_nswap_001(enco)
 
   return(swaps)
 }
