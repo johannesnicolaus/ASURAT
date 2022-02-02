@@ -1,28 +1,6 @@
 #-----------------------------------------------------------------------------80
 #
 #-----------------------------------------------------------------------------80
-#' Compute number of swaps.
-#'
-#' This function computes the number of swaps.
-#'
-#' @param enco A vector.
-#' @import Rcpp
-#' @export
-#'
-compute_nswap_001 <- "int compute_nswap_001(NumericVector enco){
-  int  swaps = 0;
-  for(int i=0; i<(enco.length()-1); ++i){
-    for(int j=i+1; j<enco.length(); ++j){
-      if(enco[i] > enco[j]){
-        swaps++;
-      }
-    }
-  }
-  return(swaps);
-}"
-#-----------------------------------------------------------------------------80
-#
-#-----------------------------------------------------------------------------80
 #' Compute an edit distance between two vectors.
 #'
 #' This function computes the number of swaps of adjacent elements required for
@@ -60,6 +38,17 @@ compute_nswaps <- function(vec1 = NULL, vec2 = NULL){
   }
 
   # (3): this step is time consuming.
+  compute_nswap_001 <- "int compute_nswap_001(NumericVector enco){
+    int  swaps = 0;
+    for(int i=0; i<(enco.length()-1); ++i){
+      for(int j=i+1; j<enco.length(); ++j){
+        if(enco[i] > enco[j]){
+          swaps++;
+        }
+      }
+    }
+    return(swaps);
+  }"
   cppFunction(compute_nswap_001)
   swaps <- compute_nswap_001(enco)
 
