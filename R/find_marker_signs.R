@@ -7,8 +7,6 @@
 #'
 #' @param enco A vector.
 #'
-#' @import Rcpp
-#'
 compute_nswap_001 <- "int compute_nswap_001(NumericVector enco){
   int  swaps = 0;
   for(int i=0; i<(enco.length()-1); ++i){
