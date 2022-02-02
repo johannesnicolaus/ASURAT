@@ -5,13 +5,12 @@
 \title{Visualize a three-dimensional data with labels and colors.}
 \usage{
 plot_dataframe3D(
-  dataframe3D,
+  dataframe3D = NULL,
   labels = NULL,
   colors = NULL,
   theta = 30,
   phi = 30,
   title = "",
-  title_size = 1.5,
   xlabel = "",
   ylabel = "",
   zlabel = ""
@@ -31,8 +30,6 @@ corresponding to labels.}
 \item{phi}{Angle of the plot.}
 
 \item{title}{Title.}
-
-\item{title_size}{Title size.}
 
 \item{xlabel}{x-axis label.}
 

@@ -1,9 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^databases$
 ^docs$
-^figures$
 ^inst$
-^misc$
 ^ASURAT.Rmd$
 ^ASURAT.html$
+^ASURAT_files$

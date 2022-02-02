@@ -4,7 +4,7 @@
 \alias{plot_dataframe2D}
 \title{Visualize a two-dimensional data with labels and colors.}
 \usage{
-plot_dataframe2D(dataframe2D, labels = NULL, colors = NULL)
+plot_dataframe2D(dataframe2D = NULL, labels = NULL, colors = NULL)
 }
 \arguments{
 \item{dataframe2D}{A dataframe with two columns.}

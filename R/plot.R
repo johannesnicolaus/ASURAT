@@ -15,7 +15,7 @@
 #' @return A ggplot object.
 #' @import ggplot2
 #' @export
-plot_violin <- function(dataframe1D, labels = NULL, colors = NULL, ...){
+plot_violin <- function(dataframe1D = NULL, labels = NULL, colors = NULL){
   if(is.null(labels)){
     dataframe1D$label <- ""
     p <- ggplot() +
@@ -56,7 +56,7 @@ plot_violin <- function(dataframe1D, labels = NULL, colors = NULL, ...){
 #' @return A ggplot object.
 #' @import ggplot2
 #' @export
-plot_dataframe2D <- function(dataframe2D, labels = NULL, colors = NULL){
+plot_dataframe2D <- function(dataframe2D = NULL, labels = NULL, colors = NULL){
   if(is.null(labels)){
     p <- ggplot() + geom_point(aes(x = dataframe2D[, 1], y = dataframe2D[, 2]),
                                color = "black", size = 0.5, alpha = 1.0)
@@ -89,7 +89,6 @@ plot_dataframe2D <- function(dataframe2D, labels = NULL, colors = NULL){
 #' @param theta Angle of the plot.
 #' @param phi Angle of the plot.
 #' @param title Title.
-#' @param title_size Title size.
 #' @param xlabel x-axis label.
 #' @param ylabel y-axis label.
 #' @param zlabel z-axis label.
@@ -98,16 +97,15 @@ plot_dataframe2D <- function(dataframe2D, labels = NULL, colors = NULL){
 #' @import plot3D
 #' @export
 plot_dataframe3D <- function(
-  dataframe3D, labels = NULL, colors = NULL, theta = 30, phi = 30,
-  title = "", title_size = 1.5, xlabel = "", ylabel = "", zlabel = ""
+  dataframe3D = NULL, labels = NULL, colors = NULL, theta = 30, phi = 30,
+  title = "", xlabel = "", ylabel = "", zlabel = ""
 ){
   if(is.null(labels)){
     scatter3D(dataframe3D[, 1], dataframe3D[, 2], dataframe3D[, 3],
               main = title, xlab = xlabel, ylab = ylabel, zlab = zlabel,
-              cex.main  = title_size, box = TRUE, bty = "b2", axes = TRUE,
-              nticks = 5, theta = theta, phi = phi, pch = 16, cex = 0.5,
-              alpha = 1.0, col = "black",
-              colvar = NA, colkey = FALSE)
+              box = TRUE, bty = "b2", axes = TRUE, nticks = 5,
+              theta = theta, phi = phi, pch = 16, cex = 0.5, alpha = 1.0,
+              col = "black", colvar = NA, colkey = FALSE)
   }else{
     if(is.null(colors)){
       myggcolor <- function(n, l = 65){
@@ -119,8 +117,7 @@ plot_dataframe3D <- function(
       dataframe3D <- dataframe3D[order(dataframe3D$label), ]
       scatter3D(dataframe3D[, 1], dataframe3D[, 2], dataframe3D[, 3],
                 main = title, xlab = xlabel, ylab = ylabel, zlab = zlabel,
-                cex.main = title_size, box = TRUE, bty = "b2", axes = TRUE,
-                nticks = 5,
+                box = TRUE, bty = "b2", axes = TRUE, nticks = 5,
                 theta = theta, phi = phi, pch = 16, cex = 0.5, alpha = 1.0,
                 col = dataframe3D$color, colvar = NA, colkey = FALSE)
       graphics::legend("bottomright", legend = unique(dataframe3D$label),
@@ -131,8 +128,7 @@ plot_dataframe3D <- function(
       dataframe3D <- dataframe3D[order(dataframe3D$label), ]
       scatter3D(dataframe3D[, 1], dataframe3D[, 2], dataframe3D[, 3],
                 main = title, xlab = xlabel, ylab = ylabel, zlab = zlabel,
-                cex.main = title_size, box = TRUE, bty = "b2", axes = TRUE,
-                nticks = 5,
+                box = TRUE, bty = "b2", axes = TRUE, nticks = 5,
                 theta = theta, phi = phi, pch = 16, cex = 0.5, alpha = 1.0,
                 col = dataframe3D$color, colvar = NA, colkey = FALSE)
       graphics::legend("bottomright", legend=unique(dataframe3D$label),
@@ -161,7 +157,6 @@ plot_dataframe3D <- function(
 #' @param nSamples Number of samples (cells) used for random sampling.
 #' @param show_row_names TRUE or FALSE: if TRUE, row names are shown.
 #' @param title Title.
-#' @param title_size Title size.
 #'
 #' @return A ComplexHeatmap object.
 #' @import ComplexHeatmap
@@ -169,8 +164,8 @@ plot_dataframe3D <- function(
 #' @import grid
 #' @export
 plot_multiheatmaps <- function(
-  ssm_list, gem_list = NULL, ssmlabel_list = NULL, gemlabel_list = NULL,
-  nSamples = NULL, show_row_names = FALSE, title, title_size = 20
+  ssm_list = NULL, gem_list = NULL, ssmlabel_list = NULL, gemlabel_list = NULL,
+  nSamples = NULL, show_row_names = FALSE, title = NULL
 ){
   #--------------------------------------------------
   # Error handling
@@ -278,8 +273,6 @@ plot_multiheatmaps <- function(
                      column_gap = unit(1.5, "mm"),
                      cluster_column_slices = cluster_column_slices,
                      column_title = title,
-                     column_title_gp = gpar(fontsize = title_size,
-                                            fontface = "bold"),
                      # Option
                      name = names(ssm_list)[[i]], border = border)
       }else{
@@ -296,8 +289,6 @@ plot_multiheatmaps <- function(
                      column_gap = unit(1.5, "mm"),
                      cluster_column_slices = cluster_column_slices,
                      column_title = title,
-                     column_title_gp = gpar(fontsize = title_size,
-                                            fontface = "bold"),
                      # Option
                      name = names(ssm_list)[[i]], border = border)
       }
@@ -315,8 +306,6 @@ plot_multiheatmaps <- function(
                      column_gap = unit(1.5, "mm"),
                      cluster_column_slices = cluster_column_slices,
                      column_title = title,
-                     column_title_gp = gpar(fontsize = title_size,
-                                            fontface = "bold"),
                      # Option
                      name = names(ssm_list)[[i]], border = border)
       }else{
@@ -333,8 +322,6 @@ plot_multiheatmaps <- function(
                      column_gap = unit(1.5, "mm"),
                      cluster_column_slices = cluster_column_slices,
                      column_title = title,
-                     column_title_gp = gpar(fontsize = title_size,
-                                            fontface = "bold"),
                      # Option
                      name = names(ssm_list)[[i]], border = border)
       }
@@ -380,8 +367,6 @@ plot_multiheatmaps <- function(
                      column_gap = unit(1.5, "mm"),
                      cluster_column_slices = cluster_column_slices,
                      column_title = title,
-                     column_title_gp = gpar(fontsize = title_size,
-                                            fontface = "bold"),
                      # Option
                      name = names(gem_list)[[i]], border = border)
       }else{
@@ -398,8 +383,6 @@ plot_multiheatmaps <- function(
                      column_gap = unit(1.5, "mm"),
                      cluster_column_slices = cluster_column_slices,
                      column_title = title,
-                     column_title_gp = gpar(fontsize = title_size,
-                                            fontface = "bold"),
                      # Option
                      name = names(gem_list)[[i]], border = border)
       }
@@ -417,8 +400,6 @@ plot_multiheatmaps <- function(
                      column_gap = unit(1.5, "mm"),
                      cluster_column_slices = cluster_column_slices,
                      column_title = title,
-                     column_title_gp = gpar(fontsize = title_size,
-                                            fontface = "bold"),
                      # Option
                      name = names(gem_list)[[i]], border = border)
       }else{
@@ -435,8 +416,6 @@ plot_multiheatmaps <- function(
                      column_gap = unit(1.5, "mm"),
                      cluster_column_slices = cluster_column_slices,
                      column_title = title,
-                     column_title_gp = gpar(fontsize = title_size,
-                                            fontface = "bold"),
                      # Option
                      name = names(gem_list)[[i]], border = border)
       }

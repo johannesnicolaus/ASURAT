@@ -4,7 +4,7 @@
 \alias{plot_violin}
 \title{Violin plots of a one-dimensional data with labels and colors.}
 \usage{
-plot_violin(dataframe1D, labels = NULL, colors = NULL, ...)
+plot_violin(dataframe1D = NULL, labels = NULL, colors = NULL)
 }
 \arguments{
 \item{dataframe1D}{A dataframe with one column.}

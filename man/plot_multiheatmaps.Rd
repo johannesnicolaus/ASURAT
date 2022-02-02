@@ -5,14 +5,13 @@
 \title{Visualize a three-dimensional data with labels and colors.}
 \usage{
 plot_multiheatmaps(
-  ssm_list,
+  ssm_list = NULL,
   gem_list = NULL,
   ssmlabel_list = NULL,
   gemlabel_list = NULL,
   nSamples = NULL,
   show_row_names = FALSE,
-  title,
-  title_size = 20
+  title = NULL
 )
 }
 \arguments{
@@ -35,8 +34,6 @@ the order of labels in each list must be as same as those in gem_list.}
 \item{show_row_names}{TRUE or FALSE: if TRUE, row names are shown.}
 
 \item{title}{Title.}
-
-\item{title_size}{Title size.}
 }
 \value{
 A ComplexHeatmap object.

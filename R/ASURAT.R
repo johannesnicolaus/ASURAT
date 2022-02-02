@@ -16,20 +16,4 @@
 #' @docType package
 #' @name ASURAT
 NULL
-#-----------------------------------------------------------------------------80
-#
-#-----------------------------------------------------------------------------80
-#' Print future work.
-#'
-#' This function prints future work.
-#'
-#' @return A sentences.
-#'
-print_future_asrt <- function(){
-  message("* Create biological sentences by combining multiple signs.")
-  message("  - Explore a way to characterize samples by sentences.")
-  message("* Find a feedback structure in the system of linguistics.")
-  message("  - What is le langage in a precise mathematical sense?")
-  message("  - Find an analogy between le langue and cell systems.")
-  message("  - Investigate a catastrophe structure in linguistics.")
-}
+
