@@ -4,7 +4,7 @@
 \alias{remove_signs}
 \title{Remove signs including too few or too many genes.}
 \usage{
-remove_signs(sce, min_ngenes = 2, max_ngenes = 1000)
+remove_signs(sce = NULL, min_ngenes = 2, max_ngenes = 1000)
 }
 \arguments{
 \item{sce}{A SingleCellExperiment object.}

@@ -5,7 +5,7 @@
 \title{Remove redundant signs using semantic similarity matrices.}
 \usage{
 remove_signs_redundant(
-  sce,
+  sce = NULL,
   similarity_matrix = NULL,
   threshold = NULL,
   keep_rareID = NULL

@@ -4,7 +4,7 @@
 \alias{create_signs}
 \title{Define signs for strongly and variably correlated gene sets.}
 \usage{
-create_signs(sce, min_cnt_strg = 2, min_cnt_vari = 2)
+create_signs(sce = NULL, min_cnt_strg = 2, min_cnt_vari = 2)
 }
 \arguments{
 \item{sce}{A SingleCellExperiment object.}

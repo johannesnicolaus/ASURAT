@@ -4,7 +4,7 @@
 \alias{makeSignMatrix}
 \title{Create a new SingleCellExperiment object for sign-by-sample matrices.}
 \usage{
-makeSignMatrix(sce, weight_strg = 0.5, weight_vari = 0.5)
+makeSignMatrix(sce = NULL, weight_strg = 0.5, weight_vari = 0.5)
 }
 \arguments{
 \item{sce}{A SingleCellExperiment object.}

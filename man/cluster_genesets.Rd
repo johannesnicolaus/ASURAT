@@ -4,7 +4,7 @@
 \alias{cluster_genesets}
 \title{Cluster each functional gene set into three groups.}
 \usage{
-cluster_genesets(sce, cormat, th_posi, th_nega)
+cluster_genesets(sce = NULL, cormat = NULL, th_posi = NULL, th_nega = NULL)
 }
 \arguments{
 \item{sce}{A SingleCellExperiment object.}

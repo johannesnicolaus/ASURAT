@@ -4,7 +4,7 @@
 \alias{compute_nswaps}
 \title{Compute an edit distance between two vectors.}
 \usage{
-compute_nswaps(vec1, vec2)
+compute_nswaps(vec1 = NULL, vec2 = NULL)
 }
 \arguments{
 \item{vec1}{A first vector.}

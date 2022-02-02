@@ -4,7 +4,7 @@
 \alias{remove_signs_manually}
 \title{Remove signs by specifying keywords.}
 \usage{
-remove_signs_manually(sce, keywords = NULL)
+remove_signs_manually(sce = NULL, keywords = NULL)
 }
 \arguments{
 \item{sce}{A SingleCellExperiment object.}

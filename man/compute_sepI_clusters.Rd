@@ -4,7 +4,12 @@
 \alias{compute_sepI_clusters}
 \title{Compute separation indices of sign scores for given two clusters.}
 \usage{
-compute_sepI_clusters(sce, labels, ident_1, ident_2)
+compute_sepI_clusters(
+  sce = NULL,
+  labels = NULL,
+  ident_1 = NULL,
+  ident_2 = NULL
+)
 }
 \arguments{
 \item{sce}{A SingleCellExperiment object.}

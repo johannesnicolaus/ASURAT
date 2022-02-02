@@ -4,7 +4,7 @@
 \alias{select_signs_manually}
 \title{Select signs by specifying keywords.}
 \usage{
-select_signs_manually(sce, keywords = NULL)
+select_signs_manually(sce = NULL, keywords = NULL)
 }
 \arguments{
 \item{sce}{An ASURAT object.}

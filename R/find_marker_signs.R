@@ -36,7 +36,7 @@ Rcpp::cppFunction(compute_nswap_001)
 #' @return An integer representing an edit distance.
 #' @import Rcpp
 #'
-compute_nswaps <- function(vec1, vec2){
+compute_nswaps <- function(vec1 = NULL, vec2 = NULL){
   I <- length(vec1)
 
   # (1)
@@ -87,7 +87,9 @@ compute_nswaps <- function(vec1, vec2){
 #' @import S4Vectors
 #' @export
 #'
-compute_sepI_clusters <- function(sce, labels, ident_1, ident_2){
+compute_sepI_clusters <- function(
+  sce = NULL, labels = NULL, ident_1 = NULL, ident_2 = NULL
+){
   inds_1 <- which(labels %in% ident_1)
   inds_2 <- which(labels %in% ident_2)
   popu_1 <- colnames(sce)[inds_1]
@@ -142,9 +144,14 @@ compute_sepI_clusters <- function(sce, labels, ident_1, ident_2){
 #' Compute separation indices for each cluster against the others.
 #'
 #' This function computes separation indices for each cluster versus the others.
+#'   Since this function may be timeconsuming, random sampling is automatically
+#'   performed unless setting num_rand = NULL.
 #'
 #' @param sce A SingleCellExperiment object.
 #' @param labels A vector of labels of all the samples (cells).
+#' @param random_sampling TRUE or FALSE. If TRUE, random sampling is performed,
+#'   in which the smaller value between 2000 and floor(0.5 * ncol(sce)) is used
+#'   for the number of samples.
 #'
 #' @return A SingleCellExperiment object.
 #' @import SingleCellExperiment
@@ -152,12 +159,19 @@ compute_sepI_clusters <- function(sce, labels, ident_1, ident_2){
 #' @import S4Vectors
 #' @export
 #'
-compute_sepI_all <- function(sce, labels){
+compute_sepI_all <- function(sce = NULL, labels = NULL, random_sampling = TRUE){
   #--------------------------------------------------
-  # Preparation
+  # Preparation and Message
   #--------------------------------------------------
   res <- list()
   tmp <- sce
+  if(random_sampling == TRUE){ 
+    message("Random sampling is performed for the fast computation.")
+    n <- ifelse(floor(0.5 * ncol(sce)) >= 2000, 2000, floor(0.5 * ncol(sce)))
+    inds <- sort(sample(seq_len(ncol(sce)), n, replace = FALSE, prob = NULL))
+    tmp <- tmp[, inds]
+    labels <- labels[inds]
+  }
   metadata(tmp)$marker_signs <- NULL
   #--------------------------------------------------
   # Loop

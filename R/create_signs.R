@@ -15,7 +15,7 @@
 #' @import S4Vectors
 #' @export
 #'
-remove_signs <- function(sce, min_ngenes = 2, max_ngenes = 1000){
+remove_signs <- function(sce = NULL, min_ngenes = 2, max_ngenes = 1000){
   #--------------------------------------------------
   # Error handling
   #--------------------------------------------------
@@ -80,7 +80,9 @@ remove_signs <- function(sce, min_ngenes = 2, max_ngenes = 1000){
 #' @importFrom cluster pam
 #' @export
 #'
-cluster_genesets <- function(sce, cormat, th_posi, th_nega){
+cluster_genesets <- function(
+  sce = NULL, cormat = NULL, th_posi = NULL, th_nega = NULL
+){
   #--------------------------------------------------
   # Error handling
   #--------------------------------------------------
@@ -281,7 +283,7 @@ cluster_genesets <- function(sce, cormat, th_posi, th_nega){
 #' @import S4Vectors
 #' @export
 #'
-create_signs <- function(sce, min_cnt_strg = 2, min_cnt_vari = 2){
+create_signs <- function(sce = NULL, min_cnt_strg = 2, min_cnt_vari = 2){
   #--------------------------------------------------
   # Error handling
   #--------------------------------------------------
@@ -366,7 +368,7 @@ create_signs <- function(sce, min_cnt_strg = 2, min_cnt_vari = 2){
 #' @export
 #'
 remove_signs_redundant <- function(
-  sce, similarity_matrix = NULL, threshold = NULL, keep_rareID = NULL
+  sce = NULL, similarity_matrix = NULL, threshold = NULL, keep_rareID = NULL
 ){
   #--------------------------------------------------
   # Error handling
@@ -568,7 +570,7 @@ remove_signs_redundant <- function(
 #' @import S4Vectors
 #' @export
 #'
-remove_signs_manually <- function(sce, keywords = NULL){
+remove_signs_manually <- function(sce = NULL, keywords = NULL){
   if(is.null(keywords)){
     return(sce)
   }
@@ -621,7 +623,7 @@ remove_signs_manually <- function(sce, keywords = NULL){
 #' @import S4Vectors
 #' @export
 #'
-select_signs_manually <- function(sce, keywords = NULL){
+select_signs_manually <- function(sce = NULL, keywords = NULL){
   if(is.null(keywords)){
     return(sce)
   }
@@ -677,7 +679,7 @@ select_signs_manually <- function(sce, keywords = NULL){
 #' @import S4Vectors
 #' @export
 #'
-makeSignMatrix <- function(sce, weight_strg = 0.5, weight_vari = 0.5){
+makeSignMatrix <- function(sce = NULL, weight_strg = 0.5, weight_vari = 0.5){
   #--------------------------------------------------
   # Error handling
   #--------------------------------------------------
