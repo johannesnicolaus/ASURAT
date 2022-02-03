@@ -1,4 +1,7 @@
+##' @importFrom utils packageDescription
 .onAttach <- function(libname, pkgname){ 
+  version <- packageDescription(pkgname, fields="Version")
+  
   version_msg <- paste0(pkgname, " v", version, "\n\n")
 
   msg <- paste0("Thank you for using ", pkgname, "\n\n", 
