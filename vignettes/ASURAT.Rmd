@@ -590,7 +590,7 @@ for(i in seq_len(length(pbmcs))){
   set.seed(1)
   labels <- colData(pbmcs[[i]])$seurat_clusters
   pbmcs[[i]] <- compute_sepI_all(sce = pbmcs[[i]], labels = labels,
-                                 nrand_samples = floor(0.5 * ncol(pbmcs[[i]])))
+                                 nrand_samples = 1000)
 }
 ```
 When computing separation indices between given clusters, e.g., cluster 1 versus

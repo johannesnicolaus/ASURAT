@@ -109,7 +109,7 @@ compute_sepI_clusters <- function(
     }
     nonbaseindices <- unlist(nonbaseindex_list)
     n <- nrand_samples - length(idents)
-    nonbaseindices <- sample(index_list[[i]], n, prob = NULL)
+    nonbaseindices <- sample(unlist(nonbaseindex_list), n, prob = NULL)
     final_idents <- union(unlist(baseindex_list), nonbaseindices)
     subsce <- sce[, final_idents]
     popu_1 <- colnames(sce)[final_idents[labels[final_idents] %in% ident_1]]
@@ -196,7 +196,6 @@ compute_sepI_all <- function(sce = NULL, labels = NULL, nrand_samples = NULL){
   res <- list()
   tmp <- sce
   metadata(tmp)$marker_signs <- NULL
-  labels <- as.character(labels)
   #--------------------------------------------------
   # Loop
   #--------------------------------------------------
