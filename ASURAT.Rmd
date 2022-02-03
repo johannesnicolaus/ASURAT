@@ -381,7 +381,7 @@ the method for computing semantic similarity matrix.
 ```{r}
 pbmcs$GO <- remove_signs_redundant(
   sce = pbmcs$GO, similarity_matrix = human_GO$similarity_matrix$BP,
-  threshold = 0.90, keep_rareID = TRUE)
+  threshold = 0.80, keep_rareID = TRUE)
 ```
 The results are stored in `metadata(sce)$sign_SCG`, `metadata(sce)$sign_VCG`,
 `metadata(sce)$sign_all`, and if there exist, `metadata(sce)$sign_SCG_redundant`
@@ -483,7 +483,8 @@ plot_dataframe2D(dataframe2D = dataframe2D) +
 
 ```{r}
 dataframe3D <- as.data.frame(reducedDim(pbmcs$CM, "UMAP")[, 1:3])
-plot_dataframe3D(dataframe3D = dataframe3D, theta = 45, phi = 20, title = "PBMC",
+plot_dataframe3D(dataframe3D = dataframe3D, theta = 45, phi = 20,
+                 title = "PBMC (CO & MSigDB)",
                  xlabel = "UMAP_1", ylabel = "UMAP_2", zlabel = "UMAP_3")
 ```
 
@@ -508,8 +509,8 @@ In this tutorial, our strategy is as follows:
 resolutions <- c(0.15, 0.20, 0.25)
 for(i in seq_len(length(pbmcs))){
   pbmc_surt <- Seurat::as.Seurat(pbmcs[[i]], counts = "counts", data = "counts")
-  #If there is data in `altExp(sce)`, set Seurat default assay as follows:
-  Seurat::DefaultAssay(pbmc_surt) <- "originalexp"
+  pbmc_surt[["SSM"]] <- Seurat::CreateAssayObject(counts = as.matrix(assay(pbmcs[[i]], "counts")))
+  Seurat::DefaultAssay(pbmc_surt) <- "SSM"
   pbmc_surt <- Seurat::ScaleData(pbmc_surt, features = rownames(pbmc_surt))
   pbmc_surt <- Seurat::RunPCA(pbmc_surt, features = rownames(pbmc_surt))
   pbmc_surt <- Seurat::FindNeighbors(pbmc_surt, reduction = "pca", dims = 1:20)
@@ -552,7 +553,7 @@ plot_dataframe2D(dataframe2D = dataframe2D, labels = labels, colors = NULL) +
 dataframe3D <- as.data.frame(reducedDim(pbmcs$CM, "UMAP")[, 1:3])
 labels <- colData(pbmcs$CM)$seurat_clusters
 plot_dataframe3D(dataframe3D = dataframe3D, labels = labels, colors = NULL,
-                 theta = 45, phi = 20, title = "PBMC",
+                 theta = 45, phi = 20, title = "PBMC (CO & MSigDB)",
                  xlabel = "UMAP_1", ylabel = "UMAP_2", zlabel = "UMAP_3")
 ```
 
@@ -565,8 +566,8 @@ If there is gene expression data in `altExp(sce)`, one can infer cell cycle
 phases by using Seurat functions in the similar manner as above.
 ```{r, message = FALSE, warning = FALSE}
 pbmc_surt <- Seurat::as.Seurat(pbmcs$CM, counts = "counts", data = "counts")
-#If there is "expressions" data in `altExp(sce)`, set Seurat default assay.
-Seurat::DefaultAssay(pbmc_surt) <- "logcounts"
+pbmc_surt[["GEM"]] <- Seurat::CreateAssayObject(counts = as.matrix(assay(altExp(pbmcs$CM), "counts")))
+Seurat::DefaultAssay(pbmc_surt) <- "GEM"
 pbmc_surt <- Seurat::ScaleData(pbmc_surt, features = rownames(pbmc_surt))
 pbmc_surt <- Seurat::RunPCA(pbmc_surt, features = rownames(pbmc_surt))
 pbmc_surt <- Seurat::CellCycleScoring(pbmc_surt,
@@ -597,11 +598,11 @@ The arguments are
 
 * `sce`: SingleCellExperiment object and
 * `labels`: a vector of labels of all the samples.
-```{r}
+```{r, message = FALSE}
 for(i in seq_len(length(pbmcs))){
   labels <- colData(pbmcs[[i]])$seurat_clusters
   pbmcs[[i]] <- compute_sepI_all(sce = pbmcs[[i]], labels = labels,
-                                 random_sampling = TRUE)
+                                 nrand_samples = floor(0.5 * ncol(pbmcs[[i]])))
 }
 ```
 
@@ -802,7 +803,7 @@ if `colors = NULL`, default colors are used,
 dataframe3D <- as.data.frame(reducedDim(pbmcs$CM, "UMAP")[, 1:3])
 labels <- colData(pbmcs$CM)$seurat_clusters
 plot_dataframe3D(dataframe3D = dataframe3D, labels = labels, colors = NULL,
-                 theta = 45, phi = 20, title = "PBMC",
+                 theta = 45, phi = 20, title = "PBMC (CO & MSigDB)",
                  xlabel = "UMAP_1", ylabel = "UMAP_2", zlabel = "UMAP_3")
 ```
 
