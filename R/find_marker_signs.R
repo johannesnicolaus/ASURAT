@@ -93,31 +93,31 @@ compute_sepI_clusters <- function(
   #--------------------------------------------------
   # Preparation
   #--------------------------------------------------
-  inds_1 <- which(labels %in% ident_1)
-  inds_2 <- which(labels %in% ident_2)
-  subsce <- sce[, sort(union(inds_1, inds_2))]
-  submat <- as.matrix(assay(subsce, "counts"))
-  popu_1 <- colnames(subsce)[inds_1]
-
   idents <- sort(union(ident_1, ident_2))
-  sublabels <- labels[which(labels %in% idents)]
+  labels <- as.character(labels)
   #--------------------------------------------------
   # Random sampling
   #--------------------------------------------------
   if(!(is.null(nrand_samples))){
-    base_inds <- c()
+    index_list <- list()
+    baseindex_list <- list()
+    nonbaseindex_list <- list()
     for(i in seq_len(length(idents))){
-      inds <- which(sublabels == idents[i])
-      base_inds <- c(base_inds, sample(inds, 1, prob = NULL))
+      index_list[[i]] <- which(labels == idents[i])
+      baseindex_list[[i]] <- sample(index_list[[i]], 1, prob = NULL)
+      nonbaseindex_list[[i]] <- setdiff(index_list[[i]], baseindex_list[[i]])
     }
-    inds <- setdiff(seq_len(length(sublabels)), base_inds)
-    n <- nrand_samples - length(base_inds)
-    inds <- sample(inds, size = n, replace = FALSE, prob = NULL)
-    inds <- sort(union(base_inds, inds))
-    subsce <- subsce[, inds]
-    sublabels <- sublabels[inds]
-    popu_1 <- popu_1[inds]
+    nonbaseindices <- unlist(nonbaseindex_list)
+    n <- nrand_samples - length(idents)
+    nonbaseindices <- sample(index_list[[i]], n, prob = NULL)
+    final_idents <- union(unlist(baseindex_list), nonbaseindices)
+    subsce <- sce[, final_idents]
+    popu_1 <- colnames(sce)[final_idents[labels[final_idents] %in% ident_1]]
+  }else{
+    subsce <- sce
+    popu_1 <- colnames(sce)[which(labels %in% ident_1)]
   }
+  submat <- as.matrix(assay(subsce, "counts"))
   #--------------------------------------------------
   # Compute separation indices.
   #--------------------------------------------------
@@ -196,6 +196,7 @@ compute_sepI_all <- function(sce = NULL, labels = NULL, nrand_samples = NULL){
   res <- list()
   tmp <- sce
   metadata(tmp)$marker_signs <- NULL
+  labels <- as.character(labels)
   #--------------------------------------------------
   # Loop
   #--------------------------------------------------
