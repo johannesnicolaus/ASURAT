@@ -16,6 +16,7 @@ Description: ASURAT is a computational pipeline for single-cell data analysis,
     termed a sign-by-sample matrices (SSMs). Analyzing SSMs, one can cluster
     samples (cells) to aid their interpretation.
 License: GPL-3 + file LICENSE
+VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: TRUE
 Depends: 
