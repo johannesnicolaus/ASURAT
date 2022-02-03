@@ -7,6 +7,7 @@
 compute_sepI_clusters(
   sce = NULL,
   labels = NULL,
+  nrand_samples = NULL,
   ident_1 = NULL,
   ident_2 = NULL
 )
@@ -15,6 +16,9 @@ compute_sepI_clusters(
 \item{sce}{A SingleCellExperiment object.}
 
 \item{labels}{A vector of labels of all the samples.}
+
+\item{nrand_samples}{An integer for the number of samples used for
+random sampling, which samples at least one sample per cluster.}
 
 \item{ident_1}{Label names identifying cluster numbers,
 e.g., ident_1 = 1, ident_1 = c(1, 3).}

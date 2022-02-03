@@ -12,7 +12,7 @@ compute_sepI_all(sce = NULL, labels = NULL, nrand_samples = NULL)
 \item{labels}{A vector of labels of all the samples (cells).}
 
 \item{nrand_samples}{An integer for the number of samples used for
-random sampling.}
+random sampling, which samples at least one sample per cluster.}
 }
 \value{
 A SingleCellExperiment object.

@@ -64,6 +64,8 @@ compute_nswaps <- function(vec1 = NULL, vec2 = NULL){
 #'
 #' @param sce A SingleCellExperiment object.
 #' @param labels A vector of labels of all the samples.
+#' @param nrand_samples An integer for the number of samples used for
+#'   random sampling, which samples at least one sample per cluster.
 #' @param ident_1 Label names identifying cluster numbers,
 #'   e.g., ident_1 = 1, ident_1 = c(1, 3).
 #' @param ident_2 Label names identifying cluster numbers,
@@ -76,12 +78,35 @@ compute_nswaps <- function(vec1 = NULL, vec2 = NULL){
 #' @export
 #'
 compute_sepI_clusters <- function(
-  sce = NULL, labels = NULL, ident_1 = NULL, ident_2 = NULL
+  sce = NULL, labels = NULL, nrand_samples = NULL,
+  ident_1 = NULL, ident_2 = NULL
 ){
+  #--------------------------------------------------
+  # Random sampling
+  #--------------------------------------------------
+  tmp <- sce
+  if(!(is.null(nrand_samples))){
+    base_inds <- c()
+    idents <- unique(sort(labels))
+    for(i in seq_len(length(idents))){
+      inds <- which(labels == idents[i])
+      base_inds <- c(base_inds, sample(inds, 1, prob = NULL))
+    }
+    inds <- seq_len(length(labels))
+    inds <- setdiff(inds, base_inds)
+    n <- nrand_samples - length(base_inds)
+    inds <- sample(inds, size = n, replace = FALSE, prob = NULL)
+    inds <- sort(union(base_inds, inds))
+    tmp <- tmp[, inds]
+    labels <- labels[inds]
+  }
+  #--------------------------------------------------
+  # Compute separation indices.
+  #--------------------------------------------------
   inds_1 <- which(labels %in% ident_1)
   inds_2 <- which(labels %in% ident_2)
-  popu_1 <- colnames(sce)[inds_1]
-  subsce <- sce[, sort(union(inds_1, inds_2))]
+  popu_1 <- colnames(tmp)[inds_1]
+  subsce <- tmp[, sort(union(inds_1, inds_2))]
   submat <- as.matrix(assay(subsce, "counts"))
   res <- data.frame(
     Ident_1 = paste(ident_1, collapse = "/"),
@@ -136,7 +161,7 @@ compute_sepI_clusters <- function(
 #' @param sce A SingleCellExperiment object.
 #' @param labels A vector of labels of all the samples (cells).
 #' @param nrand_samples An integer for the number of samples used for
-#'   random sampling.
+#'   random sampling, which samples at least one sample per cluster.
 #'
 #' @return A SingleCellExperiment object.
 #' @import SingleCellExperiment
@@ -153,17 +178,10 @@ compute_sepI_all <- function(sce = NULL, labels = NULL, nrand_samples = NULL){
     stop("Insufficient labels for calculating separation index.")
   }
   #--------------------------------------------------
-  # Preparation and Message
+  # Preparation
   #--------------------------------------------------
   res <- list()
   tmp <- sce
-  if(!(is.null(nrand_samples))){
-    message("Random sampling is performed for the fast computation.")
-    inds <- sort(sample(seq_len(ncol(sce)), nrand_samples, replace = FALSE,
-                        prob = NULL))
-    tmp <- tmp[, inds]
-    labels <- labels[inds]
-  }
   metadata(tmp)$marker_signs <- NULL
   #--------------------------------------------------
   # Loop
@@ -178,6 +196,7 @@ compute_sepI_all <- function(sce = NULL, labels = NULL, nrand_samples = NULL){
     ident_1 <- idents[i]
     ident_2 <- setdiff(idents, ident_1)
     tmp <- compute_sepI_clusters(sce = tmp, labels = labels,
+                                 nrand_samples = nrand_samples,
                                  ident_1 = ident_1, ident_2 = ident_2)
     res[[i]] <- metadata(tmp)$marker_signs[[i]]
     slot_name <- paste("Label_", paste(ident_1, collapse = "/"), "_vs_",

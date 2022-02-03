@@ -148,14 +148,14 @@ two-dimensional data (see [here](#visualization_lowdim) for details).
 dataframe2D <- data.frame(x = colData(pbmc)$nReads, y = colData(pbmc)$nGenes)
 plot_dataframe2D(dataframe2D = dataframe2D) +
   ggplot2::labs(x = "Number of reads", y = "Number of genes") +
-  ggplot2::theme_classic(base_size = 20, base_family = "Helvetica")
+  ggplot2::theme_classic(base_size = 20)
 ```
 
 ```{r}
 dataframe2D <- data.frame(x = colData(pbmc)$nReads, y = colData(pbmc)$percMT)
 plot_dataframe2D(dataframe2D = dataframe2D) +
   ggplot2::labs(x = "Number of reads", y = "Perc of MT reads") +
-  ggplot2::theme_classic(base_size = 20, base_family = "Helvetica")
+  ggplot2::theme_classic(base_size = 20)
 ```
 
 ASURAT function `remove_samples()` removes sample (cell) data by setting cutoff
@@ -189,7 +189,7 @@ dataframe2D <- data.frame(x = 1:nrow(rowData(pbmc)),
                           y = sort(rowData(pbmc)$nSamples, decreasing = TRUE))
 plot_dataframe2D(dataframe2D = dataframe2D) +
   ggplot2::labs(x = "Rank of genes", y = "Mean read counts") +
-  ggplot2::theme_classic(base_size = 20, base_family = "Helvetica")
+  ggplot2::theme_classic(base_size = 20)
 ```
 
 ASURAT function `remove_variables_second()` removes variable (gene) data
@@ -464,21 +464,21 @@ The results can be visualized by ASURAT functions `plot_dataframe2D()` or
 dataframe2D <- as.data.frame(reducedDim(pbmcs$CM, "TSNE"))
 plot_dataframe2D(dataframe2D = dataframe2D) +
   ggplot2::labs(title = "PBMC (CO & MSigDB)", x = "tSNE_1", y = "tSNE_2") +
-  ggplot2::theme_classic(base_size = 15, base_family = "Helvetica")
+  ggplot2::theme_classic(base_size = 15)
 ```
 
 ```{r}
 dataframe2D <- as.data.frame(reducedDim(pbmcs$GO, "TSNE"))
 plot_dataframe2D(dataframe2D = dataframe2D) +
   ggplot2::labs(title = "PBMC (GO)", x = "tSNE_1", y = "tSNE_2") +
-  ggplot2::theme_classic(base_size = 15, base_family = "Helvetica")
+  ggplot2::theme_classic(base_size = 15)
 ```
 
 ```{r}
 dataframe2D <- as.data.frame(reducedDim(pbmcs$KG, "TSNE"))
 plot_dataframe2D(dataframe2D = dataframe2D) +
   ggplot2::labs(title = "PBMC (KEGG)", x = "tSNE_1", y = "tSNE_2") +
-  ggplot2::theme_classic(base_size = 15, base_family = "Helvetica")
+  ggplot2::theme_classic(base_size = 15)
 ```
 
 ```{r}
@@ -527,7 +527,7 @@ labels <- colData(pbmcs$CM)$seurat_clusters
 dataframe2D <- as.data.frame(reducedDim(pbmcs$CM, "TSNE"))
 plot_dataframe2D(dataframe2D = dataframe2D, labels = labels, colors = NULL) +
   ggplot2::labs(title = "PBMC (CO & MSigDB)", x = "tSNE_1", y = "tSNE_2", color = "") +
-  ggplot2::theme_classic(base_size = 15, base_family = "Helvetica") +
+  ggplot2::theme_classic(base_size = 15) +
   ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size = 4)))
 ```
 
@@ -536,7 +536,7 @@ labels <- colData(pbmcs$GO)$seurat_clusters
 dataframe2D <- as.data.frame(reducedDim(pbmcs$GO, "TSNE"))
 plot_dataframe2D(dataframe2D = dataframe2D, labels = labels, colors = NULL) +
   ggplot2::labs(title = "PBMC (GO)", x = "tSNE_1", y = "tSNE_2", color = "") +
-  ggplot2::theme_classic(base_size = 15, base_family = "Helvetica") +
+  ggplot2::theme_classic(base_size = 15) +
   ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size = 4)))
 ```
 
@@ -545,7 +545,7 @@ labels <- colData(pbmcs$KG)$seurat_clusters
 dataframe2D <- as.data.frame(reducedDim(pbmcs$KG, "TSNE"))
 plot_dataframe2D(dataframe2D = dataframe2D, labels = labels, colors = NULL) +
   ggplot2::labs(title = "PBMC (KEGG)", x = "tSNE_1", y = "tSNE_2", color = "") +
-  ggplot2::theme_classic(base_size = 15, base_family = "Helvetica") +
+  ggplot2::theme_classic(base_size = 15) +
   ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size = 4)))
 ```
 
@@ -596,15 +596,26 @@ The larger (resp. smaller) sepI is, the more reliable the sign is as a positive
 
 The arguments are
 
-* `sce`: SingleCellExperiment object and
-* `labels`: a vector of labels of all the samples.
+* `sce`: SingleCellExperiment object,
+* `labels`: a vector of labels of all the samples, and
+* `nrand_samples`: an integer for the number of samples used for random
+  sampling, which samples at least one sample per cluster.
 ```{r, message = FALSE, results = "hide"}
 for(i in seq_len(length(pbmcs))){
+  set.seed(1)
   labels <- colData(pbmcs[[i]])$seurat_clusters
   pbmcs[[i]] <- compute_sepI_all(sce = pbmcs[[i]], labels = labels,
                                  nrand_samples = floor(0.5 * ncol(pbmcs[[i]])))
 }
 ```
+When computing separation indices between given clusters, e.g., cluster 1 versus
+clusters 2 and 3, use an ASURAT function `compute_sepI_clusters()`, whose
+arguments are
+
+* `sce`: SingleCellExperiment object,
+* `labels`: a vector of labels of all the samples,
+* `nrand_samples`: an integer for the random sampling, and
+* `ident_1` and `ident_2`: label names identifying cluster numbers.
 
 ASURAT function `plot_violin()` shows violin plots showing sign score
 distributions (see [here](#violin) for details).
@@ -616,7 +627,7 @@ dataframe1D <- as.data.frame(t(assay(pbmc_sub, "counts")))
 plot_violin(dataframe1D = dataframe1D, labels = labels, colors = NULL) +
   ggplot2::labs(title = paste0(vname, "\n", "B cell (CD79A, CD22, ...)"),
                 x = "Cluster (CO & MSigDB)", y = "Sign score", fill = "Cluster") +
-  ggplot2::theme_classic(base_size = 20, base_family = "Helvetica")
+  ggplot2::theme_classic(base_size = 20)
 ```
 
 
@@ -652,7 +663,7 @@ dataframe1D <- as.data.frame(t(assay(expr_sub, "counts")))
 plot_violin(dataframe1D = dataframe1D, labels = labels, colors = NULL) +
   ggplot2::labs(title = "BANK1", x = "Cluster (CO & MSigDB)",
                 y = "Normalized expression", fill = "Cluster") +
-  ggplot2::theme_classic(base_size = 20, base_family = "Helvetica")
+  ggplot2::theme_classic(base_size = 20)
 ```
 
 
@@ -748,7 +759,7 @@ dataframe1D <- as.data.frame(t(assay(pbmc_sub, "counts")))
 plot_violin(dataframe1D = dataframe1D, labels = labels, colors = colors) +
   ggplot2::labs(title = paste0(vname, "\n", "Naive T cell (CD3E, TRAC, ...)"),
                 x = "Cluster (CO & MSigDB)", y = "Sign score", fill = "Cluster") +
-  ggplot2::theme_classic(base_size = 20, base_family = "Helvetica")
+  ggplot2::theme_classic(base_size = 20)
 ```
 
 ```{r}
@@ -761,7 +772,7 @@ dataframe1D <- as.data.frame(t(assay(expr_sub, "counts")))
 plot_violin(dataframe1D = dataframe1D, labels = labels, colors = colors) +
   ggplot2::labs(title = "BANK1", x = "Cluster (CO & MSigDB)",
                 y = "Normalized expression", fill = "Cluster") +
-  ggplot2::theme_classic(base_size = 20, base_family = "Helvetica")
+  ggplot2::theme_classic(base_size = 20)
 ```
 
 
@@ -784,7 +795,7 @@ colors <- rainbow(length(unique(labels)))[labels]
 dataframe2D <- as.data.frame(reducedDim(pbmcs$CM, "TSNE"))
 plot_dataframe2D(dataframe2D = dataframe2D, labels = labels, colors = colors) +
   ggplot2::labs(title = "PBMC (CO & MSigDB)", x = "tSNE_1", y = "tSNE_2", color = "") +
-  ggplot2::theme_classic(base_size = 15, base_family = "Helvetica") +
+  ggplot2::theme_classic(base_size = 15) +
   ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size = 4)))
 ```
 

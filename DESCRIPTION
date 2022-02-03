@@ -26,12 +26,12 @@ Imports:
     S4Vectors,
     Rcpp,
     cluster,
+    utils,
     ggplot2,
     plot3D,
     ComplexHeatmap,
     circlize,
-    grid,
-    utils
+    grid
 Suggests:
     dplyr,
     bayNorm,
