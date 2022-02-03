@@ -82,32 +82,45 @@ compute_sepI_clusters <- function(
   ident_1 = NULL, ident_2 = NULL
 ){
   #--------------------------------------------------
+  # Error handling
+  #--------------------------------------------------
+  if((length(unique(sort(labels))) <= 1) || (is.null(labels))){
+    stop("Insufficient labels for calculating separation index.")
+  }
+  if(length(intersect(ident_1, ident_2)) != 0){
+    stop("ident_1 and ident_2 must be disjoint.")
+  }
+  #--------------------------------------------------
+  # Preparation
+  #--------------------------------------------------
+  inds_1 <- which(labels %in% ident_1)
+  inds_2 <- which(labels %in% ident_2)
+  subsce <- sce[, sort(union(inds_1, inds_2))]
+  submat <- as.matrix(assay(subsce, "counts"))
+  popu_1 <- colnames(subsce)[inds_1]
+
+  idents <- sort(union(ident_1, ident_2))
+  sublabels <- labels[which(labels %in% idents)]
+  #--------------------------------------------------
   # Random sampling
   #--------------------------------------------------
-  tmp <- sce
   if(!(is.null(nrand_samples))){
     base_inds <- c()
-    idents <- unique(sort(labels))
     for(i in seq_len(length(idents))){
-      inds <- which(labels == idents[i])
+      inds <- which(sublabels == idents[i])
       base_inds <- c(base_inds, sample(inds, 1, prob = NULL))
     }
-    inds <- seq_len(length(labels))
-    inds <- setdiff(inds, base_inds)
+    inds <- setdiff(seq_len(length(sublabels)), base_inds)
     n <- nrand_samples - length(base_inds)
     inds <- sample(inds, size = n, replace = FALSE, prob = NULL)
     inds <- sort(union(base_inds, inds))
-    tmp <- tmp[, inds]
-    labels <- labels[inds]
+    subsce <- subsce[, inds]
+    sublabels <- sublabels[inds]
+    popu_1 <- popu_1[inds]
   }
   #--------------------------------------------------
   # Compute separation indices.
   #--------------------------------------------------
-  inds_1 <- which(labels %in% ident_1)
-  inds_2 <- which(labels %in% ident_2)
-  popu_1 <- colnames(tmp)[inds_1]
-  subsce <- tmp[, sort(union(inds_1, inds_2))]
-  submat <- as.matrix(assay(subsce, "counts"))
   res <- data.frame(
     Ident_1 = paste(ident_1, collapse = "/"),
     Ident_2 = paste(ident_2, collapse = "/"),
