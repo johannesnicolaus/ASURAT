@@ -759,8 +759,8 @@ labels <- colData(pbmcs$CM)$seurat_clusters
 colors <- rainbow(length(unique(labels)))[labels]
 dataframe1D <- as.data.frame(t(assay(expr_sub, "counts")))
 plot_violin(dataframe1D = dataframe1D, labels = labels, colors = colors) +
-  ggplot2::labs(title = "PBMC", x = "Cluster (CO & MSigDB)",
-                y = "Normalized\nexpression", fill = "Cluster") +
+  ggplot2::labs(title = "BANK1", x = "Cluster (CO & MSigDB)",
+                y = "Normalized expression", fill = "Cluster") +
   ggplot2::theme_classic(base_size = 20, base_family = "Helvetica")
 ```
 
