@@ -4,22 +4,19 @@
 \alias{compute_sepI_all}
 \title{Compute separation indices for each cluster against the others.}
 \usage{
-compute_sepI_all(sce = NULL, labels = NULL, random_sampling = TRUE)
+compute_sepI_all(sce = NULL, labels = NULL, nrand_samples = NULL)
 }
 \arguments{
 \item{sce}{A SingleCellExperiment object.}
 
 \item{labels}{A vector of labels of all the samples (cells).}
 
-\item{random_sampling}{TRUE or FALSE. If TRUE, random sampling is performed,
-in which the smaller value between 2000 and floor(0.5 * ncol(sce)) is used
-for the number of samples.}
+\item{nrand_samples}{An integer for the number of samples used for
+random sampling.}
 }
 \value{
 A SingleCellExperiment object.
 }
 \description{
 This function computes separation indices for each cluster versus the others.
-  Since this function may be timeconsuming, random sampling is automatically
-  performed unless setting num_rand = NULL.
 }

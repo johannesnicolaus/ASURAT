@@ -132,14 +132,11 @@ compute_sepI_clusters <- function(
 #' Compute separation indices for each cluster against the others.
 #'
 #' This function computes separation indices for each cluster versus the others.
-#'   Since this function may be timeconsuming, random sampling is automatically
-#'   performed unless setting num_rand = NULL.
 #'
 #' @param sce A SingleCellExperiment object.
 #' @param labels A vector of labels of all the samples (cells).
-#' @param random_sampling TRUE or FALSE. If TRUE, random sampling is performed,
-#'   in which the smaller value between 2000 and floor(0.5 * ncol(sce)) is used
-#'   for the number of samples.
+#' @param nrand_samples An integer for the number of samples used for
+#'   random sampling.
 #'
 #' @return A SingleCellExperiment object.
 #' @import SingleCellExperiment
@@ -147,16 +144,16 @@ compute_sepI_clusters <- function(
 #' @import S4Vectors
 #' @export
 #'
-compute_sepI_all <- function(sce = NULL, labels = NULL, random_sampling = TRUE){
+compute_sepI_all <- function(sce = NULL, labels = NULL, nrand_samples = NULL){
   #--------------------------------------------------
   # Preparation and Message
   #--------------------------------------------------
   res <- list()
   tmp <- sce
-  if(random_sampling == TRUE){ 
+  if(!(is.null(nrand_samples))){
     message("Random sampling is performed for the fast computation.")
-    n <- ifelse(floor(0.5 * ncol(sce)) >= 2000, 2000, floor(0.5 * ncol(sce)))
-    inds <- sort(sample(seq_len(ncol(sce)), n, replace = FALSE, prob = NULL))
+    inds <- sort(sample(seq_len(ncol(sce)), nrand_samples, replace = FALSE,
+                        prob = NULL))
     tmp <- tmp[, inds]
     labels <- labels[inds]
   }
@@ -165,7 +162,12 @@ compute_sepI_all <- function(sce = NULL, labels = NULL, random_sampling = TRUE){
   # Loop
   #--------------------------------------------------
   idents <- unique(sort(labels))
+
+  # Initializes the progress bar
+  pb <- txtProgressBar(min = 0, max = length(idents), style = 3,
+                       width = 50, char = "=")
   for(i in seq_len(length(idents))){
+    setTxtProgressBar(pb, i)
     ident_1 <- idents[i]
     ident_2 <- setdiff(idents, ident_1)
     tmp <- compute_sepI_clusters(sce = tmp, labels = labels,
@@ -175,6 +177,7 @@ compute_sepI_all <- function(sce = NULL, labels = NULL, random_sampling = TRUE){
                        paste(ident_2, collapse = "/"), sep = "")
     metadata(sce)$marker_signs[[slot_name]] <- res[[i]]
   }
+  close(pb)
   res_all <- c()
   for(i in seq_len(length(res))){
     res_all <- rbind(res_all, res[[i]])
