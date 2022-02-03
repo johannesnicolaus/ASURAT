@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 ^docs$
 ^figures$
+^doc$
+^Meta$
