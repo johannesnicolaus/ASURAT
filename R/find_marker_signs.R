@@ -142,9 +142,16 @@ compute_sepI_clusters <- function(
 #' @import SingleCellExperiment
 #' @import SummarizedExperiment
 #' @import S4Vectors
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @export
 #'
 compute_sepI_all <- function(sce = NULL, labels = NULL, nrand_samples = NULL){
+  #--------------------------------------------------
+  # Error handling
+  #--------------------------------------------------
+  if((length(unique(sort(labels))) <= 1) || (is.null(labels))){
+    stop("Insufficient labels for calculating separation index.")
+  }
   #--------------------------------------------------
   # Preparation and Message
   #--------------------------------------------------

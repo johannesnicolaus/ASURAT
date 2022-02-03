@@ -506,7 +506,7 @@ In this tutorial, our strategy is as follows:
 3. convert Seurat objects into temporal SingleCellExperiment objects `temp`,
 4. add `colData(temp)$seurat_clusters` into `colData(sce)$seurat_clusters`.
 ```{r, message = FALSE, warning = FALSE, results = "hide"}
-resolutions <- c(0.15, 0.20, 0.25)
+resolutions <- c(0.15, 0.15, 0.25)
 for(i in seq_len(length(pbmcs))){
   pbmc_surt <- Seurat::as.Seurat(pbmcs[[i]], counts = "counts", data = "counts")
   pbmc_surt[["SSM"]] <- Seurat::CreateAssayObject(counts = as.matrix(assay(pbmcs[[i]], "counts")))
@@ -598,7 +598,7 @@ The arguments are
 
 * `sce`: SingleCellExperiment object and
 * `labels`: a vector of labels of all the samples.
-```{r, message = FALSE}
+```{r, message = FALSE, results = "hide"}
 for(i in seq_len(length(pbmcs))){
   labels <- colData(pbmcs[[i]])$seurat_clusters
   pbmcs[[i]] <- compute_sepI_all(sce = pbmcs[[i]], labels = labels,

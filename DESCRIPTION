@@ -1,9 +1,12 @@
 Package: ASURAT
 Type: Package
 Title: Functional annotation-driven unsupervised clustering for single-cell data
-Version: 0.3.0
-Authors@R: person("Keita", "Iida", email = "kiida@protein.osaka-u.ac.jp",
-    role = c("aut", "cre"), comment = c(ORCID = "0000-0002-1076-830X"))
+Version: 0.3.1
+Authors@R: c(person("Keita", "Iida", email = "kiida@protein.osaka-u.ac.jp",
+             role = c("aut", "cre"),
+             comment = c(ORCID = "0000-0002-1076-830X")),
+	     person("Johannes Nicolaus", "Wibisana",
+                    email = "nico@protein.osaka-u.ac.jp", role = c("ctb")))
 Description: ASURAT is a computational pipeline for single-cell data analysis,
     which simultaneously performs unsupervised clustering and biological
     interpretation in terms of cell type, disease, biological process, and
@@ -27,7 +30,8 @@ Imports:
     plot3D,
     ComplexHeatmap,
     circlize,
-    grid
+    grid,
+    utils
 Suggests:
     dplyr,
     bayNorm,
@@ -48,7 +52,6 @@ Suggests:
     ontoProc,
     GOSemSim,
     KEGGREST,
-    gridExtra,
     qgraph,
     knitr,
     rmarkdown
