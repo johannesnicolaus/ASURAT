@@ -13,6 +13,7 @@
 #
 #' @return An integer representing an edit distance.
 #' @import Rcpp
+#' @export
 #'
 compute_nswaps <- function(vec1 = NULL, vec2 = NULL){
   # (1)
