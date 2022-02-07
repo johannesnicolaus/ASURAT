@@ -543,11 +543,13 @@ format_GO <- function(dict = NULL, orgdb = NULL){
   for(k in seq_len(length(categories))){
     tidy[[categories[k]]] <- res[[categories[k]]]
   }
+  rm(res)
+  gc()
   #--------------------------------------------------
   # Compute a similarity matrix.
   #--------------------------------------------------
   for(k in seq_len(length(categories))){
-    df <- res[[categories[k]]]
+    df <- tidy[[categories[k]]]
     simmat <- GOSemSim::mgoSim(df$ID, df$ID,
                                semData = res_godata[[categories[k]]],
                                measure = "Jiang", combine = NULL)
