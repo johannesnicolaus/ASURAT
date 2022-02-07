@@ -4,5 +4,7 @@
 .Ruserdata
 ASURAT.Rproj
 
-/doc/
-/Meta/
+src/*.o
+src/*.so
+src/*.dll
+
