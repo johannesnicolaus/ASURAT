@@ -4,12 +4,15 @@
 \alias{collect_KEGG}
 \title{Collect KEGG database.}
 \usage{
-collect_KEGG(organism, categories)
+collect_KEGG(organism = NULL, categories = NULL, timelag = 0.1)
 }
 \arguments{
 \item{organism}{An identifier of organism.}
 
 \item{categories}{Category name.}
+
+\item{timelag}{Time lag for accessing KEGG database.
+Default value is set as 0.1.}
 }
 \value{
 Results from keggGet().

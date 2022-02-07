@@ -4,7 +4,7 @@
 \alias{find_descendants}
 \title{Find all the descendants for parent terms.}
 \usage{
-find_descendants(id, co, map)
+find_descendants(id = NULL, co = NULL, map = NULL)
 }
 \arguments{
 \item{id}{ID.}

@@ -4,7 +4,7 @@
 \alias{make_treeTable_CO}
 \title{Make a parent-child relation table for CO terms.}
 \usage{
-make_treeTable_CO(tidy)
+make_treeTable_CO(tidy = NULL)
 }
 \arguments{
 \item{tidy}{A list of result of format_CO().}

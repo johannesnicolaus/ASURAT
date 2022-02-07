@@ -1,66 +1,6 @@
 #-----------------------------------------------------------------------------80
 #
 #-----------------------------------------------------------------------------80
-#' Compute an edit distance between two vectors.
-#'
-#' This function computes the number of swaps of adjacent elements required for
-#'   transforming vector 1 to vector 2, which have the same length and same
-#'   amount of given numbers (e.g., vector1 = c(0,1,1), vector2 = c(1,1,0)).
-#'   The following R code is inspired by Kendall tau distance algorithm.
-#'
-#' @param vec1 A first vector.
-#' @param vec2 A second vector.
-#
-#' @return An integer representing an edit distance.
-#' @import Rcpp
-#' @export
-#'
-compute_nswaps <- function(vec1 = NULL, vec2 = NULL){
-  # (1)
-  dict <- c()
-  words <- unique(vec1)
-  for(w in seq_len(length(words))){
-    val <- which(vec1 == words[w])
-    dict <- c(dict, list(val))
-  }
-  names(dict) <- unique(vec1)
-
-  # (2)
-  cnt <- c()
-  dictnames <- names(dict)
-  for(c in seq_len(length(dictnames))){
-    cnt <- c(cnt, list(1))
-  }
-  names(cnt) <- names(dict)
-  enco <- vec2
-  for(i in seq_len(length(vec1))){
-    enco[i] <- dict[[as.character(vec2[i])]][cnt[[as.character(vec2[i])]]]
-    cnt[[as.character(vec2[i])]] <- cnt[[as.character(vec2[i])]] + 1
-  }
-
-  # (3): this step is time consuming.
-  compute_nswap_001 <- "int compute_nswap_001(NumericVector enco){
-    int  swaps = 0;
-    for(int i=0; i<(enco.length()-1); ++i){
-      for(int j=0; j<enco.length(); ++j){
-        if(j <= i){
-          continue;
-        }
-        if(enco[i] > enco[j]){
-          swaps++;
-        }
-      }
-    }
-    return(swaps);
-  }"
-  cppFunction(compute_nswap_001)
-  swaps <- compute_nswap_001(enco)
-
-  return(swaps)
-}
-#-----------------------------------------------------------------------------80
-#
-#-----------------------------------------------------------------------------80
 #' Compute separation indices of sign scores for given two clusters.
 #'
 #' This function computes separation indices of sign scores for given two
@@ -141,16 +81,17 @@ compute_sepI_clusters <- function(
     res$CorrGene[i] <- rowData(subsce)$CorrGene[i]
     res$WeakCorrGene[i] <- rowData(subsce)$WeakCorrGene[i]
     #--------------------------------------------------
-    # Compute edit distances between (0, 1)-vectors
+    # Preparation
     #--------------------------------------------------
     data <- submat[which(rownames(submat) == res$SignID[i]), ]
     vec_1 <- sort(data, decreasing = FALSE)
     vec_1 <- ifelse(names(vec_1) %in% popu_1, 1, 0)
-    vec_2 <- sort(vec_1, decreasing = FALSE) # vec_2 = (0, 0, ..., 1, 1)
-    vec_3 <- sort(vec_1, decreasing = TRUE)  # vec_3 = (1, 1, ..., 0, 0)
-    dist1 <- compute_nswaps(vec_1, vec_2)
-    dist2 <- compute_nswaps(vec_1, vec_3)
-    res$sepI[i] <- round(1 - 2 * dist1 / (dist1 + dist2), digits = 6)
+    #--------------------------------------------------
+    # Count the number of steps in bubble sort.
+    #--------------------------------------------------
+    dist1 <- bubble_sort(list(vec_1, 0))[[2]]     # dist(vec_1, (0,...,1)).
+    dist2 <- bubble_sort(list(1 - vec_1, 0))[[2]] # dist(vec_1, (1,...,0)).
+    res$sepI[i] <- round((dist2 - dist1) / (dist2 + dist1), digits = 6)
   }
   #--------------------------------------------------
   # Arrange the data frame in order of res$sepI

@@ -4,7 +4,7 @@
 \alias{format_KEGG}
 \title{Reformat collect_KEGG().}
 \usage{
-format_KEGG(dict, orgdb)
+format_KEGG(dict = NULL, orgdb = NULL)
 }
 \arguments{
 \item{dict}{A result of collect_KEGG().}

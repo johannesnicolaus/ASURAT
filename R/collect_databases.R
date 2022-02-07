@@ -12,7 +12,7 @@
 #' @return A formatted database.
 #' @export
 #'
-format_DO <- function(dict, all_geneIDs, orgdb){
+format_DO <- function(dict = NULL, all_geneIDs = NULL, orgdb = NULL){
   #--------------------------------------------------
   # Compute information contents.
   # See computeIC() in DOSE package.
@@ -95,7 +95,7 @@ format_DO <- function(dict, all_geneIDs, orgdb){
 #'
 #' @return Results of cellTypeToGenes().
 #'
-do_cellTypeToGenes <- function(data, orgdb){
+do_cellTypeToGenes <- function(data = NULL, orgdb = NULL){
   res <- suppressMessages(
     ontoProc::cellTypeToGenes(data, orgDb = orgdb,
                               gotab = ontoProc::allGOterms))
@@ -114,7 +114,7 @@ do_cellTypeToGenes <- function(data, orgdb){
 #' @return Results from getCellOnto().
 #' @export
 #'
-collect_CO <- function(orgdb){
+collect_CO <- function(orgdb = NULL){
   #--------------------------------------------------
   # Definition
   #--------------------------------------------------
@@ -160,7 +160,7 @@ collect_CO <- function(orgdb){
 #'
 #' @return A map data.
 #'
-find_descendants <- function(id, co, map){
+find_descendants <- function(id = NULL, co = NULL, map = NULL){
   children <- co[["children"]][[id]]
   if(length(children) == 0){
     return(NA)
@@ -182,7 +182,7 @@ find_descendants <- function(id, co, map){
 #'
 #' @return Parent-child relation table.
 #'
-make_treeTable_CO <- function(tidy){
+make_treeTable_CO <- function(tidy = NULL){
   categories_woALL <- setdiff(names(tidy), "ALL")
   co <- ontoProc::getCellOnto()
   res <- list() 
@@ -213,7 +213,7 @@ make_treeTable_CO <- function(tidy){
 #' @return A list of result of format_CO().
 #' @seealso Mistry and Pavlidis, BMC Bioinformatics, 2008.
 #'
-compute_IC_CO <- function(dict, tidy, treeTable){
+compute_IC_CO <- function(dict = NULL, tidy = NULL, treeTable = NULL){
   categories_woALL <- setdiff(names(tidy), "ALL")
   for(k in seq_len(length(categories_woALL))){
     #------------------------------
@@ -285,7 +285,7 @@ compute_IC_CO <- function(dict, tidy, treeTable){
 #' @return A formatted database.
 #' @export
 #'
-format_CO <- function(dict, orgdb){
+format_CO <- function(dict = NULL, orgdb = NULL){
   #--------------------------------------------------
   # Reformat dict.
   #--------------------------------------------------
@@ -392,7 +392,7 @@ format_CO <- function(dict, orgdb){
 #'
 #' @return Results of groupGO().
 #'
-do_groupGO <- function(genes, orgdb, ont, level){
+do_groupGO <- function(genes = NULL, orgdb = NULL, ont = NULL, level = NULL){
   res <- clusterProfiler::groupGO(
     gene = genes,
     OrgDb = orgdb,
@@ -415,7 +415,7 @@ do_groupGO <- function(genes, orgdb, ont, level){
 #' @return Results from groupGO().
 #' @export
 #'
-collect_GO <- function(orgdb){
+collect_GO <- function(orgdb = NULL){
   #--------------------------------------------------
   # Preparation
   #--------------------------------------------------
@@ -466,7 +466,7 @@ collect_GO <- function(orgdb){
 #' @return A formatted database.
 #' @export
 #'
-format_GO <- function(dict, orgdb){
+format_GO <- function(dict = NULL, orgdb = NULL){
   #--------------------------------------------------
   # Reformat dict.
   #--------------------------------------------------
@@ -567,7 +567,7 @@ format_GO <- function(dict, orgdb){
 #'
 #' @return Results of keggGet().
 #'
-do_keggGet <- function(data){
+do_keggGet <- function(data = NULL){
   return(KEGGREST::keggGet(data))
 }
 #-----------------------------------------------------------------------------80
@@ -579,11 +579,13 @@ do_keggGet <- function(data){
 #'
 #' @param organism An identifier of organism.
 #' @param categories Category name.
+#' @param timelag Time lag for accessing KEGG database.
+#'   Default value is set as 0.1.
 #'
 #' @return Results from keggGet().
 #' @export
 #'
-collect_KEGG <- function(organism, categories){
+collect_KEGG <- function(organism = NULL, categories = NULL, timelag = 0.1){
   #--------------------------------------------------
   # Collect KEGG terms.
   #--------------------------------------------------
@@ -599,7 +601,7 @@ collect_KEGG <- function(organism, categories){
     flags <- c()
     I <- length(map$ID)
     for(i in seq_len(I)){
-      Sys.sleep(0.1)
+      Sys.sleep(timelag)
       #--------------------------------------------------
       # Print the current process.
       #--------------------------------------------------
@@ -723,7 +725,7 @@ collect_KEGG <- function(organism, categories){
 #' @return A formatted database.
 #' @export
 #'
-format_KEGG <- function(dict, orgdb){
+format_KEGG <- function(dict = NULL, orgdb = NULL){
   #--------------------------------------------------
   # Definition
   #--------------------------------------------------

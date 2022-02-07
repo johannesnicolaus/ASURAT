@@ -4,7 +4,7 @@
 \alias{do_keggGet}
 \title{Do keggGet().}
 \usage{
-do_keggGet(data)
+do_keggGet(data = NULL)
 }
 \arguments{
 \item{data}{KEGG identifiers.}

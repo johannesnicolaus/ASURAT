@@ -4,7 +4,7 @@
 \alias{do_cellTypeToGenes}
 \title{Do cellTypeToGenes().}
 \usage{
-do_cellTypeToGenes(data, orgdb)
+do_cellTypeToGenes(data = NULL, orgdb = NULL)
 }
 \arguments{
 \item{data}{Description.}

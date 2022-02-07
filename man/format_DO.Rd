@@ -4,7 +4,7 @@
 \alias{format_DO}
 \title{Reformat a Disease Ontology database.}
 \usage{
-format_DO(dict, all_geneIDs, orgdb)
+format_DO(dict = NULL, all_geneIDs = NULL, orgdb = NULL)
 }
 \arguments{
 \item{dict}{A res slot of enrichDO().}

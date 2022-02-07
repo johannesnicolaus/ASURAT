@@ -4,7 +4,7 @@
 \alias{format_CO}
 \title{Reformat the result of collect_CO().}
 \usage{
-format_CO(dict, orgdb)
+format_CO(dict = NULL, orgdb = NULL)
 }
 \arguments{
 \item{dict}{A result of collect_CO().}

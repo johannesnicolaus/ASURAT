@@ -4,7 +4,7 @@
 \alias{compute_IC_CO}
 \title{Compute information contents.}
 \usage{
-compute_IC_CO(dict, tidy, treeTable)
+compute_IC_CO(dict = NULL, tidy = NULL, treeTable = NULL)
 }
 \arguments{
 \item{dict}{A result of format_CO().}

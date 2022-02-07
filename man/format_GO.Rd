@@ -4,7 +4,7 @@
 \alias{format_GO}
 \title{Reformat the result of collect_GO().}
 \usage{
-format_GO(dict, orgdb)
+format_GO(dict = NULL, orgdb = NULL)
 }
 \arguments{
 \item{dict}{A result of collect_GO().}

@@ -4,7 +4,7 @@
 \alias{do_groupGO}
 \title{Do groupGO().}
 \usage{
-do_groupGO(genes, orgdb, ont, level)
+do_groupGO(genes = NULL, orgdb = NULL, ont = NULL, level = NULL)
 }
 \arguments{
 \item{genes}{A gene set.}

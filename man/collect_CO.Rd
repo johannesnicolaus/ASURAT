@@ -4,7 +4,7 @@
 \alias{collect_CO}
 \title{Collect a Cell Ontology database.}
 \usage{
-collect_CO(orgdb)
+collect_CO(orgdb = NULL)
 }
 \arguments{
 \item{orgdb}{A genome annotation package.}
