@@ -628,9 +628,10 @@ If there is gene expression data in `altExp(sce)`, one can investigate
 differentially expressed genes by using Seurat functions in the similar manner
 as described before.
 ```{r, message = FALSE, warning = FALSE}
+set.seed(1)
 pbmc_surt <- Seurat::as.Seurat(pbmcs$CM, counts = "counts", data = "counts")
-#If there is "expressions" data in `altExp(sce)`, set Seurat default assay.
-Seurat::DefaultAssay(pbmc_surt) <- "logcounts"
+pbmc_surt[["GEM"]] <- Seurat::CreateAssayObject(counts = as.matrix(assay(altExp(pbmcs$CM), "counts")))
+Seurat::DefaultAssay(pbmc_surt) <- "GEM"
 pbmc_surt <- Seurat::SetIdent(pbmc_surt, value = "seurat_clusters")
 res <- Seurat::FindAllMarkers(pbmc_surt, only.pos = TRUE,
                               min.pct = 0.25, logfc.threshold = 0.25)
