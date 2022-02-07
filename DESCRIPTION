@@ -1,14 +1,61 @@
 Package: ASURAT
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Functional annotation-driven unsupervised clustering for single-cell data
+Version: 0.99.0
+Authors@R: c(person("Keita", "Iida", email = "kiida@protein.osaka-u.ac.jp",
+             role = c("aut", "cre"),
+             comment = c(ORCID = "0000-0002-1076-830X")),
+             person("Johannes Nicolaus", "Wibisana",
+                    email = "nico@protein.osaka-u.ac.jp", role = c("ctb")))
+Description: ASURAT is a computational pipeline for single-cell data analysis,
+    which simultaneously performs unsupervised clustering and biological
+    interpretation in terms of cell type, disease, biological process, and
+    signaling pathway activity. Inputting a single-cell RNA-seq data and
+    knowledge-based databases, some of which have already been prepared,
+    ASURAT transforms read count tables into an original multivariate tables,
+    termed a sign-by-sample matrices (SSMs). Analyzing SSMs, one can cluster
+    samples (cells) to aid their interpretation.
+License: GPL-3 + file LICENSE
+VignetteBuilder: knitr
 Encoding: UTF-8
-LazyData: true
-Imports: Rcpp (>= 1.0.7)
-LinkingTo: Rcpp
+LazyData: TRUE
+Depends:
+    R (>= 4.0.0)
+Imports:
+    SingleCellExperiment,
+    SummarizedExperiment,
+    S4Vectors,
+    Rcpp (>= 1.0.7),
+    cluster,
+    utils,
+    ggplot2,
+    plot3D,
+    ComplexHeatmap,
+    circlize,
+    grid
+Suggests:
+    dplyr,
+    bayNorm,
+    Rtsne,
+    umap,
+    destiny,
+    Seurat,
+    AnnotationDbi,
+    BiocGenerics,
+    stringr,
+    grDevices,
+    graphics,
+    org.Hs.eg.db,
+    org.Mm.eg.db,
+    clusterProfiler,
+    DOSE,
+    DO.db,
+    ontoProc,
+    GOSemSim,
+    KEGGREST,
+    qgraph,
+    knitr,
+    rmarkdown
 RoxygenNote: 7.1.2
+LinkingTo:
+    Rcpp
