@@ -112,6 +112,7 @@ do_cellTypeToGenes <- function(data = NULL, orgdb = NULL){
 #' @param orgdb A genome annotation package.
 #'
 #' @return Results from getCellOnto().
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @export
 #'
 collect_CO <- function(orgdb = NULL){
@@ -127,7 +128,12 @@ collect_CO <- function(orgdb = NULL){
   #--------------------------------------------------
   res <- c("ID", "Description", "Symbol", "GO", "Evidence")
   res <- data.frame(matrix(ncol = 5, nrow = 0, dimnames = list(NULL, res)))
+
+  # Initializes the progress bar
+  pb <- txtProgressBar(min = 0, max = nrow(co), style = 3, width = 50,
+                       char = "=")
   for(i in seq_len(nrow(co))){
+    setTxtProgressBar(pb, i)
     tmp <- try(do_cellTypeToGenes(co$Description[i], orgdb = orgdb),
                silent = TRUE)
     if(class(tmp) == "try-error"){
@@ -144,6 +150,7 @@ collect_CO <- function(orgdb = NULL){
       }
     }
   }
+  close(pb)
 
   return(res)
 }
