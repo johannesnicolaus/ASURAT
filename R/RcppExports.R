@@ -7,7 +7,7 @@
 #' @export
 #'
 swap_pass <- function(data) {
-    .Call(`_ASURAT_swap_pass`, data)
+    .Call('_ASURAT_swap_pass', PACKAGE = 'ASURAT', data)
 }
 
 #' Perform bubble sorting, counting the number of steps.
@@ -16,6 +16,6 @@ swap_pass <- function(data) {
 #' @export
 #'
 bubble_sort <- function(data) {
-    .Call(`_ASURAT_bubble_sort`, data)
+    .Call('_ASURAT_bubble_sort', PACKAGE = 'ASURAT', data)
 }
 
