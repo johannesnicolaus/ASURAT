@@ -324,7 +324,7 @@ but one cannot avoid trial and error for setting these values.
 An exhaustive parameter searching is time-consuming but helpful for obtaining
 "optimal" values.
 ```{r}
-set.seed(8)
+set.seed(1)
 pbmcs$CM <- cluster_genesets(sce = pbmcs$CM, cormat = pbmc_cormat,
                              th_posi = 0.20, th_nega = -0.20)
 pbmcs$GO <- cluster_genesets(sce = pbmcs$GO, cormat = pbmc_cormat,
@@ -839,7 +839,7 @@ gemlabel_list <- list(CellCycle = label_CC)
 ```
 
 Plot heatmaps.
-```{r}
+```{r, message = FALSE, warning = FALSE}
 set.seed(1)
 plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
                    ssmlabel_list = ssmlabel_list, gemlabel_list = gemlabel_list,
