@@ -7,7 +7,9 @@
 bubble_sort(data)
 }
 \arguments{
-\item{data}{A list of vector and integer.}
+\item{data}{A list of vector and integer.
+For example, in R code, data = list(vec = c(1, 0, 1, 1, 0, ...), cnt = 0).
+The integer (cnt = 0) is the initial number of steps for bubble sorting.}
 }
 \description{
 Perform bubble sorting, counting the number of steps.

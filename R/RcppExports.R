@@ -4,6 +4,7 @@
 #' Perform one-shot adjacent swapping for each element.
 #'
 #' @param data A list of vector and integer.
+#'   
 #' @export
 #'
 swap_pass <- function(data) {
@@ -13,6 +14,10 @@ swap_pass <- function(data) {
 #' Perform bubble sorting, counting the number of steps.
 #'
 #' @param data A list of vector and integer.
+#' @param data A list of vector and integer.
+#'   For example, in R code, data = list(vec = c(1, 0, 1, 1, 0, ...), cnt = 0).
+#'   The integer (cnt = 0) is the initial number of steps for bubble sorting.
+#'
 #' @export
 #'
 bubble_sort <- function(data) {
