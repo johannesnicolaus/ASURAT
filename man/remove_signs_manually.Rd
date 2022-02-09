@@ -17,3 +17,20 @@ A SingleCellExperiment object.
 \description{
 This function removes signs by specifying keywords.
 }
+\examples{
+data(pbmc_eg)
+data(human_GO_eg)
+mat <- t(as.matrix(SummarizedExperiment::assay(pbmc_eg, "centered")))
+pbmc_cormat <- cor(mat, method = "spearman")
+pbmcs <- list(GO = pbmc_eg)
+S4Vectors::metadata(pbmcs$GO) <- list(sign = human_GO_eg[["BP"]])
+pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 1000)
+pbmcs$GO <- cluster_genesets(sce = pbmcs$GO, cormat = pbmc_cormat,
+                             th_posi = 0.24, th_nega = -0.20)
+pbmcs$GO <- create_signs(sce = pbmcs$GO, min_cnt_strg = 2, min_cnt_vari = 2)
+keywords <- "Covid19|foofoo|hogehoge"
+pbmcs$GO <- remove_signs_manually(sce = pbmcs$GO, keywords = keywords)
+# The results are stored in `metadata(pbmcs$GO)$sign_SCG`,
+# `metadata(pbmcs$GO)$sign_VCG`, and `metadata(pbmcs$GO)$sign_all`.
+
+}

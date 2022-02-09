@@ -19,3 +19,8 @@ A SingleCellExperiment object.
 This function removes variable data such that the mean expression levels
   across samples are less than `min_meannReads`.
 }
+\examples{
+data(pbmc_eg)
+pbmc <- remove_variables_second(sce = pbmc_eg, min_meannReads = 0.01)
+
+}

@@ -21,6 +21,14 @@
 #' @import S4Vectors
 #' @export
 #'
+#' @examples
+#' data(pbmcs_eg)
+#' labels <- SummarizedExperiment::colData(pbmcs_eg$GO)$seurat_clusters
+#' pbmcs_eg$GO <- compute_sepI_clusters(sce = pbmcs_eg$GO, labels = labels,
+#'                                      nrand_samples = 10, ident_1 = 1,
+#'                                      ident_2 = c(0, 2))
+#' # The results are stored in `metadata(pbmcs_eg$GO)$marker_signs`.
+#'
 compute_sepI_clusters <- function(
   sce = NULL, labels = NULL, nrand_samples = NULL,
   ident_1 = NULL, ident_2 = NULL
@@ -127,6 +135,13 @@ compute_sepI_clusters <- function(
 #' @import S4Vectors
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @export
+#'
+#' @examples
+#' data(pbmcs_eg)
+#' labels <- SummarizedExperiment::colData(pbmcs_eg$GO)$seurat_clusters
+#' pbmcs_eg$GO <- compute_sepI_all(sce = pbmcs_eg$GO, labels = labels,
+#'                                 nrand_samples = 10)
+#' # The results are stored in `metadata(pbmcs_eg$GO)$marker_signs`.
 #'
 compute_sepI_all <- function(sce = NULL, labels = NULL, nrand_samples = NULL){
   #--------------------------------------------------

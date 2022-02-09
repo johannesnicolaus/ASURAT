@@ -15,6 +15,10 @@
 #' @import SummarizedExperiment
 #' @export
 #'
+#' @examples
+#' data(pbmc_eg)
+#' pbmc <- add_metadata(sce = pbmc_eg, mitochondria_symbol = "^MT-")
+#'
 add_metadata <- function(sce = NULL, mitochondria_symbol = NULL){
   mat <- assay(sce, "counts")
   #--------------------------------------------------
@@ -48,6 +52,11 @@ add_metadata <- function(sce = NULL, mitochondria_symbol = NULL){
 #' @import SummarizedExperiment
 #' @export
 #'
+#' @examples
+#' data(pbmc_eg)
+#' pbmc <- add_metadata(sce = pbmc_eg, mitochondria_symbol = "^MT-")
+#' pbmc <- remove_variables(sce = pbmc, min_nsamples = 10)
+#'
 remove_variables <- function(sce = NULL, min_nsamples = 0){
   mat <- assay(sce, "counts")
   inds <- which(apply(mat, 1, function(x) sum(x > 0)) >= min_nsamples)
@@ -78,6 +87,13 @@ remove_variables <- function(sce = NULL, min_nsamples = 0){
 #' @import SingleCellExperiment
 #' @import SummarizedExperiment
 #' @export
+#'
+#' @examples
+#' data(pbmc_eg)
+#' pbmc <- add_metadata(sce = pbmc_eg, mitochondria_symbol = "^MT-")
+#' pbmc <- remove_samples(sce = pbmc, min_nReads = 0, max_nReads = 1e+10,
+#'                        min_nGenes = 0, max_nGenes = 1e+10,
+#'                        min_percMT = NULL, max_percMT = NULL)
 #'
 remove_samples <- function(
   sce = NULL, min_nReads = NULL, max_nReads = NULL,
@@ -119,6 +135,10 @@ remove_samples <- function(
 #' @import SingleCellExperiment
 #' @import SummarizedExperiment
 #' @export
+#'
+#' @examples
+#' data(pbmc_eg)
+#' pbmc <- remove_variables_second(sce = pbmc_eg, min_meannReads = 0.01)
 #'
 remove_variables_second <- function(sce = NULL, min_meannReads = 0){
   mat <- assay(sce, "counts")

@@ -18,3 +18,9 @@ A SingleCellExperiment object.
 \description{
 This function removes low expressed variable data.
 }
+\examples{
+data(pbmc_eg)
+pbmc <- add_metadata(sce = pbmc_eg, mitochondria_symbol = "^MT-")
+pbmc <- remove_variables(sce = pbmc, min_nsamples = 10)
+
+}

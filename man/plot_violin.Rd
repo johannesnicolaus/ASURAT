@@ -22,3 +22,13 @@ A ggplot object.
 This function outputs violin plots of a one-dimensional data with labels
   and colors.
 }
+\examples{
+data(pbmcs_eg)
+vname <- "MSigID:92-S"
+pbmc_sub <- pbmcs_eg$CM[rownames(pbmcs_eg$CM) \%in\% vname, ]
+labels <- SummarizedExperiment::colData(pbmc_sub)$seurat_clusters
+mat <- t(as.matrix(SummarizedExperiment::assay(pbmc_sub, "counts")))
+dataframe1D <- as.data.frame(mat)
+plot_violin(dataframe1D = dataframe1D, labels = labels, colors = NULL)
+
+}

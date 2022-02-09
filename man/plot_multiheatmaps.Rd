@@ -41,3 +41,31 @@ A ComplexHeatmap object.
 \description{
 This function visualizes a three-dimensional data with labels and colors.
 }
+\examples{
+data(pbmcs_eg)
+mat_CM <- SummarizedExperiment::assay(pbmcs_eg$CM, "counts")
+mat_GO <- SummarizedExperiment::assay(pbmcs_eg$GO, "counts")
+mat_KG <- SummarizedExperiment::assay(pbmcs_eg$KG, "counts")
+ssm_list <- list(SSM_COMSig = mat_CM, SSM_GO = mat_GO, SSM_KEGG = mat_KG)
+se <- SingleCellExperiment::altExp(pbmcs_eg$CM, "logcounts")
+mat <- SummarizedExperiment::assay(se, "counts")
+se <- SingleCellExperiment::altExp(pbmcs_eg$CM, "logcounts")
+gem_list <- list(GeneExpr = SummarizedExperiment::assay(se, "counts"))
+labels <- list() ; ssmlabel_list <- list()
+for(i in seq_len(length(pbmcs_eg))){
+  fa <- SummarizedExperiment::colData(pbmcs_eg[[i]])$seurat_clusters
+  labels[[i]] <- data.frame(label = fa)
+  colors <- rainbow(length(unique(labels[[i]]$label)))[labels[[i]]$label]
+  labels[[i]]$color <- colors
+  ssmlabel_list[[i]] <- labels[[i]]
+}
+names(ssmlabel_list) <- c("Label_COMSig", "Label_GO", "Label_KEGG")
+phases <- SummarizedExperiment::colData(pbmcs_eg$CM)$Phase
+label_CC <- data.frame(label = phases, color = NA)
+gemlabel_list <- list(CellCycle = label_CC)
+plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
+                   ssmlabel_list = ssmlabel_list,
+                   gemlabel_list = gemlabel_list, nSamples = 50,
+                   show_row_names = FALSE, title = "PBMC")
+
+}

@@ -4,13 +4,20 @@
 \alias{bubble_sort}
 \title{Perform bubble sorting, counting the number of steps.}
 \usage{
-bubble_sort(data)
+bubble_sort(listdata)
 }
 \arguments{
-\item{data}{A list of vector and integer.
-For example, in R code, data = list(vec = c(1, 0, 1, 1, 0, ...), cnt = 0).
+\item{listdata}{A list of vector and integer.
+For example, in R code, listdata = list(vec = c(1, 0, 1, ...), cnt = 0).
 The integer (cnt = 0) is the initial number of steps for bubble sorting.}
+}
+\value{
+A List.
 }
 \description{
 Perform bubble sorting, counting the number of steps.
+}
+\examples{
+bubble_sort(list(vec = c(1, 1, 0), cnt = 0))
+
 }

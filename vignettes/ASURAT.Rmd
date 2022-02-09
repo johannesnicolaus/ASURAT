@@ -593,14 +593,11 @@ for(i in seq_len(length(pbmcs))){
                                  nrand_samples = 500)
 }
 ```
-When computing separation indices between given clusters, e.g., cluster 1 versus
-clusters 2 and 3, use an ASURAT function `compute_sepI_clusters()`, whose
-arguments are
+The results are stored in `metadata(sce)$marker_signs`.
 
-* `sce`: SingleCellExperiment object,
-* `labels`: a vector of labels of all the samples,
-* `nrand_samples`: an integer for the random sampling, and
-* `ident_1` and `ident_2`: label names identifying cluster numbers.
+When computing separation indices between given clusters, e.g., cluster 1 versus
+clusters 2 and 3, use an ASURAT function `compute_sepI_clusters()`.
+See `?compute_sepI_clusters` for details.
 
 ASURAT function `plot_violin()` shows violin plots showing sign score
 distributions (see [here](#violin) for details).
@@ -736,17 +733,6 @@ The arguments are
 * `labels`: a vector of labels of all the samples, corresponding to colors,
 * `colors`: a vector of colors of all the samples, corresponding to labels;
 if `colors = NULL`, default colors are used.
-```{r}
-vname <- "MSigID:162-S"
-pbmc_sub <- pbmcs$CM[rownames(pbmcs$CM) %in% vname, ]
-labels <- colData(pbmc_sub)$seurat_clusters
-colors <- rainbow(length(unique(labels)))[labels]
-dataframe1D <- as.data.frame(t(assay(pbmc_sub, "counts")))
-plot_violin(dataframe1D = dataframe1D, labels = labels, colors = colors) +
-  ggplot2::labs(title = paste0(vname, "\n", "Naive T cell (CD3E, TRAC, ...)"),
-                x = "Cluster (CO & MSigDB)", y = "Sign score", fill = "Cluster") +
-  ggplot2::theme_classic(base_size = 20)
-```
 
 
 
@@ -762,15 +748,6 @@ The arguments are
 * `labels`: a vector of labels of all the samples, corresponding to colors,
 * `colors`: a vector of colors of all the samples, corresponding to labels;
 if `colors = NULL`, default colors are used.
-```{r}
-labels <- colData(pbmcs$CM)$seurat_clusters
-colors <- rainbow(length(unique(labels)))[labels]
-dataframe2D <- as.data.frame(reducedDim(pbmcs$CM, "TSNE"))
-plot_dataframe2D(dataframe2D = dataframe2D, labels = labels, colors = colors) +
-  ggplot2::labs(title = "PBMC (CO & MSigDB)", x = "tSNE_1", y = "tSNE_2", color = "") +
-  ggplot2::theme_classic(base_size = 15) +
-  ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size = 4)))
-```
 
 ASURAT function `plot_dataframe3D()` visualizes three-dimensional data with or
 without labels and colors.
@@ -816,35 +793,6 @@ the order of labels in each list must be as same as those in `gem_list`,
 * `show_row_names`: `TRUE` or `FALSE`: if `TRUE`, row names are shown unless
 the maximum number of rows exceeds a certain value,
 * `title`: Title.
-
-Prepare arguments.
-```{r}
-# ssm_list
-ssm_list <- list(SSM_COMSig = assay(pbmcs$CM, "counts"),
-                 SSM_GO     = assay(pbmcs$GO, "counts"),
-                 SSM_KEGG   = assay(pbmcs$KG, "counts"))
-# gem_list
-gem_list <- list(GeneExpr = assay(altExp(pbmcs$CM, "logcounts"), "counts"))
-# ssmlabel_list
-labels <- list() ; ssmlabel_list <- list()
-for(i in seq_len(length(pbmcs))){
-  labels[[i]] <- data.frame(label = colData(pbmcs[[i]])$seurat_clusters)
-  labels[[i]]$color <- rainbow(length(unique(labels[[i]]$label)))[labels[[i]]$label]
-  ssmlabel_list[[i]] <- labels[[i]]
-}
-names(ssmlabel_list) <- c("Label_COMSig", "Label_GO", "Label_KEGG")
-# gemlabel_list
-label_CC <- data.frame(label = colData(pbmcs$CM)$Phase, color = NA)
-gemlabel_list <- list(CellCycle = label_CC)
-```
-
-Plot heatmaps.
-```{r, message = FALSE, warning = FALSE}
-set.seed(1)
-plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
-                   ssmlabel_list = ssmlabel_list, gemlabel_list = gemlabel_list,
-                   nSamples = 100, show_row_names = FALSE, title = "PBMC")
-```
 
 
 

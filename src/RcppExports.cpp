@@ -11,24 +11,24 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // swap_pass
-List swap_pass(List data);
-RcppExport SEXP _ASURAT_swap_pass(SEXP dataSEXP) {
+List swap_pass(List listdata);
+RcppExport SEXP _ASURAT_swap_pass(SEXP listdataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(swap_pass(data));
+    Rcpp::traits::input_parameter< List >::type listdata(listdataSEXP);
+    rcpp_result_gen = Rcpp::wrap(swap_pass(listdata));
     return rcpp_result_gen;
 END_RCPP
 }
 // bubble_sort
-List bubble_sort(List data);
-RcppExport SEXP _ASURAT_bubble_sort(SEXP dataSEXP) {
+List bubble_sort(List listdata);
+RcppExport SEXP _ASURAT_bubble_sort(SEXP listdataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(bubble_sort(data));
+    Rcpp::traits::input_parameter< List >::type listdata(listdataSEXP);
+    rcpp_result_gen = Rcpp::wrap(bubble_sort(listdata));
     return rcpp_result_gen;
 END_RCPP
 }

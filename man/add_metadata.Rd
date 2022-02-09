@@ -19,3 +19,8 @@ A SingleCellExperiment object.
 \description{
 This function adds metadata of variables and samples.
 }
+\examples{
+data(pbmc_eg)
+pbmc <- add_metadata(sce = pbmc_eg, mitochondria_symbol = "^MT-")
+
+}

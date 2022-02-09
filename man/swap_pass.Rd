@@ -4,11 +4,18 @@
 \alias{swap_pass}
 \title{Perform one-shot adjacent swapping for each element.}
 \usage{
-swap_pass(data)
+swap_pass(listdata)
 }
 \arguments{
-\item{data}{A list of vector and integer.}
+\item{listdata}{A list of vector and integer.}
+}
+\value{
+A List.
 }
 \description{
 Perform one-shot adjacent swapping for each element.
+}
+\examples{
+swap_pass(list(vec = c(1, 1, 0), cnt = 0))
+
 }

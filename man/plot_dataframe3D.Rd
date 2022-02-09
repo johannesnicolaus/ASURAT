@@ -43,3 +43,13 @@ A scatter3D object in plot3D package.
 \description{
 This function visualizes a three-dimensional data with labels and colors.
 }
+\examples{
+data(pbmcs_eg)
+mat <- SingleCellExperiment::reducedDim(pbmcs_eg$CM, "UMAP")[, 1:3]
+dataframe3D <- as.data.frame(mat)
+labels <- SummarizedExperiment::colData(pbmcs_eg$CM)$seurat_clusters
+plot_dataframe3D(dataframe3D = dataframe3D, labels = labels, colors = NULL,
+                 theta = 45, phi = 20, title = "PBMC (CO & MSigDB)",
+                 xlabel = "UMAP_1", ylabel = "UMAP_2", zlabel = "UMAP_3")
+
+}

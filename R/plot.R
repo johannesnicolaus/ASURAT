@@ -15,6 +15,16 @@
 #' @return A ggplot object.
 #' @import ggplot2
 #' @export
+#'
+#' @examples
+#' data(pbmcs_eg)
+#' vname <- "MSigID:92-S"
+#' pbmc_sub <- pbmcs_eg$CM[rownames(pbmcs_eg$CM) %in% vname, ]
+#' labels <- SummarizedExperiment::colData(pbmc_sub)$seurat_clusters
+#' mat <- t(as.matrix(SummarizedExperiment::assay(pbmc_sub, "counts")))
+#' dataframe1D <- as.data.frame(mat)
+#' plot_violin(dataframe1D = dataframe1D, labels = labels, colors = NULL)
+#'
 plot_violin <- function(dataframe1D = NULL, labels = NULL, colors = NULL){
   if(is.null(labels)){
     dataframe1D$label <- ""
@@ -56,6 +66,14 @@ plot_violin <- function(dataframe1D = NULL, labels = NULL, colors = NULL){
 #' @return A ggplot object.
 #' @import ggplot2
 #' @export
+#'
+#' @examples
+#' data(pbmcs_eg)
+#' labels <- SummarizedExperiment::colData(pbmcs_eg$CM)$seurat_clusters
+#' mat <- SingleCellExperiment::reducedDim(pbmcs_eg$CM, "TSNE")
+#' dataframe2D <- as.data.frame(mat)
+#' plot_dataframe2D(dataframe2D = dataframe2D, labels = labels, colors = NULL)
+#'
 plot_dataframe2D <- function(dataframe2D = NULL, labels = NULL, colors = NULL){
   if(is.null(labels)){
     p <- ggplot() + geom_point(aes(x = dataframe2D[, 1], y = dataframe2D[, 2]),
@@ -96,6 +114,16 @@ plot_dataframe2D <- function(dataframe2D = NULL, labels = NULL, colors = NULL){
 #' @return A scatter3D object in plot3D package.
 #' @import plot3D
 #' @export
+#'
+#' @examples
+#' data(pbmcs_eg)
+#' mat <- SingleCellExperiment::reducedDim(pbmcs_eg$CM, "UMAP")[, 1:3]
+#' dataframe3D <- as.data.frame(mat)
+#' labels <- SummarizedExperiment::colData(pbmcs_eg$CM)$seurat_clusters
+#' plot_dataframe3D(dataframe3D = dataframe3D, labels = labels, colors = NULL,
+#'                  theta = 45, phi = 20, title = "PBMC (CO & MSigDB)",
+#'                  xlabel = "UMAP_1", ylabel = "UMAP_2", zlabel = "UMAP_3")
+#'
 plot_dataframe3D <- function(
   dataframe3D = NULL, labels = NULL, colors = NULL, theta = 30, phi = 30,
   title = "", xlabel = "", ylabel = "", zlabel = ""
@@ -110,7 +138,7 @@ plot_dataframe3D <- function(
     if(is.null(colors)){
       myggcolor <- function(n, l = 65){
         hues <- seq(15, 375, length = n + 1)
-        grDevices::hcl(h = hues, l = l, c = 100)[1:n]
+        grDevices::hcl(h = hues, l = l, c = 100)[seq_len(n)]
       }
       colors <- myggcolor(length(unique(labels))) ; colors <- colors[labels]
       dataframe3D$label <- labels ; dataframe3D$color <- colors
@@ -163,6 +191,34 @@ plot_dataframe3D <- function(
 #' @import circlize
 #' @import grid
 #' @export
+#'
+#' @examples
+#' data(pbmcs_eg)
+#' mat_CM <- SummarizedExperiment::assay(pbmcs_eg$CM, "counts")
+#' mat_GO <- SummarizedExperiment::assay(pbmcs_eg$GO, "counts")
+#' mat_KG <- SummarizedExperiment::assay(pbmcs_eg$KG, "counts")
+#' ssm_list <- list(SSM_COMSig = mat_CM, SSM_GO = mat_GO, SSM_KEGG = mat_KG)
+#' se <- SingleCellExperiment::altExp(pbmcs_eg$CM, "logcounts")
+#' mat <- SummarizedExperiment::assay(se, "counts")
+#' se <- SingleCellExperiment::altExp(pbmcs_eg$CM, "logcounts")
+#' gem_list <- list(GeneExpr = SummarizedExperiment::assay(se, "counts"))
+#' labels <- list() ; ssmlabel_list <- list()
+#' for(i in seq_len(length(pbmcs_eg))){
+#'   fa <- SummarizedExperiment::colData(pbmcs_eg[[i]])$seurat_clusters
+#'   labels[[i]] <- data.frame(label = fa)
+#'   colors <- rainbow(length(unique(labels[[i]]$label)))[labels[[i]]$label]
+#'   labels[[i]]$color <- colors
+#'   ssmlabel_list[[i]] <- labels[[i]]
+#' }
+#' names(ssmlabel_list) <- c("Label_COMSig", "Label_GO", "Label_KEGG")
+#' phases <- SummarizedExperiment::colData(pbmcs_eg$CM)$Phase
+#' label_CC <- data.frame(label = phases, color = NA)
+#' gemlabel_list <- list(CellCycle = label_CC)
+#' plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
+#'                    ssmlabel_list = ssmlabel_list,
+#'                    gemlabel_list = gemlabel_list, nSamples = 50,
+#'                    show_row_names = FALSE, title = "PBMC")
+#'
 plot_multiheatmaps <- function(
   ssm_list = NULL, gem_list = NULL, ssmlabel_list = NULL, gemlabel_list = NULL,
   nSamples = NULL, show_row_names = FALSE, title = NULL
@@ -177,12 +233,12 @@ plot_multiheatmaps <- function(
   # Set names of dataframes.
   #--------------------------------------------------
   if(!is.null(ssmlabel_list)){
-    for(i in 1:length(ssmlabel_list)){
+    for(i in seq_len(length(ssmlabel_list))){
       colnames(ssmlabel_list[[i]]) <- c("label", "color")
     }
   }
   if(!is.null(gemlabel_list)){
-    for(i in 1:length(gemlabel_list)){
+    for(i in seq_len(length(gemlabel_list))){
       colnames(gemlabel_list[[i]]) <- c("label", "color")
     }
   }
@@ -191,12 +247,12 @@ plot_multiheatmaps <- function(
   #--------------------------------------------------
   if(show_row_names){
     nrow_max <- 1
-    for(i in 1:length(ssm_list)){
+    for(i in seq_len(length(ssm_list))){
       if(nrow_max < dim(ssm_list[[i]])[1]){
         nrow_max <- dim(ssm_list[[i]])[1]
       }
     }
-    for(i in 1:length(gem_list)){
+    for(i in seq_len(length(gem_list))){
       if(nrow_max < dim(gem_list[[i]])[1]){
         nrow_max <- dim(gem_list[[i]])[1]
       }
@@ -220,16 +276,16 @@ plot_multiheatmaps <- function(
   #--------------------------------------------------
   if(!is.null(nSamples)){
     inds <- sample(ncol(ssm_list[[1]]), size = nSamples, replace = FALSE)
-    for(i in 1:length(ssm_list)){
+    for(i in seq_len(length(ssm_list))){
       ssm_list[[i]] <- ssm_list[[i]][, inds]
     }
-    for(i in 1:length(ssmlabel_list)){
+    for(i in seq_len(length(ssmlabel_list))){
       ssmlabel_list[[i]] <- ssmlabel_list[[i]][inds, ]
     }
-    for(i in 1:length(gem_list)){
+    for(i in seq_len(length(gem_list))){
       gem_list[[i]] <- gem_list[[i]][, inds]
     }
-    for(i in 1:length(gemlabel_list)){
+    for(i in seq_len(length(gemlabel_list))){
       gemlabel_list[[i]] <- gemlabel_list[[i]][inds, ]
     }
   }
@@ -238,7 +294,7 @@ plot_multiheatmaps <- function(
   #--------------------------------------------------
   p <- c()
   ha <- list()
-  for(i in 1:length(ssm_list)){
+  for(i in seq_len(length(ssm_list))){
     if((!is.element(NA, ssmlabel_list[[i]]$label)) &
        (!is.null(ssmlabel_list[[i]]$label))){
       inds <- order(ssmlabel_list[[i]]$label)
@@ -248,7 +304,7 @@ plot_multiheatmaps <- function(
       }else{
         myggcolor <- function(n, l = 65){
           hues <- seq(15, 375, length = n + 1)
-          grDevices::hcl(h = hues, l = l, c = 100)[1:n]
+          grDevices::hcl(h = hues, l = l, c = 100)[seq_len(n)]
         }
         mycolor <- myggcolor(length(unique(ssmlabel_list[[i]]$label)))
       }
@@ -332,7 +388,7 @@ plot_multiheatmaps <- function(
   # Compute heatmaps of gene-by-sample matrices.
   #--------------------------------------------------
   ha2 <- list()
-  for(i in 1:length(gem_list)){
+  for(i in seq_len(length(gem_list))){
     if((!is.element(NA, gemlabel_list[[i]]$label)) &
        (!is.null(gemlabel_list[[i]]$label))){
       inds <- order(gemlabel_list[[i]]$label)
@@ -342,7 +398,7 @@ plot_multiheatmaps <- function(
       }else{
         myggcolor <- function(n, l = 65){
           hues <- seq(15, 375, length = n + 1)
-          grDevices::hcl(h = hues, l = l, c = 100)[1:n]
+          grDevices::hcl(h = hues, l = l, c = 100)[seq_len(n)]
         }
         mycolor <- myggcolor(length(unique(gemlabel_list[[i]]$label)))
       }

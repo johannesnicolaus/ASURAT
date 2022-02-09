@@ -22,3 +22,16 @@ A SingleCellExperiment object.
 This function clusters each functional gene set into strongly, variably, and
   weakly correlated gene sets.
 }
+\examples{
+data(pbmc_eg)
+data(human_GO_eg)
+mat <- t(as.matrix(SummarizedExperiment::assay(pbmc_eg, "centered")))
+pbmc_cormat <- cor(mat, method = "spearman")
+pbmcs <- list(GO = pbmc_eg)
+S4Vectors::metadata(pbmcs$GO) <- list(sign = human_GO_eg[["BP"]])
+pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 1000)
+pbmcs$GO <- cluster_genesets(sce = pbmcs$GO, cormat = pbmc_cormat,
+                             th_posi = 0.24, th_nega = -0.20)
+# The results are stored in `metadata(pbmcs$GO)$sign`.
+
+}

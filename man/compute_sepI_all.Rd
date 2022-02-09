@@ -20,3 +20,11 @@ A SingleCellExperiment object.
 \description{
 This function computes separation indices for each cluster versus the others.
 }
+\examples{
+data(pbmcs_eg)
+labels <- SummarizedExperiment::colData(pbmcs_eg$GO)$seurat_clusters
+pbmcs_eg$GO <- compute_sepI_all(sce = pbmcs_eg$GO, labels = labels,
+                                nrand_samples = 10)
+# The results are stored in `metadata(pbmcs_eg$GO)$marker_signs`.
+
+}

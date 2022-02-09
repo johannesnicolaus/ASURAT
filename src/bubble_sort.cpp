@@ -6,15 +6,19 @@ using namespace Rcpp;
 //----------------------------------------------------------------------------80
 //' Perform one-shot adjacent swapping for each element.
 //'
-//' @param data A list of vector and integer.
+//' @param listdata A list of vector and integer.
 //'   
+//' @return A List.
 //' @export
 //'
+//' @examples
+//' swap_pass(list(vec = c(1, 1, 0), cnt = 0))
+//'
 // [[Rcpp::export]]
-List swap_pass(List data){
+List swap_pass(List listdata){
   int           i, tmp;
-  IntegerVector vec = data[0];
-  int           cnt = data[1];
+  IntegerVector vec = listdata[0];
+  int           cnt = listdata[1];
   int           m = vec.length() - 1, n = vec.length();
   IntegerVector newvec(n);
   int           newcnt = cnt;
@@ -44,17 +48,20 @@ List swap_pass(List data){
 //----------------------------------------------------------------------------80
 //' Perform bubble sorting, counting the number of steps.
 //'
-//' @param data A list of vector and integer.
-//' @param data A list of vector and integer.
-//'   For example, in R code, data = list(vec = c(1, 0, 1, 1, 0, ...), cnt = 0).
+//' @param listdata A list of vector and integer.
+//'   For example, in R code, listdata = list(vec = c(1, 0, 1, ...), cnt = 0).
 //'   The integer (cnt = 0) is the initial number of steps for bubble sorting.
 //'
+//' @return A List.
 //' @export
 //'
+//' @examples
+//' bubble_sort(list(vec = c(1, 1, 0), cnt = 0))
+//'
 // [[Rcpp::export]]
-List bubble_sort(List data){
-  List          newdata = swap_pass(data);
-  IntegerVector vec = data[0], newvec = newdata[0];
+List bubble_sort(List listdata){
+  List          newdata = swap_pass(listdata);
+  IntegerVector vec = listdata[0], newvec = newdata[0];
   int           i = 0, n = vec.length(), diff = 0;
 
   for(i=0; i<n; ++i){

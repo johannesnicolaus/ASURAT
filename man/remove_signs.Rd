@@ -19,3 +19,12 @@ A SingleCellExperiment object.
 \description{
 This function removes signs including too few or too many genes.
 }
+\examples{
+data(pbmc_eg)
+data(human_GO_eg)
+pbmcs <- list(GO = pbmc_eg)
+S4Vectors::metadata(pbmcs$GO) <- list(sign = human_GO_eg[["BP"]])
+pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 1000)
+# The results are stored in `metadata(pbmcs$GO)$sign`.
+
+}

@@ -40,3 +40,11 @@ A SingleCellExperiment object.
 This function removes sample data by setting minimum and maximum threshold
   values for the metadata.
 }
+\examples{
+data(pbmc_eg)
+pbmc <- add_metadata(sce = pbmc_eg, mitochondria_symbol = "^MT-")
+pbmc <- remove_samples(sce = pbmc, min_nReads = 0, max_nReads = 1e+10,
+                       min_nGenes = 0, max_nGenes = 1e+10,
+                       min_percMT = NULL, max_percMT = NULL)
+
+}

@@ -27,3 +27,23 @@ A SingleCellExperiment object.
 \description{
 This function removes redundant signs using semantic similarity matrices.
 }
+\examples{
+data(pbmc_eg)
+data(human_GO_eg)
+mat <- t(as.matrix(SummarizedExperiment::assay(pbmc_eg, "centered")))
+pbmc_cormat <- cor(mat, method = "spearman")
+pbmcs <- list(GO = pbmc_eg)
+S4Vectors::metadata(pbmcs$GO) <- list(sign = human_GO_eg[["BP"]])
+pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 1000)
+pbmcs$GO <- cluster_genesets(sce = pbmcs$GO, cormat = pbmc_cormat,
+                             th_posi = 0.24, th_nega = -0.20)
+pbmcs$GO <- create_signs(sce = pbmcs$GO, min_cnt_strg = 2, min_cnt_vari = 2)
+pbmcs$GO <- remove_signs_redundant(
+  sce = pbmcs$GO, similarity_matrix = human_GO_eg$similarity_matrix$BP,
+  threshold = 0.80, keep_rareID = TRUE)
+# The results are stored in `metadata(pbmcs$GO)$sign_SCG`,
+# `metadata(pbmcs$GO)$sign_VCG`, `metadata(pbmcs$GO)$sign_all`,
+# and if there exist, `metadata(pbmcs$GO)$sign_SCG_redundant` and
+# `metadata(pbmcs$GO)$sign_VCG_redundant`.
+
+}

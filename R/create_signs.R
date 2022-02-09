@@ -15,6 +15,14 @@
 #' @import S4Vectors
 #' @export
 #'
+#' @examples
+#' data(pbmc_eg)
+#' data(human_GO_eg)
+#' pbmcs <- list(GO = pbmc_eg)
+#' S4Vectors::metadata(pbmcs$GO) <- list(sign = human_GO_eg[["BP"]])
+#' pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 1000)
+#' # The results are stored in `metadata(pbmcs$GO)$sign`.
+#'
 remove_signs <- function(sce = NULL, min_ngenes = 2, max_ngenes = 1000){
   #--------------------------------------------------
   # Error handling
@@ -79,6 +87,18 @@ remove_signs <- function(sce = NULL, min_ngenes = 2, max_ngenes = 1000){
 #' @import S4Vectors
 #' @importFrom cluster pam
 #' @export
+#'
+#' @examples
+#' data(pbmc_eg)
+#' data(human_GO_eg)
+#' mat <- t(as.matrix(SummarizedExperiment::assay(pbmc_eg, "centered")))
+#' pbmc_cormat <- cor(mat, method = "spearman")
+#' pbmcs <- list(GO = pbmc_eg)
+#' S4Vectors::metadata(pbmcs$GO) <- list(sign = human_GO_eg[["BP"]])
+#' pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 1000)
+#' pbmcs$GO <- cluster_genesets(sce = pbmcs$GO, cormat = pbmc_cormat,
+#'                              th_posi = 0.24, th_nega = -0.20)
+#' # The results are stored in `metadata(pbmcs$GO)$sign`.
 #'
 cluster_genesets <- function(
   sce = NULL, cormat = NULL, th_posi = NULL, th_nega = NULL
@@ -283,6 +303,19 @@ cluster_genesets <- function(
 #' @import S4Vectors
 #' @export
 #'
+#' @examples
+#' data(pbmc_eg)
+#' data(human_GO_eg)
+#' mat <- t(as.matrix(SummarizedExperiment::assay(pbmc_eg, "centered")))
+#' pbmc_cormat <- cor(mat, method = "spearman")
+#' pbmcs <- list(GO = pbmc_eg)
+#' S4Vectors::metadata(pbmcs$GO) <- list(sign = human_GO_eg[["BP"]])
+#' pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 1000)
+#' pbmcs$GO <- cluster_genesets(sce = pbmcs$GO, cormat = pbmc_cormat,
+#'                              th_posi = 0.24, th_nega = -0.20)
+#' pbmcs$GO <- create_signs(sce = pbmcs$GO, min_cnt_strg = 2, min_cnt_vari = 2)
+#' # The results are stored in `metadata(pbmcs$GO)$sign_all`.
+#'
 create_signs <- function(sce = NULL, min_cnt_strg = 2, min_cnt_vari = 2){
   #--------------------------------------------------
   # Error handling
@@ -366,6 +399,25 @@ create_signs <- function(sce = NULL, min_cnt_strg = 2, min_cnt_vari = 2){
 #' @import SummarizedExperiment
 #' @import S4Vectors
 #' @export
+#'
+#' @examples
+#' data(pbmc_eg)
+#' data(human_GO_eg)
+#' mat <- t(as.matrix(SummarizedExperiment::assay(pbmc_eg, "centered")))
+#' pbmc_cormat <- cor(mat, method = "spearman")
+#' pbmcs <- list(GO = pbmc_eg)
+#' S4Vectors::metadata(pbmcs$GO) <- list(sign = human_GO_eg[["BP"]])
+#' pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 1000)
+#' pbmcs$GO <- cluster_genesets(sce = pbmcs$GO, cormat = pbmc_cormat,
+#'                              th_posi = 0.24, th_nega = -0.20)
+#' pbmcs$GO <- create_signs(sce = pbmcs$GO, min_cnt_strg = 2, min_cnt_vari = 2)
+#' pbmcs$GO <- remove_signs_redundant(
+#'   sce = pbmcs$GO, similarity_matrix = human_GO_eg$similarity_matrix$BP,
+#'   threshold = 0.80, keep_rareID = TRUE)
+#' # The results are stored in `metadata(pbmcs$GO)$sign_SCG`,
+#' # `metadata(pbmcs$GO)$sign_VCG`, `metadata(pbmcs$GO)$sign_all`,
+#' # and if there exist, `metadata(pbmcs$GO)$sign_SCG_redundant` and
+#' # `metadata(pbmcs$GO)$sign_VCG_redundant`.
 #'
 remove_signs_redundant <- function(
   sce = NULL, similarity_matrix = NULL, threshold = NULL, keep_rareID = NULL
@@ -570,6 +622,22 @@ remove_signs_redundant <- function(
 #' @import S4Vectors
 #' @export
 #'
+#' @examples
+#' data(pbmc_eg)
+#' data(human_GO_eg)
+#' mat <- t(as.matrix(SummarizedExperiment::assay(pbmc_eg, "centered")))
+#' pbmc_cormat <- cor(mat, method = "spearman")
+#' pbmcs <- list(GO = pbmc_eg)
+#' S4Vectors::metadata(pbmcs$GO) <- list(sign = human_GO_eg[["BP"]])
+#' pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 1000)
+#' pbmcs$GO <- cluster_genesets(sce = pbmcs$GO, cormat = pbmc_cormat,
+#'                              th_posi = 0.24, th_nega = -0.20)
+#' pbmcs$GO <- create_signs(sce = pbmcs$GO, min_cnt_strg = 2, min_cnt_vari = 2)
+#' keywords <- "Covid19|foofoo|hogehoge"
+#' pbmcs$GO <- remove_signs_manually(sce = pbmcs$GO, keywords = keywords)
+#' # The results are stored in `metadata(pbmcs$GO)$sign_SCG`,
+#' # `metadata(pbmcs$GO)$sign_VCG`, and `metadata(pbmcs$GO)$sign_all`.
+#'
 remove_signs_manually <- function(sce = NULL, keywords = NULL){
   if(is.null(keywords)){
     return(sce)
@@ -622,6 +690,22 @@ remove_signs_manually <- function(sce = NULL, keywords = NULL){
 #' @import SummarizedExperiment
 #' @import S4Vectors
 #' @export
+#'
+#' @examples
+#' data(pbmc_eg)
+#' data(human_GO_eg)
+#' mat <- t(as.matrix(SummarizedExperiment::assay(pbmc_eg, "centered")))
+#' pbmc_cormat <- cor(mat, method = "spearman")
+#' pbmcs <- list(GO = pbmc_eg)
+#' S4Vectors::metadata(pbmcs$GO) <- list(sign = human_GO_eg[["BP"]])
+#' pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 1000)
+#' pbmcs$GO <- cluster_genesets(sce = pbmcs$GO, cormat = pbmc_cormat,
+#'                              th_posi = 0.24, th_nega = -0.20)
+#' pbmcs$GO <- create_signs(sce = pbmcs$GO, min_cnt_strg = 2, min_cnt_vari = 2)
+#' keywords <- "cell|process"
+#' pbmcs$GO <- select_signs_manually(sce = pbmcs$GO, keywords = keywords)
+#' # The results are stored in `metadata(pbmcs$GO)$sign_SCG`,
+#' # `metadata(pbmcs$GO)$sign_VCG`, and `metadata(pbmcs$GO)$sign_all`.
 #'
 select_signs_manually <- function(sce = NULL, keywords = NULL){
   if(is.null(keywords)){
@@ -678,6 +762,21 @@ select_signs_manually <- function(sce = NULL, keywords = NULL){
 #' @import SummarizedExperiment
 #' @import S4Vectors
 #' @export
+#'
+#' @examples
+#' data(pbmc_eg)
+#' data(human_GO_eg)
+#' mat <- t(as.matrix(SummarizedExperiment::assay(pbmc_eg, "centered")))
+#' pbmc_cormat <- cor(mat, method = "spearman")
+#' pbmcs <- list(GO = pbmc_eg)
+#' S4Vectors::metadata(pbmcs$GO) <- list(sign = human_GO_eg[["BP"]])
+#' pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 1000)
+#' pbmcs$GO <- cluster_genesets(sce = pbmcs$GO, cormat = pbmc_cormat,
+#'                              th_posi = 0.24, th_nega = -0.20)
+#' pbmcs$GO <- create_signs(sce = pbmcs$GO, min_cnt_strg = 2, min_cnt_vari = 2)
+#' pbmcs$GO <- makeSignMatrix(sce = pbmcs$GO, weight_strg = 0.5,
+#'                            weight_vari = 0.5)
+#' # The resutls can be check by, e.g., assay(pbmcs$GO, "counts").
 #'
 makeSignMatrix <- function(sce = NULL, weight_strg = 0.5, weight_vari = 0.5){
   #--------------------------------------------------

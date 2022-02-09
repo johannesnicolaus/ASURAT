@@ -7,15 +7,15 @@ Authors@R: c(person("Keita", "Iida", email = "kiida@protein.osaka-u.ac.jp",
              comment = c(ORCID = "0000-0002-1076-830X")),
              person("Johannes Nicolaus", "Wibisana",
                     email = "nico@protein.osaka-u.ac.jp", role = c("ctb")))
-Description: ASURAT is a computational pipeline for single-cell data analysis,
-    which simultaneously performs unsupervised clustering and biological
-    interpretation in terms of cell type, disease, biological process, and
-    signaling pathway activity. Inputting a single-cell RNA-seq data and
-    knowledge-based databases, some of which have already been prepared,
-    ASURAT transforms read count tables into an original multivariate tables,
-    termed a sign-by-sample matrices (SSMs). Analyzing SSMs, one can cluster
-    samples (cells) to aid their interpretation.
+Description: ASURAT is a software for single-cell data analysis.
+    Using ASURAT, one can simultaneously perform unsupervised clustering and
+    biological interpretation in terms of cell type, disease, biological process,
+    and signaling pathway activity. Inputting a single-cell RNA-seq data and
+    knowledge-based databases, such as Cell Ontology, Gene Ontology, KEGG, etc.,
+    ASURAT transforms gene expression tables into original multivariate tables,
+    termed sign-by-sample matrices (SSMs).
 License: GPL-3 + file LICENSE
+biocViews: GeneExpression, SingleCell, Sequencing, Clustering, GeneSignaling
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: TRUE
@@ -55,7 +55,9 @@ Suggests:
     KEGGREST,
     qgraph,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 RoxygenNote: 7.1.2
 LinkingTo:
     Rcpp
+Config/testthat/edition: 3

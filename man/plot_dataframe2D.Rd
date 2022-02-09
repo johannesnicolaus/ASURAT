@@ -21,3 +21,11 @@ A ggplot object.
 \description{
 This function visualizes a two-dimensional data with labels and colors.
 }
+\examples{
+data(pbmcs_eg)
+labels <- SummarizedExperiment::colData(pbmcs_eg$CM)$seurat_clusters
+mat <- SingleCellExperiment::reducedDim(pbmcs_eg$CM, "TSNE")
+dataframe2D <- as.data.frame(mat)
+plot_dataframe2D(dataframe2D = dataframe2D, labels = labels, colors = NULL)
+
+}

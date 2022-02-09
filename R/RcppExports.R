@@ -3,24 +3,31 @@
 
 #' Perform one-shot adjacent swapping for each element.
 #'
-#' @param data A list of vector and integer.
+#' @param listdata A list of vector and integer.
 #'   
+#' @return A List.
 #' @export
 #'
-swap_pass <- function(data) {
-    .Call('_ASURAT_swap_pass', PACKAGE = 'ASURAT', data)
+#' @examples
+#' swap_pass(list(vec = c(1, 1, 0), cnt = 0))
+#'
+swap_pass <- function(listdata) {
+    .Call('_ASURAT_swap_pass', PACKAGE = 'ASURAT', listdata)
 }
 
 #' Perform bubble sorting, counting the number of steps.
 #'
-#' @param data A list of vector and integer.
-#' @param data A list of vector and integer.
-#'   For example, in R code, data = list(vec = c(1, 0, 1, 1, 0, ...), cnt = 0).
+#' @param listdata A list of vector and integer.
+#'   For example, in R code, listdata = list(vec = c(1, 0, 1, ...), cnt = 0).
 #'   The integer (cnt = 0) is the initial number of steps for bubble sorting.
 #'
+#' @return A List.
 #' @export
 #'
-bubble_sort <- function(data) {
-    .Call('_ASURAT_bubble_sort', PACKAGE = 'ASURAT', data)
+#' @examples
+#' bubble_sort(list(vec = c(1, 1, 0), cnt = 0))
+#'
+bubble_sort <- function(listdata) {
+    .Call('_ASURAT_bubble_sort', PACKAGE = 'ASURAT', listdata)
 }
 
