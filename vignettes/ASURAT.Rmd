@@ -711,7 +711,7 @@ plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
 
 <br>
 
-# Appendix. Visualize computational results {#visualization}
+# Appendix. Visualization {#visualization}
 In this section, ASURAT functions for visualization are introduced.
 
 

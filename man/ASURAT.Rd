@@ -5,14 +5,12 @@
 \alias{ASURAT}
 \title{Functional annotation-driven unsupervised clustering of SingleCell data.}
 \description{
-ASURAT is a computational pipeline for single-cell or spatial transcriptome
-   data analyses, which simultaneously performs unsupervised clustering and
-   biological interpretation in terms of cell type, disease,
-   biological process, and signaling pathway activity.
-   Inputting single-cell RNA-seq (scRNA-seq) data and knowledge-based
-   databases, some of which have already been prepared, ASURAT transforms
-   a read count table into an original multivariate table, termed a
-   sign-by-sample matrix (SSM) (see \code{\link{create_signs}}
-   and \code{\link{makeSignMatrix}}). By analyzing SSMs,
-   users can cluster cells (or spatial spots) to aid their interpretation.
+ASURAT is a software for single-cell data analysis.
+   Using ASURAT, one can simultaneously perform unsupervised clustering and
+   biological interpretation in terms of cell type, disease, biological
+   process, and signaling pathway activity.
+   Inputting a single-cell RNA-seq data and knowledge-based databases,
+   such as Cell Ontology, Gene Ontology, KEGG, etc., ASURAT transforms
+   gene expression tables into original multivariate tables, termed
+   sign-by-sample matrices (SSMs).
 }
