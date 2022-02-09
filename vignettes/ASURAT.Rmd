@@ -24,11 +24,6 @@ knitr::opts_chunk$set(
 
 
 # Installations
-ASURAT is available on GitHub.
-```{r, eval = FALSE}
-devtools::install_github("keita-iida/ASURAT", upgrade = "never")
-```
-
 Attach necessary libraries:
 ```{r, message = FALSE, warning = FALSE}
 library(ASURAT)
