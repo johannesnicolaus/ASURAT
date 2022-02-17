@@ -47,12 +47,6 @@ Suggests:
     stringr,
     org.Hs.eg.db,
     org.Mm.eg.db,
-    clusterProfiler,
-    DOSE,
-    DO.db,
-    ontoProc,
-    GOSemSim,
-    KEGGREST,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
