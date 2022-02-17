@@ -72,7 +72,7 @@ Now, ready for the next step [here](#sign).
 ## Load SingleCellExperiment objects
 Load a single-cell RNA sequencing (scRNA-seq) data.
 ```{r}
-urlpath <- "https://github.com/keita-iida/ASURAT_DB/blob/main/transcriptome/"
+urlpath <- "https://github.com/keita-iida/ASURATDB/blob/main/transcriptome/"
 load(url(paste0(urlpath, "pbmc_counts.rda?raw=true")))
 ```
 Here, `pbmc_counts` is a read count table of peripheral blood mononuclear cells
@@ -241,7 +241,7 @@ Using SSMs, perform unsupervised clustering of samples (cells).
 ## Load databases
 Load databases.
 ```{r}
-urlpath <- "https://github.com/keita-iida/ASURAT_DB/blob/main/genes2bioterm/"
+urlpath <- "https://github.com/keita-iida/ASURATDB/blob/main/genes2bioterm/"
 load(url(paste0(urlpath, "20220108_human_COMSig.rda?raw=TRUE"))) # CO & MSigDB
 load(url(paste0(urlpath, "20201213_human_GO_red.rda?raw=TRUE"))) # GO
 load(url(paste0(urlpath, "20201213_human_KEGG.rda?raw=TRUE")))   # KEGG

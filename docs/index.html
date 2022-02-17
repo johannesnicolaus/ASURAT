@@ -11,7 +11,7 @@
 
 <meta name="author" content="Keita Iida" />
 
-<meta name="date" content="2022-02-09" />
+<meta name="date" content="2022-02-17" />
 
 <title>ASURAT</title>
 
@@ -243,7 +243,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">ASURAT</h1>
 <h4 class="author">Keita Iida</h4>
-<h4 class="date">2022-02-09</h4>
+<h4 class="date">2022-02-17</h4>
 
 </div>
 
@@ -279,7 +279,7 @@ assay(sce, &quot;centered&quot;) &lt;- sweep(mat, 1, apply(mat, 1, mean), FUN = 
 <div id="load-singlecellexperiment-objects" class="section level2" number="4.1">
 <h2 number="4.1"><span class="header-section-number">4.1</span> Load SingleCellExperiment objects</h2>
 <p>Load a single-cell RNA sequencing (scRNA-seq) data.</p>
-<pre class="r"><code>urlpath &lt;- &quot;https://github.com/keita-iida/ASURAT_DB/blob/main/transcriptome/&quot;
+<pre class="r"><code>urlpath &lt;- &quot;https://github.com/keita-iida/ASURATDB/blob/main/transcriptome/&quot;
 load(url(paste0(urlpath, &quot;pbmc_counts.rda?raw=true&quot;)))</code></pre>
 <p>Here, <code>pbmc_counts</code> is a read count table of peripheral blood mononuclear cells (PBMCs), processed by extremely conservative quality controls.</p>
 <p>Below is a head of <code>pbmc_counts</code>:</p>
@@ -384,7 +384,7 @@ assay(pbmc, &quot;centered&quot;) &lt;- sweep(mat, 1, apply(mat, 1, mean), FUN =
 <div id="load-databases" class="section level2" number="5.1">
 <h2 number="5.1"><span class="header-section-number">5.1</span> Load databases</h2>
 <p>Load databases.</p>
-<pre class="r"><code>urlpath &lt;- &quot;https://github.com/keita-iida/ASURAT_DB/blob/main/genes2bioterm/&quot;
+<pre class="r"><code>urlpath &lt;- &quot;https://github.com/keita-iida/ASURATDB/blob/main/genes2bioterm/&quot;
 load(url(paste0(urlpath, &quot;20220108_human_COMSig.rda?raw=TRUE&quot;))) # CO &amp; MSigDB
 load(url(paste0(urlpath, &quot;20201213_human_GO_red.rda?raw=TRUE&quot;))) # GO
 load(url(paste0(urlpath, &quot;20201213_human_KEGG.rda?raw=TRUE&quot;)))   # KEGG</code></pre>
