@@ -32,7 +32,9 @@ Imports:
     plot3D,
     ComplexHeatmap,
     circlize,
-    grid
+    grid,
+    grDevices,
+    graphics
 Suggests:
     dplyr,
     bayNorm,
@@ -43,8 +45,6 @@ Suggests:
     AnnotationDbi,
     BiocGenerics,
     stringr,
-    grDevices,
-    graphics,
     org.Hs.eg.db,
     org.Mm.eg.db,
     clusterProfiler,
