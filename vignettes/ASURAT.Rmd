@@ -69,7 +69,7 @@ Now, ready for the next step [here](#sign).
 <br>
 
 # Preprocessing
-## Load SingleCellExperiment objects
+## Prepare SingleCellExperiment objects
 Load a single-cell RNA sequencing (scRNA-seq) data.
 ```{r}
 urlpath <- "https://github.com/keita-iida/ASURATDB/blob/main/transcriptome/"
