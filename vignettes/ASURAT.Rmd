@@ -449,6 +449,7 @@ rbind(head(assay(pbmcs$CM, "counts")[, 1:3], n = 4),
 
 
 <br>
+
 ## Reduce dimensions of sign-by-sample matrices {#dim_reduction}
 Perform t-distributed stochastic neighbor embedding.
 ```{r}
