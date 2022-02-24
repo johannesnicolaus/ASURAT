@@ -732,7 +732,7 @@ select_signs_manually <- function(sce = NULL, keywords = NULL){
   colnames(df_strg) <- tmp
   colnames(df_vari) <- tmp
   if(nrow(df_strg) == 0){
-    stop("SCG is not defined.")
+    stop("SCG is not defined. The keywords may not be included in the data.")
   }else{
     if(nrow(df_vari) == 0){
       metadata(sce)$sign_all <- cbind(CorrType = "SCG", df_strg)

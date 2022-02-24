@@ -36,6 +36,7 @@ Imports:
     grDevices,
     graphics
 Suggests:
+    TENxPBMCData,
     dplyr,
     bayNorm,
     Rtsne,

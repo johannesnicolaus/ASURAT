@@ -70,13 +70,15 @@ Now, ready for the next step [here](#sign).
 
 # Preprocessing
 ## Prepare SingleCellExperiment objects
-Load a single-cell RNA sequencing (scRNA-seq) data.
+Load single-cell RNA sequencing (scRNA-seq) data.
 ```{r}
-urlpath <- "https://github.com/keita-iida/ASURATDB/blob/main/transcriptome/"
-load(url(paste0(urlpath, "pbmc_counts.rda?raw=true")))
+sce <- TENxPBMCData::TENxPBMCData(dataset = c("pbmc4k"))
+pbmc_counts <- as.matrix(assay(sce, "counts"))
+rownames(pbmc_counts) <- rowData(sce)$Symbol_TENx
+colnames(pbmc_counts) <- colData(sce)$Barcode
 ```
 Here, `pbmc_counts` is a read count table of peripheral blood mononuclear cells
-(PBMCs), processed by extremely conservative quality controls.
+(PBMCs).
 
 Below is a head of `pbmc_counts`:
 ```{r}
@@ -164,10 +166,11 @@ The arguments are
 expressed genes, and
 * `min_percMT` and `max_percMT`: minimum and maximum percent of reads that
 map to mitochondrial genes, respectively.
+If there is no mitochondrial genes, set them as `NULL`.
 ```{r}
-pbmc <- remove_samples(sce = pbmc, min_nReads = 0, max_nReads = 1e+10,
-                       min_nGenes = 0, max_nGenes = 1e+10,
-                       min_percMT = NULL, max_percMT = NULL)
+pbmc <- remove_samples(sce = pbmc, min_nReads = 1500, max_nReads = 20000,
+                       min_nGenes = 500, max_nGenes = 5000,
+                       min_percMT = 0, max_percMT = 10)
 ```
 
 
@@ -190,7 +193,7 @@ plot_dataframe2D(dataframe2D = dataframe2D) +
 ASURAT function `remove_variables_second()` removes variable (gene) data
 such that the mean read counts across samples are less than `min_meannReads`.
 ```{r}
-pbmc <- remove_variables_second(sce = pbmc, min_meannReads = 0.01)
+pbmc <- remove_variables_second(sce = pbmc, min_meannReads = 0.05)
 ```
 
 
@@ -246,6 +249,11 @@ load(url(paste0(urlpath, "20220108_human_COMSig.rda?raw=TRUE"))) # CO & MSigDB
 load(url(paste0(urlpath, "20201213_human_GO_red.rda?raw=TRUE"))) # GO
 load(url(paste0(urlpath, "20201213_human_KEGG.rda?raw=TRUE")))   # KEGG
 ```
+The reformatted knowledge-based data were available from the following
+repositories:
+
+* [DOI:10.6084/m9.figshare.19102598](https://figshare.com/s/0599d2de970c2deb675c)
+* [Github ASURATDB](https://github.com/keita-iida/ASURATDB)
 
 Prepare correlation matrices of gene expressions.
 ```{r}
@@ -323,9 +331,9 @@ set.seed(1)
 pbmcs$CM <- cluster_genesets(sce = pbmcs$CM, cormat = pbmc_cormat,
                              th_posi = 0.20, th_nega = -0.20)
 pbmcs$GO <- cluster_genesets(sce = pbmcs$GO, cormat = pbmc_cormat,
-                             th_posi = 0.24, th_nega = -0.20)
-pbmcs$KG <- cluster_genesets(sce = pbmcs$KG, cormat = pbmc_cormat,
                              th_posi = 0.20, th_nega = -0.20)
+pbmcs$KG <- cluster_genesets(sce = pbmcs$KG, cormat = pbmc_cormat,
+                             th_posi = 0.25, th_nega = -0.20)
 ```
 The results are stored in `metadata(sce)$sign`.
 
@@ -352,6 +360,11 @@ where "CorrType" indicates SCG or VCG, "Corr" means the average correlation
 coefficients of SCG or VCG, "CorrWeak" means the average correlation
 coefficients of WCG, "CorrGene" means SCG or VCG, and "WeakCorrGene" means WCG.
 The orders of gene symbols and ENTREZ IDs, separated by "/", are consistent.
+
+**Tips:**
+If one would like to recreate signs, reset the list of objects by, e.g.,
+(`pbmcs <- list(CM = pbmc, GO = pbmc, KG = pbmc)`), and go back to
+`remove_signs()`.
 
 
 
@@ -386,7 +399,7 @@ ASURAT function `remove_signs_manually()` removes signs by specifying
 IDs (e.g., `GOID:XXX`) or descriptions (e.g., `metabolic`) using `grepl()`.
 The arguments are `sce` and `keywords` (keywords separated by `|`).
 ```{r}
-keywords <- "Covid19|foofoo|hogehoge"
+keywords <- "Covid|COVID|foofoo|hogehoge"
 pbmcs$KG <- remove_signs_manually(sce = pbmcs$KG, keywords = keywords)
 ```
 The results are stored in `metadata(sce)$sign_SCG`, `metadata(sce)$sign_VCG`,
@@ -396,7 +409,7 @@ There is another ASURAT function `select_signs_manually()`, a counter part of
 `remove_signs_manually()`, which removes signs that do not include `keywords`
 (keywords separated by `|`).
 ```{r}
-keywords <- "lung|pleural|respiratory"
+keywords <- "cell|cyte"
 test <- select_signs_manually(sce = pbmcs$CM, keywords = keywords)
 ```
 The results are stored in `metadata(sce)$sign_SCG`, `metadata(sce)$sign_VCG`,
@@ -446,13 +459,6 @@ for(i in seq_len(length(pbmcs))){
 }
 ```
 
-Perform uniform manifold approximation and projection.
-```{r}
-set.seed(1)
-res <- umap::umap(t(assay(pbmcs$CM, "counts")), n_components = 3)
-reducedDim(pbmcs$CM, "UMAP") <- res[["layout"]]
-```
-
 The results can be visualized by ASURAT functions `plot_dataframe2D()` or
 `plot_dataframe3D()` (see [here](#visualization_lowdim) for details).
 ```{r}
@@ -494,7 +500,7 @@ In this tutorial, our strategy is as follows:
 3. convert Seurat objects into temporal SingleCellExperiment objects `temp`,
 4. add `colData(temp)$seurat_clusters` into `colData(sce)$seurat_clusters`.
 ```{r, message = FALSE, warning = FALSE, results = "hide"}
-resolutions <- c(0.15, 0.15, 0.25)
+resolutions <- c(0.10, 0.10, 0.15)
 for(i in seq_len(length(pbmcs))){
   pbmc_surt <- Seurat::as.Seurat(pbmcs[[i]], counts = "counts", data = "counts")
   pbmc_surt[["SSM"]] <- Seurat::CreateAssayObject(counts = as.matrix(assay(pbmcs[[i]], "counts")))
@@ -619,7 +625,7 @@ tests in scRNA-seq data analysis is to use a Seurat function `FindAllMarkers()`.
 If there is gene expression data in `altExp(sce)`, one can investigate
 differentially expressed genes by using Seurat functions in the similar manner
 as described before.
-```{r, message = FALSE, warning = FALSE}
+```{r, message = FALSE}
 set.seed(1)
 pbmc_surt <- Seurat::as.Seurat(pbmcs$CM, counts = "counts", data = "counts")
 pbmc_surt[["GEM"]] <- Seurat::CreateAssayObject(counts = as.matrix(assay(altExp(pbmcs$CM), "counts")))
@@ -670,7 +676,8 @@ for(i in seq_len(length(pbmcs))){
 # Significant genes
 marker_genes_CM <- metadata(pbmcs$CM)$marker_genes$all
 marker_genes_CM <- dplyr::group_by(marker_genes_CM, cluster)
-marker_genes_CM <- dplyr::slice_min(marker_genes_CM, p_val_adj, n = 1)
+marker_genes_CM <- dplyr::slice_min(marker_genes_CM, p_val_adj, n = 5)
+marker_genes_CM <- dplyr::slice_max(marker_genes_CM, avg_log2FC, n = 1)
 ```
 
 Then, prepare arguments.
@@ -756,6 +763,11 @@ if `colors = NULL`, default colors are used,
 * `theta` and `phi`: angles in degree measure,
 * `title`, `title_size`, `xlabel`, `ylabel`, and `zlabel`.
 ```{r}
+#Perform three-dimensional uniform manifold approximation and projection (UMAP).
+set.seed(1)
+res <- umap::umap(t(assay(pbmcs$CM, "counts")), n_components = 3)
+reducedDim(pbmcs$CM, "UMAP") <- res[["layout"]]
+
 dataframe3D <- as.data.frame(reducedDim(pbmcs$CM, "UMAP")[, 1:3])
 labels <- colData(pbmcs$CM)$seurat_clusters
 plot_dataframe3D(dataframe3D = dataframe3D, labels = labels, colors = NULL,
