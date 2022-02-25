@@ -646,7 +646,7 @@ expr_sub <- expr_sub[rownames(expr_sub) == vname]
 labels <- colData(pbmcs$CM)$seurat_clusters
 dataframe1D <- as.data.frame(t(assay(expr_sub, "counts")))
 plot_violin(dataframe1D = dataframe1D, labels = labels, colors = NULL) +
-  ggplot2::labs(title = "BANK1", x = "Cluster (CO & MSigDB)",
+  ggplot2::labs(title = vname, x = "Cluster (CO & MSigDB)",
                 y = "Normalized expression", fill = "Cluster") +
   ggplot2::theme_classic(base_size = 20)
 ```
