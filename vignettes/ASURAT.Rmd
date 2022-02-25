@@ -71,7 +71,7 @@ Now, ready for the next step [here](#sign).
 # Preprocessing
 ## Prepare SingleCellExperiment objects
 Load single-cell RNA sequencing (scRNA-seq) data.
-```{r}
+```{r, message = FALSE}
 sce <- TENxPBMCData::TENxPBMCData(dataset = c("pbmc4k"))
 pbmc_counts <- as.matrix(assay(sce, "counts"))
 rownames(pbmc_counts) <- rowData(sce)$Symbol_TENx
