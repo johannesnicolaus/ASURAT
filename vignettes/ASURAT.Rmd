@@ -325,7 +325,7 @@ Empirically, typical values of `th_posi` and `th_nega` are
 $0.15 \le {\rm th{\_}posi} \le 0.4$ and $-0.4 \le {\rm th{\_}nega} \le -0.15$,
 but one cannot avoid trial and error for setting these values.
 An exhaustive parameter searching is time-consuming but helpful for obtaining
-"optimal" values.
+interpretable results.
 ```{r}
 set.seed(1)
 pbmcs$CM <- cluster_genesets(sce = pbmcs$CM, cormat = pbmc_cormat,
@@ -349,7 +349,7 @@ Empirically, typical values of `min_cnt_strg` and `min_cnt_vari` are
 $2 \le {\rm min\_cnt\_strg} = {\rm min\_cnt\_vari} \le 3$,
 but one cannot avoid trial and error for setting these values.
 An exhaustive parameter searching is time-consuming but helpful for obtaining
-"optimal" values.
+interpretable results.
 ```{r}
 pbmcs$CM <- create_signs(sce = pbmcs$CM, min_cnt_strg = 2, min_cnt_vari = 2)
 pbmcs$GO <- create_signs(sce = pbmcs$GO, min_cnt_strg = 2, min_cnt_vari = 2)
