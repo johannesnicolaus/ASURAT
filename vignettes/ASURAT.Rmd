@@ -304,9 +304,9 @@ The arguments are
 * `min_ngenes`: minimal number of genes> 1 (the default value is 2), and
 * `max_ngenes`: maximal number of genes> 1 (the default value is 1000).
 ```{r}
-pbmcs$CM <- remove_signs(sce = pbmcs$CM, min_ngenes = 2, max_ngenes = 1000)
-pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 500)
-pbmcs$KG <- remove_signs(sce = pbmcs$KG, min_ngenes = 2, max_ngenes = 1000)
+pbmcs$CM <- remove_signs(sce = pbmcs$CM, min_ngenes = 2, max_ngenes = 400)
+pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 400)
+pbmcs$KG <- remove_signs(sce = pbmcs$KG, min_ngenes = 2, max_ngenes = 400)
 ```
 The results are stored in `metadata(sce)$sign`.
 
