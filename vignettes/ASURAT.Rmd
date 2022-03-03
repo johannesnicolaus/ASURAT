@@ -202,25 +202,16 @@ pbmc <- remove_variables_second(sce = pbmc, min_meannReads = 0.05)
 <br>
 
 ## Normalize data
-Normalize data using bayNorm functions (Tang et al., Bioinformatics, 2020)
-and log transformation with a pseudo count.
-Then, we center the log-normalized data by subtracting with the mean expression
-levels across samples (cells).
+Normalize data using log transformation with a pseudo count and center the data
+by subtracting with the mean expression levels across samples (cells).
 The resulting normalized-and-centered data are used for downstream analyses.
-
-Perform `bayNorm()` for attenuating technical biases with respect to
-zero inflation and variation of capture efficiencies between samples (cells).
-```{r, results = "hide", message = FALSE}
-bayout <- bayNorm::bayNorm(Data = counts(pbmc), mode_version = TRUE)
-assay(pbmc, "normalized") <- bayout$Bay_out
-```
 
 Perform log-normalization with a pseudo count.
 ```{r}
-assay(pbmc, "logcounts") <- log(assay(pbmc, "normalized") + 1)
+assay(pbmc, "logcounts") <- log(assay(pbmc, "counts") + 1)
 ```
 
-Center row data.
+Center each row data.
 ```{r}
 mat <- assay(pbmc, "logcounts")
 assay(pbmc, "centered") <- sweep(mat, 1, apply(mat, 1, mean), FUN = "-")
@@ -304,9 +295,9 @@ The arguments are
 * `min_ngenes`: minimal number of genes> 1 (the default value is 2), and
 * `max_ngenes`: maximal number of genes> 1 (the default value is 1000).
 ```{r}
-pbmcs$CM <- remove_signs(sce = pbmcs$CM, min_ngenes = 2, max_ngenes = 400)
-pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 400)
-pbmcs$KG <- remove_signs(sce = pbmcs$KG, min_ngenes = 2, max_ngenes = 400)
+pbmcs$CM <- remove_signs(sce = pbmcs$CM, min_ngenes = 2, max_ngenes = 1000)
+pbmcs$GO <- remove_signs(sce = pbmcs$GO, min_ngenes = 2, max_ngenes = 500)
+pbmcs$KG <- remove_signs(sce = pbmcs$KG, min_ngenes = 2, max_ngenes = 1000)
 ```
 The results are stored in `metadata(sce)$sign`.
 
@@ -357,7 +348,7 @@ An exhaustive parameter searching is time-consuming but helpful for obtaining
 interpretable results.
 ```{r}
 pbmcs$CM <- create_signs(sce = pbmcs$CM, min_cnt_strg = 2, min_cnt_vari = 2)
-pbmcs$GO <- create_signs(sce = pbmcs$GO, min_cnt_strg = 3, min_cnt_vari = 3)
+pbmcs$GO <- create_signs(sce = pbmcs$GO, min_cnt_strg = 2, min_cnt_vari = 2)
 pbmcs$KG <- create_signs(sce = pbmcs$KG, min_cnt_strg = 3, min_cnt_vari = 3)
 ```
 The results are stored in `metadata(sce)$sign_all`,
@@ -467,7 +458,7 @@ set.seed(1)
 res <- Rtsne::Rtsne(t(assay(pbmcs$GO, "counts")), dim = 2, pca = TRUE)
 reducedDim(pbmcs$GO, "TSNE") <- res[["Y"]]
 
-set.seed(1)
+set.seed(5)
 res <- Rtsne::Rtsne(t(assay(pbmcs$KG, "counts")), dim = 3, pca = TRUE)
 reducedDim(pbmcs$KG, "TSNE") <- res[["Y"]]
 ```
@@ -491,7 +482,7 @@ plot_dataframe2D(dataframe2D = dataframe2D) +
 ```{r}
 dataframe3D <- as.data.frame(reducedDim(pbmcs$KG, "TSNE")[, seq_len(3)])
 plot_dataframe3D(dataframe3D = dataframe3D,
-                 theta = 40, phi = 25, title = "PBMC (KEGG)",
+                 theta = 55, phi = 35, title = "PBMC (KEGG)",
                  xlabel = "tSNE_1", ylabel = "tSNE_2", zlabel = "tSNE_3")
 ```
 
@@ -514,7 +505,7 @@ In this tutorial, our strategy is as follows:
 4. add `colData(temp)$seurat_clusters` into `colData(sce)$seurat_clusters`.
 ```{r, message = FALSE, warning = FALSE, results = "hide"}
 resolutions <- c(0.15, 0.10, 0.20)
-dims <- list(seq_len(30), seq_len(30), seq_len(10))
+dims <- list(seq_len(30), seq_len(30), seq_len(50))
 for(i in seq_len(length(pbmcs))){
   pbmc_surt <- Seurat::as.Seurat(pbmcs[[i]], counts = "counts", data = "counts")
   pbmc_surt[["SSM"]] <- Seurat::CreateAssayObject(
@@ -552,7 +543,7 @@ plot_dataframe2D(dataframe2D = dataframe2D, labels = labels, colors = NULL) +
 labels <- colData(pbmcs$KG)$seurat_clusters
 dataframe3D <- as.data.frame(reducedDim(pbmcs$KG, "TSNE")[, seq_len(3)])
 plot_dataframe3D(dataframe3D = dataframe3D, labels = labels, colors = NULL,
-                 theta = 40, phi = 25, title = "PBMC (KEGG)",
+                 theta = 55, phi = 35, title = "PBMC (KEGG)",
                  xlabel = "tSNE_1", ylabel = "tSNE_2", zlabel = "tSNE_3")
 ```
 
@@ -624,7 +615,7 @@ dataframe1D <- as.data.frame(t(assay(pbmc_sub, "counts")))
 plot_violin(dataframe1D = dataframe1D, labels = labels, colors = NULL) +
   ggplot2::labs(title = paste0(vname, "\n", "B cell (CD79A, CD22, ...)"),
                 x = "Cluster (CO & MSigDB)", y = "Sign score", fill = "Cluster") +
-  ggplot2::theme_classic(base_size = 20)
+  ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position = "none")
 ```
 
 
@@ -660,9 +651,9 @@ expr_sub <- expr_sub[rownames(expr_sub) == vname]
 labels <- colData(pbmcs$CM)$seurat_clusters
 dataframe1D <- as.data.frame(t(assay(expr_sub, "counts")))
 plot_violin(dataframe1D = dataframe1D, labels = labels, colors = NULL) +
-  ggplot2::labs(title = vname, x = "Cluster (CO & MSigDB)",
-                y = "Normalized expression", fill = "Cluster") +
-  ggplot2::theme_classic(base_size = 20)
+  ggplot2::labs(title = paste0(vname, "  (B cell marker)"),
+                x = "Cluster (CO & MSigDB)", y = "Normalized expression") +
+  ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position = "none")
 ```
 
 
@@ -684,7 +675,7 @@ separation index and p-value, respectively.
 ```{r}
 # Significant signs
 marker_signs <- list()
-keywords <- "GLIA|glia"
+keywords <- "GLIA|glia|OLFACTORY"
 for(i in seq_len(length(pbmcs))){
   marker_signs[[i]] <- metadata(pbmcs[[i]])$marker_signs$all
   marker_signs[[i]] <- marker_signs[[i]][!grepl(keywords, marker_signs[[i]]$Description), ]
