@@ -2,6 +2,6 @@
 #
 #-----------------------------------------------------------------------------80
 .onAttach <- function(libname, pkgname){ 
-  msg <- "ASURAT: functional annotation-driven multifaceted clustering."
+  msg <- "ASURAT"
   packageStartupMessage(msg)
 }

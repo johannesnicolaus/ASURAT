@@ -1,4 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^docs$
-^vignettes$
+^doc$
+^Meta$

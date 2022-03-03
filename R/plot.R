@@ -1,10 +1,9 @@
 #-----------------------------------------------------------------------------80
 #
 #-----------------------------------------------------------------------------80
-#' Violin plots of a one-dimensional data with labels and colors.
+#' Visualize one-dimensional data by violin plots.
 #'
-#' This function outputs violin plots of a one-dimensional data with labels
-#'   and colors.
+#' This function visualizes one-dimensional data by violin plots.
 #'
 #' @param dataframe1D A dataframe with one column.
 #' @param labels NULL or a vector of labels of all the samples,
@@ -168,9 +167,9 @@ plot_dataframe3D <- function(
 #-----------------------------------------------------------------------------80
 # 
 #-----------------------------------------------------------------------------80
-#' Visualize a three-dimensional data with labels and colors.
+#' Visualize multivariate data by heatmaps.
 #'
-#' This function visualizes a three-dimensional data with labels and colors.
+#' This function visualizes multivariate data by heatmaps.
 #'
 #' @param ssm_list A list of sign-by-sample matrices.
 #' @param gem_list A list of gene-by-sample matrices.

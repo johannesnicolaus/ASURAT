@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{plot_multiheatmaps}
 \alias{plot_multiheatmaps}
-\title{Visualize a three-dimensional data with labels and colors.}
+\title{Visualize multivariate data by heatmaps.}
 \usage{
 plot_multiheatmaps(
   ssm_list = NULL,
@@ -39,7 +39,7 @@ the order of labels in each list must be as same as those in gem_list.}
 A ComplexHeatmap object.
 }
 \description{
-This function visualizes a three-dimensional data with labels and colors.
+This function visualizes multivariate data by heatmaps.
 }
 \examples{
 data(pbmcs_eg)

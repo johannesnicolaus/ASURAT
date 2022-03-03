@@ -3,8 +3,11 @@
 .RData
 .Ruserdata
 ASURAT.Rproj
+.DS_Store
 
 src/*.o
 src/*.so
 src/*.dll
 
+/doc/
+/Meta/
