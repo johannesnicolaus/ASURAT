@@ -181,7 +181,7 @@ plot_dataframe3D <- function(
 #'   annotations and colors.
 #'   The length of the list must be as same as that of gem_list, and
 #'   the order of labels in each list must be as same as those in gem_list.
-#' @param nSamples Number of samples (cells) used for random sampling.
+#' @param nrand_samples Number of samples (cells) used for random sampling.
 #' @param show_row_names TRUE or FALSE: if TRUE, row names are shown.
 #' @param title Title.
 #'
@@ -215,18 +215,18 @@ plot_dataframe3D <- function(
 #' gemlabel_list <- list(CellCycle = label_CC)
 #' plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
 #'                    ssmlabel_list = ssmlabel_list,
-#'                    gemlabel_list = gemlabel_list, nSamples = 50,
+#'                    gemlabel_list = gemlabel_list, nrand_samples = 50,
 #'                    show_row_names = FALSE, title = "PBMC")
 #'
 plot_multiheatmaps <- function(
   ssm_list = NULL, gem_list = NULL, ssmlabel_list = NULL, gemlabel_list = NULL,
-  nSamples = NULL, show_row_names = FALSE, title = NULL
+  nrand_samples = NULL, show_row_names = FALSE, title = NULL
 ){
   #--------------------------------------------------
   # Error handling
   #--------------------------------------------------
   if(dim(ssm_list[[1]])[2] > 2000){
-    warning("Sample size is huge> 2000. It is recommended to use nSamples.")
+    warning("Huge sample size> 2000. It is recommended to use nrand_samples.")
   }
   #--------------------------------------------------
   # Set names of dataframes.
@@ -273,8 +273,8 @@ plot_multiheatmaps <- function(
   #--------------------------------------------------
   # Random sampling
   #--------------------------------------------------
-  if(!is.null(nSamples)){
-    inds <- sample(ncol(ssm_list[[1]]), size = nSamples, replace = FALSE)
+  if(!is.null(nrand_samples)){
+    inds <- sample(ncol(ssm_list[[1]]), size = nrand_samples, replace = FALSE)
     for(i in seq_len(length(ssm_list))){
       ssm_list[[i]] <- ssm_list[[i]][, inds]
     }
