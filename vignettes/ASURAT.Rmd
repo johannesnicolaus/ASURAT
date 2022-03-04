@@ -7,8 +7,8 @@ output:
     toc: true
     toc_depth: 2
     number_section: true
-    fig_width: 6.2
-    fig_height: 5.2
+    fig_width: 6
+    fig_height: 5.4
 vignette: >
   %\VignetteIndexEntry{ASURAT}
   %\VignetteEngine{knitr::rmarkdown}
@@ -725,7 +725,7 @@ plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
                    nrand_samples = 100, show_row_names = TRUE, title = "PBMC")
 ```
 
-ASURAT function `plot_violin()` shows violin plots of sign score distributions,
+ASURAT function `plot_violin()` shows violin plots for sign score distributions,
 which helps users annotate each cluster.
 See `?plot_violin` for details.
 ```{r}
