@@ -659,7 +659,7 @@ plot_violin(dataframe1D = dataframe1D, labels = labels, colors = NULL) +
 
 <br>
 
-# Multifaceted sign analysis {#multilayered}
+## Multifaceted analysis {#multilayered}
 Simultaneously analyze multiple sign-by-sample matrices, which helps us
 characterize individual samples (cells) from multiple biological aspects.
 
@@ -725,8 +725,8 @@ plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
                    nrand_samples = 100, show_row_names = TRUE, title = "PBMC")
 ```
 
-ASURAT function `plot_violin()` shows violin plots showing sign score
-distributions.
+ASURAT function `plot_violin()` shows violin plots of sign score distributions,
+which helps users annotate each cluster.
 See `?plot_violin` for details.
 ```{r}
 vlist <- list(c("CM", "CL:0000798-S", "gamma-delta T cell"),
