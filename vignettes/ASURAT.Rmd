@@ -615,31 +615,6 @@ When computing separation indices between given clusters, e.g., cluster 1 versus
 clusters 2 and 3, use an ASURAT function `compute_sepI_clusters()`.
 See `?compute_sepI_clusters` for details.
 
-ASURAT function `plot_violin()` shows violin plots showing sign score
-distributions.
-See `?plot_violin` for details.
-```{r}
-vlist <- list(c("CM", "CL:0000798-S", "gamma-delta T cell"),
-              c("CM", "CL:0000623-V", "natural killer cell"),
-              c("GO", "GO:0006910-S", "phagocytosis, recognition"),
-              c("CM", "MSigID:12-S", "AIZARANI...B_CELLS..."),
-              c("CM", "CL:0000912-S", "helper T cell"),
-              c("KG", "path:hsa04666-V", "Fc gamma R-mediated phagocytosis"))
-xlabels <- list(CM = "Cluster (CO MSigDB)", GO = "Cluster (GO)", KG = "Cluster (KEGG)")
-p <- list()
-for(i in seq_len(length(vlist))){
-  ind <- which(rownames(pbmcs[[vlist[[i]][1]]]) == vlist[[i]][2])
-  pbmc_sub <- pbmcs[[vlist[[i]][1]]][ind, ]
-  labels <- colData(pbmc_sub)$seurat_clusters
-  dataframe1D <- as.data.frame(t(assay(pbmc_sub, "counts")))
-  p[[i]] <- plot_violin(dataframe1D = dataframe1D, labels = labels) +
-    ggplot2::labs(title = paste0(vlist[[i]][2], "\n", vlist[[i]][3]),
-                  x = xlabels[[vlist[[i]][1]]], y = "Sign score", fill = "Cluster") +
-    ggplot2::theme(legend.position = "none")
-}
-gridExtra::grid.arrange(p[[1]], p[[2]], p[[3]], p[[4]], p[[5]], p[[6]])
-```
-
 
 
 <br>
@@ -748,6 +723,31 @@ set.seed(1)
 plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
                    ssmlabel_list = ssmlabel_list, gemlabel_list = gemlabel_list,
                    nrand_samples = 100, show_row_names = TRUE, title = "PBMC")
+```
+
+ASURAT function `plot_violin()` shows violin plots showing sign score
+distributions.
+See `?plot_violin` for details.
+```{r}
+vlist <- list(c("CM", "CL:0000798-S", "gamma-delta T cell"),
+              c("CM", "CL:0000623-V", "natural killer cell"),
+              c("GO", "GO:0006910-S", "phagocytosis, recognition"),
+              c("CM", "MSigID:12-S", "AIZARANI...B_CELLS..."),
+              c("CM", "CL:0000912-S", "helper T cell"),
+              c("KG", "path:hsa04666-V", "Fc gamma R-mediated phagocytosis"))
+xlabels <- list(CM = "Cluster (CO MSigDB)", GO = "Cluster (GO)", KG = "Cluster (KEGG)")
+p <- list()
+for(i in seq_len(length(vlist))){
+  ind <- which(rownames(pbmcs[[vlist[[i]][1]]]) == vlist[[i]][2])
+  pbmc_sub <- pbmcs[[vlist[[i]][1]]][ind, ]
+  labels <- colData(pbmc_sub)$seurat_clusters
+  dataframe1D <- as.data.frame(t(assay(pbmc_sub, "counts")))
+  p[[i]] <- plot_violin(dataframe1D = dataframe1D, labels = labels) +
+    ggplot2::labs(title = paste0(vlist[[i]][2], "\n", vlist[[i]][3]),
+                  x = xlabels[[vlist[[i]][1]]], y = "Sign score", fill = "Cluster") +
+    ggplot2::theme(legend.position = "none")
+}
+gridExtra::grid.arrange(p[[1]], p[[2]], p[[3]], p[[4]], p[[5]], p[[6]])
 ```
 
 
