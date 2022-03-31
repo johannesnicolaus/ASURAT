@@ -745,8 +745,8 @@ ggplot2::ggplot() +
                         width = 0.15, alpha = 0.6) +
   ggplot2::labs(title = paste0(variable, "\n", description),
                 x = "Cluster (cell type)", y = "Sign score") +
-  ggplot2::theme_classic() + ggplot2::theme(legend.position = "none") +
-  ggplot2::scale_fill_hue()
+  ggplot2::theme_classic(base_size = 20) +
+  ggplot2::theme(legend.position = "none") + ggplot2::scale_fill_hue()
 ```
 
 Show violin plots for gene expression distributions across cell type-related
