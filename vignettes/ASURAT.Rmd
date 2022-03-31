@@ -412,7 +412,7 @@ ASURAT function `remove_signs_manually()` removes signs by specifying
 IDs (e.g., `GOID:XXX`) or descriptions (e.g., `COVID`) using `grepl()`.
 The arguments are `sce` and `keywords` (keywords separated by `|`).
 ```{r}
-keywords <- "Covid|COVID|foofoo|hogehoge"
+keywords <- "Covid|COVID"
 pbmcs$KG <- remove_signs_manually(sce = pbmcs$KG, keywords = keywords)
 ```
 The results are stored in `metadata(sce)$sign_SCG`, `metadata(sce)$sign_VCG`,
@@ -469,7 +469,7 @@ embedding (t-SNE).
 ```{r}
 pca_dims <- c(30, 30, 50)
 tsne_dims <- c(2, 2, 3)
-for(i in seq_len(length(pbmcs))){
+for(i in seq_along(pbmcs)){
   set.seed(1)
   mat <- t(as.matrix(assay(pbmcs[[i]], "counts")))
   res <- Rtsne::Rtsne(mat, dim = tsne_dims[i], pca = TRUE,
@@ -523,7 +523,7 @@ Here, our strategy is as follows:
 ```{r, message = FALSE, warning = FALSE, results = "hide"}
 resolutions <- c(0.20, 0.18, 0.30)
 ds <- list(seq_len(30), seq_len(30), seq_len(30))
-for(i in seq_len(length(pbmcs))){
+for(i in seq_along(pbmcs)){
   surt <- Seurat::as.Seurat(pbmcs[[i]], counts = "counts", data = "counts")
   mat <- as.matrix(assay(pbmcs[[i]], "counts"))
   surt[["SSM"]] <- Seurat::CreateAssayObject(counts = mat)
@@ -616,7 +616,7 @@ The arguments are
 * `nrand_samples`: an integer for the number of samples used for random
   sampling, which samples at least one sample per cluster.
 ```{r, message = FALSE, results = "hide"}
-for(i in seq_len(length(pbmcs))){
+for(i in seq_along(pbmcs)){
   set.seed(1)
   labels <- colData(pbmcs[[i]])$seurat_clusters
   pbmcs[[i]] <- compute_sepI_all(sce = pbmcs[[i]], labels = labels,
@@ -674,7 +674,7 @@ separation index and adjusted p-value, respectively.
 marker_signs <- list()
 keywords <- c("LIMB|limb|OENOCYTE|oenocyte", "GO:0002221-S|GO:0035425-S",
               "path:hsa00565-S|path:hsa00564-S")
-for(i in seq_len(length(pbmcs))){
+for(i in seq_along(pbmcs)){
   marker_signs[[i]] <- metadata(pbmcs[[i]])$marker_signs$all
   marker_signs[[i]] <- marker_signs[[i]][!grepl(keywords[i],
                                                 marker_signs[[i]]$Description), ]
@@ -693,7 +693,7 @@ Next, prepare the arguments.
 ```{r}
 # ssm_list
 sces_sub <- list() ; ssm_list <- list()
-for(i in seq_len(length(pbmcs))){
+for(i in seq_along(pbmcs)){
   sces_sub[[i]] <- pbmcs[[i]][rownames(pbmcs[[i]]) %in% marker_signs[[i]]$SignID, ]
   ssm_list[[i]] <- assay(sces_sub[[i]], "counts")
 }
@@ -704,7 +704,7 @@ expr_sub <- expr_sub[rownames(expr_sub) %in% marker_genes_CB$gene]
 gem_list <- list(GeneExpr = assay(expr_sub, "counts"))
 # ssmlabel_list
 labels <- list() ; ssmlabel_list <- list()
-for(i in seq_len(length(pbmcs))){
+for(i in seq_along(pbmcs)){
   tmp <- colData(sces_sub[[i]])$seurat_clusters
   labels[[i]] <- data.frame(label = tmp)
   n_groups <- length(unique(tmp))
@@ -734,27 +734,19 @@ plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
 Show violin plots for sign score distributions across cell type-related clusters.
 ```{r}
 labels <- colData(pbmcs$CB)$seurat_clusters
-vlist <- list(c("CL:0000798-S", "gamma-delta T cell"),
-              c("CL:0000623-V", "natural killer cell"),
-              c("GO:0006910-S", "phagocytosis, recognition"),
-              c("MSigDBID:12-S", "AIZARANI...B_CELLS..."))
-xlabel <- "Cluster (cell type)"
-p <- list()
-for(i in seq_len(length(vlist))){
-  ind <- which(rownames(pbmcs$CB) == vlist[[i]][1])
-  subsce <- pbmcs$CB[ind, ]
-  df <- as.data.frame(t(as.matrix(assay(subsce, "counts"))))
-  p[[i]] <- ggplot2::ggplot() +
-    ggplot2::geom_violin(ggplot2::aes(x = as.factor(labels), y = df[, 1],
-                                      fill = labels), trim = FALSE, size = 0.5) +
-    ggplot2::geom_boxplot(ggplot2::aes(x = as.factor(labels), y = df[, 1]),
-                          width = 0.15, alpha = 0.6) +
-    ggplot2::labs(title = paste0(vlist[[i]][1], "\n", vlist[[i]][2]),
-                  x = xlabel, y = "Sign score") +
-    ggplot2::theme_classic() + ggplot2::theme(legend.position = "none") +
-    ggplot2::scale_fill_hue()
-}
-gridExtra::grid.arrange(p[[1]], p[[2]], p[[3]], p[[4]])
+variable <- "GO:0006910-S"
+description <- "phagocytosis, recognition"
+subsce <- pbmcs$GO[which(rownames(pbmcs$GO) == variable), ]
+df <- as.data.frame(t(as.matrix(assay(subsce, "counts"))))
+ggplot2::ggplot() +
+  ggplot2::geom_violin(ggplot2::aes(x = as.factor(labels), y = df[, 1],
+                                    fill = labels), trim = FALSE, size = 0.5) +
+  ggplot2::geom_boxplot(ggplot2::aes(x = as.factor(labels), y = df[, 1]),
+                        width = 0.15, alpha = 0.6) +
+  ggplot2::labs(title = paste0(variable, "\n", description),
+                x = "Cluster (cell type)", y = "Sign score") +
+  ggplot2::theme_classic() + ggplot2::theme(legend.position = "none") +
+  ggplot2::scale_fill_hue()
 ```
 
 Show violin plots for gene expression distributions across cell type-related

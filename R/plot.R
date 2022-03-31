@@ -109,7 +109,7 @@ plot_dataframe3D <- function(
 #' se <- SingleCellExperiment::altExp(pbmcs_eg$CM, "logcounts")
 #' gem_list <- list(GeneExpr = SummarizedExperiment::assay(se, "counts"))
 #' labels <- list() ; ssmlabel_list <- list()
-#' for(i in seq_len(length(pbmcs_eg))){
+#' for(i in seq_along(pbmcs_eg)){
 #'   fa <- SummarizedExperiment::colData(pbmcs_eg[[i]])$seurat_clusters
 #'   labels[[i]] <- data.frame(label = fa)
 #'   colors <- rainbow(length(unique(labels[[i]]$label)))[labels[[i]]$label]
@@ -139,12 +139,12 @@ plot_multiheatmaps <- function(
   # Set names of dataframes.
   #--------------------------------------------------
   if(!is.null(ssmlabel_list)){
-    for(i in seq_len(length(ssmlabel_list))){
+    for(i in seq_along(ssmlabel_list)){
       colnames(ssmlabel_list[[i]]) <- c("label", "color")
     }
   }
   if(!is.null(gemlabel_list)){
-    for(i in seq_len(length(gemlabel_list))){
+    for(i in seq_along(gemlabel_list)){
       colnames(gemlabel_list[[i]]) <- c("label", "color")
     }
   }
@@ -153,12 +153,12 @@ plot_multiheatmaps <- function(
   #--------------------------------------------------
   if(show_row_names){
     nrow_max <- 1
-    for(i in seq_len(length(ssm_list))){
+    for(i in seq_along(ssm_list)){
       if(nrow_max < dim(ssm_list[[i]])[1]){
         nrow_max <- dim(ssm_list[[i]])[1]
       }
     }
-    for(i in seq_len(length(gem_list))){
+    for(i in seq_along(gem_list)){
       if(nrow_max < dim(gem_list[[i]])[1]){
         nrow_max <- dim(gem_list[[i]])[1]
       }
@@ -182,16 +182,16 @@ plot_multiheatmaps <- function(
   #--------------------------------------------------
   if(!is.null(nrand_samples)){
     inds <- sample(ncol(ssm_list[[1]]), size = nrand_samples, replace = FALSE)
-    for(i in seq_len(length(ssm_list))){
+    for(i in seq_along(ssm_list)){
       ssm_list[[i]] <- ssm_list[[i]][, inds]
     }
-    for(i in seq_len(length(ssmlabel_list))){
+    for(i in seq_along(ssmlabel_list)){
       ssmlabel_list[[i]] <- ssmlabel_list[[i]][inds, ]
     }
-    for(i in seq_len(length(gem_list))){
+    for(i in seq_along(gem_list)){
       gem_list[[i]] <- gem_list[[i]][, inds]
     }
-    for(i in seq_len(length(gemlabel_list))){
+    for(i in seq_along(gemlabel_list)){
       gemlabel_list[[i]] <- gemlabel_list[[i]][inds, ]
     }
   }
@@ -200,7 +200,7 @@ plot_multiheatmaps <- function(
   #--------------------------------------------------
   p <- c()
   ha <- list()
-  for(i in seq_len(length(ssm_list))){
+  for(i in seq_along(ssm_list)){
     if((!is.element(NA, ssmlabel_list[[i]]$label)) &
        (!is.null(ssmlabel_list[[i]]$label))){
       inds <- order(ssmlabel_list[[i]]$label)
@@ -294,7 +294,7 @@ plot_multiheatmaps <- function(
   # Compute heatmaps of gene-by-sample matrices.
   #--------------------------------------------------
   ha2 <- list()
-  for(i in seq_len(length(gem_list))){
+  for(i in seq_along(gem_list)){
     if((!is.element(NA, gemlabel_list[[i]]$label)) &
        (!is.null(gemlabel_list[[i]]$label))){
       inds <- order(gemlabel_list[[i]]$label)

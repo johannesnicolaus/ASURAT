@@ -44,7 +44,6 @@ Suggests:
     BiocGenerics,
     stringr,
     org.Hs.eg.db,
-    gridExtra,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)

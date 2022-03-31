@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 ASURAT.Rproj
+ASURAT_files
 .DS_Store
 
 src/*.o

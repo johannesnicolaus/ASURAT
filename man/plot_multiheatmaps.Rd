@@ -52,7 +52,7 @@ mat <- SummarizedExperiment::assay(se, "counts")
 se <- SingleCellExperiment::altExp(pbmcs_eg$CM, "logcounts")
 gem_list <- list(GeneExpr = SummarizedExperiment::assay(se, "counts"))
 labels <- list() ; ssmlabel_list <- list()
-for(i in seq_len(length(pbmcs_eg))){
+for(i in seq_along(pbmcs_eg)){
   fa <- SummarizedExperiment::colData(pbmcs_eg[[i]])$seurat_clusters
   labels[[i]] <- data.frame(label = fa)
   colors <- rainbow(length(unique(labels[[i]]$label)))[labels[[i]]$label]
