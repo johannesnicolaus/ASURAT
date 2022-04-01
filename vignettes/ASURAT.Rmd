@@ -169,13 +169,15 @@ expressed genes, and
 map to mitochondrial genes, respectively.
 If there is no mitochondrial genes, set them as `NULL`.
 ```{r}
-pbmc <- remove_samples(sce = pbmc, min_nReads = 3500, max_nReads = 20000,
+pbmc <- remove_samples(sce = pbmc, min_nReads = 5000, max_nReads = 20000,
                        min_nGenes = 100, max_nGenes = 1e+10,
                        min_percMT = 0, max_percMT = 10)
 ```
 **Tips:**
 Take care not to set excessive values for the arguments of `remove_samples()`,
 or it may produce biased results.
+Note that `min_nReads = 5000` is somewhat large, which is used only for the
+tutorial.
 
 
 
@@ -365,7 +367,7 @@ An exhaustive parameter searching is time-consuming but helpful for obtaining
 interpretable results.
 ```{r}
 pbmcs$CB <- create_signs(sce = pbmcs$CB, min_cnt_strg = 2, min_cnt_vari = 2)
-pbmcs$GO <- create_signs(sce = pbmcs$GO, min_cnt_strg = 3, min_cnt_vari = 3)
+pbmcs$GO <- create_signs(sce = pbmcs$GO, min_cnt_strg = 4, min_cnt_vari = 4)
 pbmcs$KG <- create_signs(sce = pbmcs$KG, min_cnt_strg = 3, min_cnt_vari = 3)
 ```
 The results are stored in `metadata(sce)$sign_all`,
@@ -402,7 +404,7 @@ the method for computing semantic similarity matrix.
 ```{r}
 pbmcs$GO <- remove_signs_redundant(sce = pbmcs$GO,
                                    similarity_matrix = human_GO$similarity_matrix$BP,
-                                   threshold = 0.60, keep_rareID = TRUE)
+                                   threshold = 0.70, keep_rareID = TRUE)
 ```
 The results are stored in `metadata(sce)$sign_SCG`, `metadata(sce)$sign_VCG`,
 `metadata(sce)$sign_all`, and if there exist, `metadata(sce)$sign_SCG_redundant`
@@ -521,8 +523,8 @@ Here, our strategy is as follows:
 3. convert Seurat objects into temporal SingleCellExperiment objects `temp`,
 4. add `colData(temp)$seurat_clusters` into `colData(sce)$seurat_clusters`.
 ```{r, message = FALSE, warning = FALSE, results = "hide"}
-resolutions <- c(0.20, 0.20, 0.30)
-ds <- list(seq_len(30), seq_len(30), seq_len(30))
+resolutions <- c(0.20, 0.20, 0.10)
+ds <- list(seq_len(20), seq_len(20), seq_len(20))
 for(i in seq_along(pbmcs)){
   surt <- Seurat::as.Seurat(pbmcs[[i]], counts = "counts", data = "counts")
   mat <- as.matrix(assay(pbmcs[[i]], "counts"))
@@ -620,7 +622,7 @@ for(i in seq_along(pbmcs)){
   set.seed(1)
   labels <- colData(pbmcs[[i]])$seurat_clusters
   pbmcs[[i]] <- compute_sepI_all(sce = pbmcs[[i]], labels = labels,
-                                 nrand_samples = 100)
+                                 nrand_samples = 200)
 }
 ```
 The results are stored in `metadata(sce)$marker_signs`.
@@ -649,7 +651,7 @@ surt[["GEM"]] <- Seurat::CreateAssayObject(counts = mat)
 Seurat::DefaultAssay(surt) <- "GEM"
 surt <- Seurat::SetIdent(surt, value = "seurat_clusters")
 res <- Seurat::FindAllMarkers(surt, only.pos = TRUE,
-                              min.pct = 0.25, logfc.threshold = 0.25)
+                              min.pct = 0.50, logfc.threshold = 0.50)
 metadata(pbmcs$CB)$marker_genes$all <- res
 ```
 
@@ -672,12 +674,11 @@ separation index and adjusted p-value, respectively.
 ```{r}
 # Significant signs
 marker_signs <- list()
-keywords <- c("LIMB|limb|OENOCYTE|oenocyte", "foofoo|hogehoge",
-              "path:hsa00565-S|path:hsa00564-S")
+keywords <- "MESENCHYMAL|LIMB|PANCREAS"
 for(i in seq_along(pbmcs)){
   marker_signs[[i]] <- metadata(pbmcs[[i]])$marker_signs$all
-  marker_signs[[i]] <- marker_signs[[i]][!grepl(keywords[i],
-                                                marker_signs[[i]]$Description), ]
+  marker_signs[[i]] <-
+    marker_signs[[i]][!grepl(keywords, marker_signs[[i]]$Description), ]
   marker_signs[[i]] <- dplyr::group_by(marker_signs[[i]], Ident_1)
   marker_signs[[i]] <- dplyr::slice_max(marker_signs[[i]], sepI, n = 2)
   marker_signs[[i]] <- dplyr::slice_min(marker_signs[[i]], Rank, n = 1)
