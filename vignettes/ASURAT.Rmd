@@ -402,7 +402,7 @@ the method for computing semantic similarity matrix.
 ```{r}
 pbmcs$GO <- remove_signs_redundant(sce = pbmcs$GO,
                                    similarity_matrix = human_GO$similarity_matrix$BP,
-                                   threshold = 0.80, keep_rareID = TRUE)
+                                   threshold = 0.60, keep_rareID = TRUE)
 ```
 The results are stored in `metadata(sce)$sign_SCG`, `metadata(sce)$sign_VCG`,
 `metadata(sce)$sign_all`, and if there exist, `metadata(sce)$sign_SCG_redundant`
@@ -521,7 +521,7 @@ Here, our strategy is as follows:
 3. convert Seurat objects into temporal SingleCellExperiment objects `temp`,
 4. add `colData(temp)$seurat_clusters` into `colData(sce)$seurat_clusters`.
 ```{r, message = FALSE, warning = FALSE, results = "hide"}
-resolutions <- c(0.20, 0.18, 0.30)
+resolutions <- c(0.20, 0.20, 0.30)
 ds <- list(seq_len(30), seq_len(30), seq_len(30))
 for(i in seq_along(pbmcs)){
   surt <- Seurat::as.Seurat(pbmcs[[i]], counts = "counts", data = "counts")
@@ -672,20 +672,20 @@ separation index and adjusted p-value, respectively.
 ```{r}
 # Significant signs
 marker_signs <- list()
-keywords <- c("LIMB|limb|OENOCYTE|oenocyte", "GO:0002221-S|GO:0035425-S",
+keywords <- c("LIMB|limb|OENOCYTE|oenocyte", "foofoo|hogehoge",
               "path:hsa00565-S|path:hsa00564-S")
 for(i in seq_along(pbmcs)){
   marker_signs[[i]] <- metadata(pbmcs[[i]])$marker_signs$all
   marker_signs[[i]] <- marker_signs[[i]][!grepl(keywords[i],
                                                 marker_signs[[i]]$Description), ]
   marker_signs[[i]] <- dplyr::group_by(marker_signs[[i]], Ident_1)
-  marker_signs[[i]] <- dplyr::slice_max(marker_signs[[i]], sepI, n = 5)
+  marker_signs[[i]] <- dplyr::slice_max(marker_signs[[i]], sepI, n = 2)
   marker_signs[[i]] <- dplyr::slice_min(marker_signs[[i]], Rank, n = 1)
 }
 # Significant genes
 marker_genes_CB <- metadata(pbmcs$CB)$marker_genes$all
 marker_genes_CB <- dplyr::group_by(marker_genes_CB, cluster)
-marker_genes_CB <- dplyr::slice_min(marker_genes_CB, p_val_adj, n = 5)
+marker_genes_CB <- dplyr::slice_min(marker_genes_CB, p_val_adj, n = 2)
 marker_genes_CB <- dplyr::slice_max(marker_genes_CB, avg_log2FC, n = 1)
 ```
 
@@ -734,8 +734,8 @@ plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
 Show violin plots for sign score distributions across cell type-related clusters.
 ```{r}
 labels <- colData(pbmcs$CB)$seurat_clusters
-variable <- "GO:0006910-S"
-description <- "phagocytosis, recognition"
+variable <- "GO:0042100-V"
+description <- "B cell proliferation"
 subsce <- pbmcs$GO[which(rownames(pbmcs$GO) == variable), ]
 df <- as.data.frame(t(as.matrix(assay(subsce, "counts"))))
 ggplot2::ggplot() +
