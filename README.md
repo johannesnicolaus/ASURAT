@@ -15,8 +15,18 @@ Well-documented vignette and tutorial is available from the following URL:
 One can install ASURAT by the following code:
 
 ```{r}
-devtools::install_github("keita-iida/ASURAT", upgrade = "never")
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+# The following initializes usage of Bioc devel
+BiocManager::install(version='devel')
+
+BiocManager::install("ASURAT")
 ```
+
+## Bioconductor
+ASURAT can be found in the following URL:
+https://bioconductor.org/packages/devel/bioc/html/ASURAT.html
 
 ## Preprint
 The latest version is available from the following bioRxiv page:
