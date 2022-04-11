@@ -25,8 +25,9 @@ BiocManager::install("ASURAT")
 ```
 
 ## Bioconductor
-ASURAT can be found in the following URL:
-https://bioconductor.org/packages/devel/bioc/html/ASURAT.html
+One can find ASURAT in the following Bioconductor page:
+
+* https://bioconductor.org/packages/devel/bioc/html/ASURAT.html
 
 ## Preprint
 The latest version is available from the following bioRxiv page:
