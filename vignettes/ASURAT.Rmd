@@ -173,6 +173,7 @@ pbmc <- remove_samples(sce = pbmc, min_nReads = 5000, max_nReads = 20000,
                        min_nGenes = 100, max_nGenes = 1e+10,
                        min_percMT = 0, max_percMT = 10)
 ```
+
 **Tips:**
 Take care not to set excessive values for the arguments of `remove_samples()`,
 or it may produce biased results.
@@ -289,8 +290,7 @@ Create a custom-built (CB) cell type-related database by combining different
 databases for analyzing human single-cell transcriptome data.
 ```{r}
 d <- list(human_CO[["cell"]], human_MSigDB[["cell"]])
-res <- do.call("rbind", d)
-human_CB <- list(cell = res)
+human_CB <- list(cell = do.call("rbind", d))
 ```
 
 Add formatted databases to `metadata(sce)$sign`.
@@ -702,7 +702,8 @@ names(ssm_list) <- c("SSM_cell", "SSM_function", "SSM_pathway")
 # gem_list
 expr_sub <- altExp(pbmcs$CB, "logcounts")
 expr_sub <- expr_sub[rownames(expr_sub) %in% marker_genes_CB$gene]
-gem_list <- list(GeneExpr = assay(expr_sub, "counts"))
+gem_list <- list(x = t(scale(t(as.matrix(assay(expr_sub, "counts"))))))
+names(gem_list) <- "Scaled\nLogExpr"
 # ssmlabel_list
 labels <- list() ; ssmlabel_list <- list()
 for(i in seq_along(pbmcs)){
@@ -724,6 +725,13 @@ label_CC <- data.frame(label = colData(pbmcs$CB)$Phase, color = NA)
 gemlabel_list <- list(CellCycle = label_CC)
 ```
 
+**Tips:**
+If one would like to omit some color labels (e.g., labels[[3]]), set the
+argument as follows:
+```{r, eval = FALSE}
+ssmlabel_list[[3]] <- data.frame(label = NA, color = NA)
+```
+
 Show heatmaps for the selected signs and genes.
 ```{r, message = FALSE, warning = FALSE}
 set.seed(1)
@@ -731,6 +739,11 @@ plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
                    ssmlabel_list = ssmlabel_list, gemlabel_list = gemlabel_list,
                    nrand_samples = 100, show_row_names = TRUE, title = "PBMC")
 ```
+
+**Tips:**
+If `nrand_samples` is set, `plot_multiheatmaps()` downsamples the samples
+(cells) without considering clustering labels.
+Take care of the clusters with small populations.
 
 Show violin plots for sign score distributions across cell type-related clusters.
 ```{r}
